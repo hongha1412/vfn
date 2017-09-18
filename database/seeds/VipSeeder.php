@@ -19,7 +19,10 @@ class VipSeeder extends Seeder
             'name'      => 'V\u0169 H\u1ed3ng H\u00e0',
             'user'      => 1,
             'goi'       => 1,
+            'time'      => 0,
             'solike'    => 100,
+            'limitpost' => 0,
+            'chuthich'  => '',
         ]);
     }
 }
