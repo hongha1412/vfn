@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        '\App\Console\Commands\CronJob\VipCommentCommand',
+        '\App\Console\Commands\CronJob\VipLikeCommand',
+        '\App\Console\Commands\CronJob\VipReactCommand',
+        '\App\Console\Commands\CronJob\VipShareCommand',
     ];
 
     /**
@@ -24,8 +27,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('BotCmd:like')
+                ->everyMinute();
+//        $schedule->command('BotCmd:react')
+//                ->everyMinute();
+//        $schedule->command('BotCmd:comment')
+//                ->everyMinute();
+//        $schedule->command('BotCmd:share')
+//                ->everyMinute();
     }
 
     /**
