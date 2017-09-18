@@ -16,7 +16,7 @@ if ($_GET[post] == 'dangnhap') {
 }
 ?>
 
-<?php if(!$_SESSION['admin']){ ?>
+<?php if(!$_SESSION['guest']){ ?>
 
 <?php
 $error = '';
@@ -24,7 +24,7 @@ $username = $_POST['username'];
 $password = htmlspecialchars(md5($_POST['password']));
 if($username && $password){
 
-if($username !=  'admin'){
+if($username !=  'guest'){
 $error = '<div class="alert alert-danger"><b>Tài Khoản Hoặc Mật Khẩu Sai!</b></div>';
 }
 
@@ -33,7 +33,7 @@ if($check < 1){
 $error = '<div class="alert alert-danger"><b>Tài Khoản Hoặc Mật Khẩu Sai!</b></div>';
 }else{
 $res = mysql_fetch_assoc(mysql_query("SELECT * FROM `ACCOUNT` WHERE `username`='$username' AND `password`='$password'"));
-$_SESSION['admin'] = $username;
+$_SESSION['guest'] = $username;
 $error = '<div class="alert alert-success"><b>Đăng Nhập Thành Công ...</b></div>';
 echo '<meta http-equiv=refresh content="2; URL=/AdminCP/index.php">';
 }
@@ -98,7 +98,7 @@ include '../theme/js.php';
 
 
 <?php
- if($_SESSION['admin']) { 
+ if($_SESSION['guest']) {
 ?>
 
 <!doctype html>

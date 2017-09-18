@@ -2,7 +2,7 @@
 session_start();
 include '../config.php';
 include 'head.php';
-if(!$_SESSION['admin']){
+if(!$_SESSION['guest']){
     header('Location: index.php');
 }
 ?>
@@ -21,7 +21,7 @@ $result = mysql_query($get);
 $count = mysql_fetch_assoc($result)['COUNT(*)'];
 ?>
 <?php
-if(!$_SESSION['admin'])
+if(!$_SESSION['guest'])
 {
     header('Location: index.php');
 }

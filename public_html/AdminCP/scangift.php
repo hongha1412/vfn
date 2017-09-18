@@ -3,7 +3,7 @@
 <?php
 session_start();
 include '../config.php';
-if(!$_SESSION['admin']){
+if(!$_SESSION['guest']){
 header('Location: index.php');
 exit;
 }

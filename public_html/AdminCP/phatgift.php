@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!$_SESSION['admin']) 
+if(!$_SESSION['guest'])
 {
 	header('Location: /AdminCP');
 }

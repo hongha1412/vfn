@@ -15,7 +15,7 @@
 <meta property="og:author" content="100006670751625" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link href="{{ asset('assets/css/toastr.css') }}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset('assets/css/dataTables.bootstrap.min.css.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/css/dataTables.bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ asset('assets/css/stuly.css') }}" rel="stylesheet" type="text/css"/>
 <link href="{{ asset('assets/css/sweetalert.css') }}" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">

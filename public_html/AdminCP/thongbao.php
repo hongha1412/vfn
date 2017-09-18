@@ -3,7 +3,7 @@ session_start();
 include '../config.php';
 include './head.php';
 include '../theme/css.php';
-if(!$_SESSION['admin']) { 
+if(!$_SESSION['guest']) {
 echo '<meta http-equiv=refresh content="0; URL=/quanly.html">';
 }
 $get = mysql_fetch_assoc(mysql_query("SELECT * FROM `thongbao` WHERE `id`='1'"));

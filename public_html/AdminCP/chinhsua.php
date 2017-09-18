@@ -5,7 +5,7 @@ include './head.php';
 ?>
 <div class="container htt" style="margin-top: 70px;">
 
-<?php if(!$_SESSION['admin']){
+<?php if(!$_SESSION['guest']){
 echo '<meta http-equiv=refresh content="0; URL=/AdminCP">';
 die('<script>alert("Không thể chỉnh sửa được ID người khác nhé!."); </script>');
 } ?>
