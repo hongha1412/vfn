@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\CronJob;
 
+use App\Enum\LikePackageEnum;
 use App\Models\Token;
 use App\Models\Vip;
 use Illuminate\Console\Command;
@@ -43,9 +44,17 @@ class VipLikeCommand extends Command
         $lsUser = Vip::getVipList();
 
         foreach ($lsUser as $user) {
+            if ($user->chuthich == 'done') {
+                continue;
+            }
             $fbAutoLike = new FacebookAutoLike();
             $fbAutoLike->lsToken = Token::getTokenList();
-            $fbAutoLike->userId = $user;
+            $fbAutoLike->userId = $user->idfb;
+            $fbAutoLike->targetLikeNumber = LikePackageEnum::idToValue($user->goi);
+            if ($fbAutoLike->run() > 0) {
+                $user->chuthich('done');
+                $user->save();
+            }
         }
     }
 }

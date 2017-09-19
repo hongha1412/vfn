@@ -9,6 +9,8 @@
 namespace App\Console\Commands\CronJob;
 
 
+use GuzzleHttp\Client;
+
 class FacebookAutoLike
 {
     public $userId, $lsToken, $targetLikeNumber;
@@ -32,7 +34,7 @@ class FacebookAutoLike
             // Count like number
             $count = 0;
             // Facebook target post data
-            $postData = $this->getPost($this->userId, $this->lsToken[0]);
+            $postData = $this->getPost($this->userId, $this->lsToken[0]['token']);
 
             // Check if post data exists
             if ($postData != 0) {
@@ -40,7 +42,7 @@ class FacebookAutoLike
                 foreach ($this->lsToken as $token) {
                     // if bot like enough, break and return like count
                     if ($count < $this->targetLikeNumber) {
-                        if ($this->like($postId, $token)) {
+                        if ($this->like($postId, $token['token'])) {
                             $count++;
                         }
                     } else {
@@ -63,22 +65,26 @@ class FacebookAutoLike
      */
     public function like($postId, $token)
     {
-        $ch = curl_init();
-        $url = 'https://graph.facebook.com/v2.10/' . $postId . '/likes';
+        $host = 'https://graph.facebook.com/';
+        $uri = 'v2.10/' . $postId . '/likes';
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, 'access_token=' . $token);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+        $client = new Client(['base_uri' => $host]);
 
-        $result = json_decode(curl_exec($ch));
-        curl_close($ch);
-
-        if ($result['success']) {
-            return true;
-        } else {
-            return false;
+        try {
+            $response = $client->request('POST', $uri, [
+                'form_params' => [
+                    'access_token' => $token
+                ],
+                'headers' => [
+                    'content-type' => 'application/x-www-form-urlencoded'
+                ]
+            ]);
+            $result = json_decode($response->getBody()->getContents());
+        } catch (\Exception $e) {
+            $result = json_decode('{"success": false}');
         }
+
+        return $result->success;
     }
 
     /**
