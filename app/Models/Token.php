@@ -14,7 +14,7 @@ class Token extends Model
         'token',
     ];
 
-    public function getTokenList()
+    public static function getTokenList()
     {
         return Token::inRandomOrder()->get();
     }
