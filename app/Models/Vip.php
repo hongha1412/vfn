@@ -21,6 +21,6 @@ class Vip extends Model
 
     public static function getVipList()
     {
-        return Vip::inRandomOrder()->get();
+        return Vip::where('goi', '>', '0')->inRandomOrder()->get();
     }
 }

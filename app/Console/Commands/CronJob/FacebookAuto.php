@@ -9,12 +9,14 @@
 namespace App\Console\Commands\CronJob;
 
 
+use App\Enum\FacebookActionEnum;
+use App\Enum\ReactionsEnum;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
-class FacebookAutoLike
+class FacebookAuto
 {
-    public $userId, $lsToken, $targetLikeNumber;
+    public $userId, $lsToken, $targetLikeNumber, $action;
 
     public function __construct()
     {
@@ -33,7 +35,11 @@ class FacebookAutoLike
         // Check valid input data
         if (count($this->lsToken) > 0 && $this->targetLikeNumber > 0 && $this->userId != '') {
             // Facebook target post data
-            $postData = $this->getPost($this->userId, $this->lsToken[0]['token']);
+            foreach ($this->lsToken as $token) {
+                if ($postData = $this->getPost($this->userId, $token['token']) != 0) {
+                    break;
+                }
+            }
             if (!Cache::has('likeCounter')) {
                 Cache::forever('likeCounter', 0);
             }
@@ -44,7 +50,7 @@ class FacebookAutoLike
                 foreach ($this->lsToken as $token) {
                     // if bot like enough, break and return like count
                     if (Cache::get('likeCounter') < $this->targetLikeNumber) {
-                        if ($this->like($postId, $token['token'])) {
+                        if ($this->action($postId, $token['token'], $this->action)) {
                             Cache::increment('likeCounter');
                         }
                     } else {
@@ -89,6 +95,49 @@ class FacebookAutoLike
         return $result->success;
     }
 
+    public function action($postId, $token, $action, $reactionValue = ReactionsEnum::NONE) {
+        // Declare url setting
+        $host = 'https://graph.facebook.com/';
+        $uri = 'v2.10/' . $postId;
+
+        // Create client http request
+        $client = new Client(['base_uri' => $host]);
+        $data = [];
+        $data['form_param']['access_token'] = $token;
+        $data['headers']['content-type'] = 'application/x-www-form-urlencoded';
+
+        // Action like
+        if ($action == FacebookActionEnum::LIKE) {
+            $uri  .= '/likes';
+        }
+        // Action react
+        else if ($action == FacebookActionEnum::REACT) {
+            $uri .= '/reactions';
+            $data['form_param']['type'] = $reactionValue;
+        }
+        // Action comment
+        else if ($action == FacebookActionEnum::COMMENT) {
+
+        }
+        // Action share
+        else if ($action == FacebookActionEnum::SHARE) {
+
+        }
+        // Invalid action
+        else {
+            return false;
+        }
+
+        try {
+            $response = $client->request('POST', $uri, $data);
+            $result = json_decode($response->getBody()->getContents());
+        } catch (\Exception $e) {
+            $result = json_decode('{"success": false}');
+        }
+
+        return $result->success;
+    }
+
     /**
      * Get post data infor
      *
@@ -98,7 +147,11 @@ class FacebookAutoLike
      */
     public function getPost($userId, $token)
     {
-        $postData = file_get_contents('https://graph.facebook.com/' . $userId . '/feed?limit=1&access_token=' . $token);
+        try {
+            $postData = file_get_contents('https://graph.facebook.com/' . $userId . '/feed?limit=1&access_token=' . $token);
+        } catch (\Exception $e) {
+            return 0;
+        }
         $postData = json_decode($postData, true);
         if ($postData['data'][0]['id']) {
             return $postData;
