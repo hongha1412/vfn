@@ -10,6 +10,7 @@ namespace App\Console\Commands\CronJob;
 
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 class FacebookAutoLike
 {
@@ -31,25 +32,26 @@ class FacebookAutoLike
     {
         // Check valid input data
         if (count($this->lsToken) > 0 && $this->targetLikeNumber > 0 && $this->userId != '') {
-            // Count like number
-            $count = 0;
             // Facebook target post data
             $postData = $this->getPost($this->userId, $this->lsToken[0]['token']);
+            if (!Cache::has('likeCounter')) {
+                Cache::forever('likeCounter', 0);
+            }
 
             // Check if post data exists
             if ($postData != 0) {
                 $postId = $postData['data'][0]['id'];
                 foreach ($this->lsToken as $token) {
                     // if bot like enough, break and return like count
-                    if ($count < $this->targetLikeNumber) {
+                    if (Cache::get('likeCounter') < $this->targetLikeNumber) {
                         if ($this->like($postId, $token['token'])) {
-                            $count++;
+                            Cache::increment('likeCounter');
                         }
                     } else {
                         break;
                     }
                 }
-                return $count;
+                return Cache::get('likeCounter');
             } else {
                 return 0;
             }

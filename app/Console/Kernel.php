@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,8 +28,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        if (Cache::has('likeCounter')) {
+            Cache::forget('likeCounter');
+        }
         $schedule->command('BotCmd:like')
-                ->everyMinute()->withoutOverlapping();
+            ->everyMinute()->withoutOverlapping();
+        $schedule->command('BotCmd:like')
+            ->everyMinute()->withoutOverlapping();
+        $schedule->command('BotCmd:like')
+            ->everyMinute()->withoutOverlapping();
 //        $schedule->command('BotCmd:react')
 //                ->everyMinute()->withoutOverlapping();
 //        $schedule->command('BotCmd:comment')

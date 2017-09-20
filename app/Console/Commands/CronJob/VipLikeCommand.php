@@ -44,17 +44,11 @@ class VipLikeCommand extends Command
         $lsUser = Vip::getVipList();
 
         foreach ($lsUser as $user) {
-            if ($user->chuthich == 'done') {
-                continue;
-            }
             $fbAutoLike = new FacebookAutoLike();
             $fbAutoLike->lsToken = Token::getTokenList();
             $fbAutoLike->userId = $user->idfb;
             $fbAutoLike->targetLikeNumber = LikePackageEnum::idToValue($user->goi);
-            if ($fbAutoLike->run() > 0) {
-                $user->chuthich('done');
-                $user->save();
-            }
+            $fbAutoLike->run();
         }
     }
 }
