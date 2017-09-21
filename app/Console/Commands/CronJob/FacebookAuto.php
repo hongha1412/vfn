@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Cache;
 
 class FacebookAuto
 {
-    public $userId, $lsToken, $targetNumber, $action, $delayTime = 0;
+    public $userId, $lsToken, $targetNumber, $action, $reactionValue = ReactionsEnum::LIKE, $message, $delayTime = 0;
 
     public function __construct()
     {
@@ -55,14 +55,14 @@ class FacebookAuto
                 }
 
                 // Init cache counter
-                if (!Cache::has('counter' . $postId)) {
-                    Cache::forever('counter' . $postId, 0);
+                if (!Cache::has('counter' . $this->action . $postId)) {
+                    Cache::forever('counter' . $this->action . $postId, 0);
                 }
                 foreach ($this->lsToken as $token) {
                     // if bot counter enough, break and return counter
-                    if (Cache::has('counter' . $postId) && Cache::get('counter' . $postId) < $this->targetNumber) {
-                        if ($this->action($postId, $token['token'], $this->action)) {
-                            Cache::increment('counter' . $postId);
+                    if (Cache::has('counter' . $this->action . $postId) && Cache::get('counter' . $this->action . $postId) < $this->targetNumber) {
+                        if ($this->action($postId, $token['token'], $this->action, $this->reactionValue)) {
+                            Cache::increment('counter' . $this->action . $postId);
                             sleep($this->delayTime);
                         }
                     } else {
@@ -70,8 +70,8 @@ class FacebookAuto
                     }
                 }
                 // Write log
-                CronLog::log($postId, $this->action, Cache::get('counter' . $postId));
-                return Cache::has('counter' . $postId) ? Cache::get('counter' . $postId) : -1;
+                CronLog::log($postId, $this->action, Cache::get('counter' . $this->action . $postId));
+                return Cache::has('counter' . $this->action . $postId) ? Cache::get('counter' . $this->action . $postId) : -1;
             } else {
                 // Write log
                 CronLog::log('Unknow', $this->action, 0);
@@ -84,7 +84,19 @@ class FacebookAuto
         }
     }
 
-    public function action($postId, $token, $action, $reactionValue = ReactionsEnum::NONE) {
+    /**
+     * Facebook action request
+     *
+     * @param $postId target post id
+     * @param $token access token
+     * @param $action action type
+     * @return bool true: success / false: fail
+     */
+    public function action($postId, $token, $action) {
+        // Set default message
+        if (!$this->message) {
+            $this->message = env('DEFAULT_COMMENT');
+        }
         // Declare url setting
         $host = 'https://graph.facebook.com/';
         $uri = 'v2.10/' . $postId;
@@ -102,15 +114,16 @@ class FacebookAuto
         // Action react
         else if ($action == FacebookActionEnum::REACT) {
             $uri .= '/reactions';
-            $data['form_param']['type'] = $reactionValue;
+            $data['form_param']['type'] = $this->reactionValue;
         }
         // Action comment
         else if ($action == FacebookActionEnum::COMMENT) {
-
+            $uri .= '/comments';
+            $data['form_param']['message'] = $this->message;
         }
         // Action share
         else if ($action == FacebookActionEnum::SHARE) {
-
+            $uri .= '/sharedposts';
         }
         // Invalid action
         else {
@@ -118,8 +131,17 @@ class FacebookAuto
         }
 
         try {
+            // Like and reactions result
             $response = $client->request('POST', $uri, $data);
             $result = json_decode($response->getBody()->getContents());
+            // Share and comment result
+            if ($this->action == FacebookActionEnum::SHARE || $this->action == FacebookActionEnum::COMMENT) {
+                if ($result->id) {
+                    $result = json_decode('{"success": true}');
+                } else {
+                    $result = json_decode('{"success": false}');
+                }
+            }
         } catch (\Exception $e) {
             $result = json_decode('{"success": false}');
         }

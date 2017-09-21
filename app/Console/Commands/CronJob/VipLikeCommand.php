@@ -47,12 +47,13 @@ class VipLikeCommand extends Command
         $lsUser = Vip::getVipList();
 
         foreach ($lsUser as $user) {
+            $delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi))) - intval(env('DEFAULT_TIME_BUFFER'));
             $fbAutoLike = new FacebookAuto();
             $fbAutoLike->lsToken = Token::getTokenList();
             $fbAutoLike->userId = $user->idfb;
             $fbAutoLike->targetNumber = LikePackageEnum::idToValue($user->goi);
             $fbAutoLike->action = FacebookActionEnum::LIKE;
-            $fbAutoLike->delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi)));
+            $fbAutoLike->delayTime = $delayTime <= 0 ? 0 : $delayTime;
             $fbAutoLike->run();
         }
     }

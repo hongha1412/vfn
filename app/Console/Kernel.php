@@ -29,17 +29,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('BotCmd:like')
-            ->everyMinute()->withoutOverlapping()
-            ->after(function() {
-                Cache::flush();
-            });
-
-//        $schedule->command('BotCmd:react')
-//                ->everyMinute()->withoutOverlapping();
-//        $schedule->command('BotCmd:comment')
-//                ->everyMinute()->withoutOverlapping();
-//        $schedule->command('BotCmd:share')
-//                ->everyMinute()->withoutOverlapping();
+            ->everyMinute()->withoutOverlapping();
+        $schedule->command('BotCmd:react')
+                ->everyMinute()->withoutOverlapping();
+        $schedule->command('BotCmd:comment')
+                ->everyMinute()->withoutOverlapping();
+        $schedule->command('BotCmd:share')
+                ->everyMinute()->withoutOverlapping();
     }
 
     /**

@@ -2,6 +2,10 @@
 
 namespace App\Console\Commands\CronJob;
 
+use App\Enum\FacebookActionEnum;
+use App\Enum\LikePackageEnum;
+use App\Models\Token;
+use App\Models\VipShare;
 use Illuminate\Console\Command;
 
 class VipShareCommand extends Command
@@ -37,6 +41,17 @@ class VipShareCommand extends Command
      */
     public function handle()
     {
-        //
+        $lsUser = VipShare::getVipShareList();
+
+        foreach ($lsUser as $user) {
+            $delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi))) - intval(env('DEFAULT_TIME_BUFFER'));
+            $fbAutoLike = new FacebookAuto();
+            $fbAutoLike->lsToken = Token::getTokenList();
+            $fbAutoLike->userId = $user->idfb;
+            $fbAutoLike->targetNumber = LikePackageEnum::idToValue($user->goi);
+            $fbAutoLike->action = FacebookActionEnum::SHARE;
+            $fbAutoLike->delayTime = $delayTime <= 0 ? 0 : $delayTime;
+            $fbAutoLike->run();
+        }
     }
 }
