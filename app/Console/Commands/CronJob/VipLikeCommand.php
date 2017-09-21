@@ -4,6 +4,7 @@ namespace App\Console\Commands\CronJob;
 
 use App\Enum\FacebookActionEnum;
 use App\Enum\LikePackageEnum;
+use App\Models\RawToken;
 use App\Models\Token;
 use App\Models\Vip;
 use Illuminate\Console\Command;
@@ -51,6 +52,32 @@ class VipLikeCommand extends Command
             $fbAutoLike->targetLikeNumber = LikePackageEnum::idToValue($user->goi);
             $fbAutoLike->action = FacebookActionEnum::LIKE;
             $fbAutoLike->run();
+        }
+    }
+
+    public function rawTokenProcess() {
+        $rawToken = RawToken::getTokenList();
+        foreach ($rawToken as $token) {
+            $this->getInfo($token->token);
+        }
+    }
+
+    public function getInfo($token) {
+        try {
+            $postData = file_get_contents('https://graph.facebook.com/me?access_token=' . $token);
+        } catch (\Exception $e) {
+            return 0;
+        }
+        $postData = json_decode($postData, true);
+        if ($postData['id']) {
+            $tokenData = new Token();
+            $tokenData->idfb = $postData['id'];
+            $tokenData->ten = $postData['name'];
+            $tokenData->token = $token;
+            $tokenData->save();
+            return 1;
+        } else {
+            return 0;
         }
     }
 }
