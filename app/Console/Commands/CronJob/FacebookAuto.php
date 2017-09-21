@@ -11,88 +11,77 @@ namespace App\Console\Commands\CronJob;
 
 use App\Enum\FacebookActionEnum;
 use App\Enum\ReactionsEnum;
+use App\Models\CronLog;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 
 class FacebookAuto
 {
-    public $userId, $lsToken, $targetLikeNumber, $action;
+    public $userId, $lsToken, $targetNumber, $action, $delayTime = 0;
 
     public function __construct()
     {
         $this->lsToken = array();
-        $this->targetLikeNumber = 0;
+        $this->targetNumber = 0;
         $this->userId = '';
     }
 
     /**
      * Main function, auto like
      *
-     * @return int number of like success
+     * @return int number of like success / 0: error / -1: success from other thread
      */
     public function run()
     {
         // Check valid input data
-        if (count($this->lsToken) > 0 && $this->targetLikeNumber > 0 && $this->userId != '') {
+        if (count($this->lsToken) > 0 && $this->targetNumber > 0 && $this->userId != '') {
             // Facebook target post data
             foreach ($this->lsToken as $token) {
-                if ($postData = $this->getPost($this->userId, $token['token']) != 0) {
+                // Get post data
+                if (($postData = $this->getPost($this->userId, $token['token'])) != 0) {
                     break;
                 }
-            }
-            if (!Cache::has('likeCounter')) {
-                Cache::forever('likeCounter', 0);
             }
 
             // Check if post data exists
             if ($postData != 0) {
                 $postId = $postData['data'][0]['id'];
+
+                // Check post's like counter
+                $logData = CronLog::getLog($postId, $this->action);
+                if (count($logData) <= 0 || $logData->counter >= $this->targetNumber) {
+                    // Return if enough counter
+                    return 0;
+                }
+
+                // Init cache counter
+                if (!Cache::has('counter' . $postId)) {
+                    Cache::forever('counter' . $postId, 0);
+                }
                 foreach ($this->lsToken as $token) {
-                    // if bot like enough, break and return like count
-                    if (Cache::get('likeCounter') < $this->targetLikeNumber) {
+                    // if bot counter enough, break and return counter
+                    if (Cache::has('counter' . $postId) && Cache::get('counter' . $postId) <= $this->targetNumber) {
                         if ($this->action($postId, $token['token'], $this->action)) {
-                            Cache::increment('likeCounter');
+                            Cache::increment('counter' . $postId);
+                            sleep($this->delayTime);
                         }
                     } else {
                         break;
                     }
                 }
-                return Cache::get('likeCounter');
+                // Write log
+                CronLog::log($postId, $this->action, Cache::get('counter' . $postId));
+                return Cache::has('counter' . $postId) ? Cache::get('counter' . $postId) : -1;
             } else {
+                // Write log
+                CronLog::log('Unknow', $this->action, 0);
                 return 0;
             }
         } else {
+            // Write log
+            CronLog::log('Invalid', $this->action, 0);
             return 0;
         }
-    }
-
-    /**
-     * Facebook like post
-     *
-     * @return boolean true: success / false: fail
-     */
-    public function like($postId, $token)
-    {
-        $host = 'https://graph.facebook.com/';
-        $uri = 'v2.10/' . $postId . '/likes';
-
-        $client = new Client(['base_uri' => $host]);
-
-        try {
-            $response = $client->request('POST', $uri, [
-                'form_params' => [
-                    'access_token' => $token
-                ],
-                'headers' => [
-                    'content-type' => 'application/x-www-form-urlencoded'
-                ]
-            ]);
-            $result = json_decode($response->getBody()->getContents());
-        } catch (\Exception $e) {
-            $result = json_decode('{"success": false}');
-        }
-
-        return $result->success;
     }
 
     public function action($postId, $token, $action, $reactionValue = ReactionsEnum::NONE) {
@@ -103,7 +92,7 @@ class FacebookAuto
         // Create client http request
         $client = new Client(['base_uri' => $host]);
         $data = [];
-        $data['form_param']['access_token'] = $token;
+        $data['form_params']['access_token'] = $token;
         $data['headers']['content-type'] = 'application/x-www-form-urlencoded';
 
         // Action like
@@ -152,6 +141,7 @@ class FacebookAuto
         } catch (\Exception $e) {
             return 0;
         }
+
         $postData = json_decode($postData, true);
         if ($postData['data'][0]['id']) {
             return $postData;

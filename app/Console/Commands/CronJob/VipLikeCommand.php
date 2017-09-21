@@ -43,14 +43,16 @@ class VipLikeCommand extends Command
      */
     public function handle()
     {
+//        $this->rawTokenProcess();
         $lsUser = Vip::getVipList();
 
         foreach ($lsUser as $user) {
             $fbAutoLike = new FacebookAuto();
             $fbAutoLike->lsToken = Token::getTokenList();
             $fbAutoLike->userId = $user->idfb;
-            $fbAutoLike->targetLikeNumber = LikePackageEnum::idToValue($user->goi);
+            $fbAutoLike->targetNumber = LikePackageEnum::idToValue($user->goi);
             $fbAutoLike->action = FacebookActionEnum::LIKE;
+            $fbAutoLike->delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi)));
             $fbAutoLike->run();
         }
     }

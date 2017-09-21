@@ -28,15 +28,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (Cache::has('likeCounter')) {
-            Cache::forget('likeCounter');
-        }
         $schedule->command('BotCmd:like')
-            ->everyMinute()->withoutOverlapping();
-        $schedule->command('BotCmd:like')
-            ->everyMinute()->withoutOverlapping();
-        $schedule->command('BotCmd:like')
-            ->everyMinute()->withoutOverlapping();
+            ->everyMinute()->withoutOverlapping()
+            ->after(function() {
+                Cache::flush();
+            });
+
 //        $schedule->command('BotCmd:react')
 //                ->everyMinute()->withoutOverlapping();
 //        $schedule->command('BotCmd:comment')
