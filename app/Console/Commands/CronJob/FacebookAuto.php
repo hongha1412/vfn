@@ -49,7 +49,7 @@ class FacebookAuto
 
                 // Check post's like counter
                 $logData = CronLog::getLog($postId, $this->action);
-                if (count($logData) <= 0 || $logData->counter >= $this->targetNumber) {
+                if (count($logData) > 0 && $logData->counter >= $this->targetNumber) {
                     // Return if enough counter
                     return 0;
                 }
@@ -60,7 +60,7 @@ class FacebookAuto
                 }
                 foreach ($this->lsToken as $token) {
                     // if bot counter enough, break and return counter
-                    if (Cache::has('counter' . $postId) && Cache::get('counter' . $postId) <= $this->targetNumber) {
+                    if (Cache::has('counter' . $postId) && Cache::get('counter' . $postId) < $this->targetNumber) {
                         if ($this->action($postId, $token['token'], $this->action)) {
                             Cache::increment('counter' . $postId);
                             sleep($this->delayTime);
