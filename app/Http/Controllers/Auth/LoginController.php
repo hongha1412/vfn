@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Utils\Message;
+use App\Http\Utils\PasswordHasher;
+use App\Models\Account;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -34,6 +38,16 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
+    }
+
+    public function guestLogin(Request $loginRequest) {
+        $hasher = new PasswordHasher();
+        $accountInfo = Account::login($loginRequest->username, $hasher->encrypt($loginRequest->password));
+        if ($accountInfo) {
+            return (new Message(true, 'Login Success'))->toJson();
+        } else {
+            return (new Message(false, 'Login Information Invalid'))->toJson();
+        }
     }
 }

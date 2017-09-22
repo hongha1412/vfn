@@ -9,24 +9,24 @@
                 <div class="form-group">
                     <label for="usr">Tên tài khoản:</label>
                     <star>*</star>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" data-bind="value: username" id="username" name="username">
                 </div>
                 <div class="form-group">
                     <label for="pwd">Mật khẩu:</label>
                     <star>*</star>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" data-bind="value: password" id="password" name="password">
                 </div>
                 <div class="footer text-center">
 
-                    <button id="postdata2" class="btn btn-rounded btn-primary" name="dangnhap"
-                            onclick="dangnhap()"><i class="fa fa-sign-in"></i> Đăng Nhập
+                    <button id="postdata2" class="btn btn-rounded btn-primary" name="login"
+                        data-bind="click: login"><i class="fa fa-sign-in"></i> Đăng Nhập
                     </button>
 
                 </div>
             </div>
         </div>
 
-        <div id="ketqua"></div>
+        <div id="result" data-bind="text: loginResult"></div>
 
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>

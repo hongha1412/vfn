@@ -218,4 +218,11 @@
             </div>
         </div>
     </div>
+
+    <!-- Store login url -->
+    <input type="text" data-bind="visible: false" id="loginURL">{{ route('guest.login') }}</input>
+@endsection
+
+@section('page_js')
+    <script src="{{ asset('assets/scripts/guest/home/index.js') }}" type="text/javascript"></script>
 @endsection

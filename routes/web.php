@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
 $domainName = env('APP_DOMAIN_NAME');
 $domain = env('APP_DOMAIN');
@@ -20,7 +21,7 @@ App::setLocale('en');
 Route::group(['domain' => $adminDomain], function () {
 
     // Login action
-    Route::get('/login', 'AuthController@actionLoginForm')->name('guest.actionLoginForm');
+    Route::get('/login', 'Auth\LoginController@adminLogin')->name('admin.login');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionAdmin']], function () {
     });
@@ -29,9 +30,11 @@ Route::group(['domain' => $adminDomain], function () {
 Route::group(['domain' => $domain], function () {
 
     // Login
-    Route::get('/login', 'AuthController@login')->name('guest.login');
+    Route::post('/login', 'Auth\LoginController@guestLogin')->name('guest.login');
     // Register
-    Route::get('/register', 'AuthController@register')->name('guest.register');
+    Route::post('/register', 'Auth\RegisterController@guestRegister')->name('guest.register');
+    // Index register
+    Route::get('/register/index', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
     Route::get('/getToken', 'GetTokenController@index')->name('guest.getToken');
     // Price

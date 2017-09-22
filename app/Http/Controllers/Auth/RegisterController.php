@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Utils\Message;
+use App\Models\Account;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -55,17 +58,39 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create user
      *
-     * @param  array  $data
-     * @return \App\User
+     * @param Request $registerRequest
+     * @return Message
      */
-    protected function create(array $data)
+    protected function guestRegister(Request $registerRequest)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+        $validator = Validator::make($registerRequest->request->all(), [
+            'fullname' => 'string|max:50',
+            'email' => 'required|string|email|max:255',
+            'username' => 'required|string|max:50',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|string|min:6'
         ]);
+        if ($validator->fails()) {
+            return (new Message(false, $validator->messages()->all()))->toJson();
+        }
+
+        $account = Account::create([
+            'fullname'      => $registerRequest->request->all()['fullname'],
+            'mail'          => $registerRequest->request->all()['email'],
+            'username'      => $registerRequest->request->all()['username'],
+            'password'      => $registerRequest->request->all()['password'],
+        ]);
+
+        if ($account) {
+            return (new Message(true, 'Register account success'))->toJson();
+        } else {
+            return (new Message(false, 'Cannot create account'))->toJson();
+        }
+    }
+
+    protected function index() {
+        return view('guest.register.index');
     }
 }

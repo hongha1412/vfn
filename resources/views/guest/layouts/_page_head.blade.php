@@ -8,6 +8,7 @@
 <meta name="robots" content="index, follow" />
 <meta property="og:url" content="http://vipfbnow.com" />
 <meta property="og:type" content="website" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="shortcut icon" href="https://i.imgur.com/iTC7RKm.png">
 <meta property="og:image" content="https://i.imgur.com/hx1OsvK.jpg" />
 <meta name="description" content="VipFbnow.Com Hệ thống Vip Like giá rẻ được ưa chuông nhất hiện nay." />
