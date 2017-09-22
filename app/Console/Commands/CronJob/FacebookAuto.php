@@ -61,7 +61,7 @@ class FacebookAuto
                 foreach ($this->lsToken as $token) {
                     // if bot counter enough, break and return counter
                     if (Cache::has('counter' . $this->action . $postId) && Cache::get('counter' . $this->action . $postId) < $this->targetNumber) {
-                        if ($this->action($postId, $token['token'], $this->action, $this->reactionValue)) {
+                        if ($this->action($postId, $token['token'])) {
                             Cache::increment('counter' . $this->action . $postId);
                             sleep($this->delayTime);
                         }
@@ -71,15 +71,19 @@ class FacebookAuto
                 }
                 // Write log
                 CronLog::log($postId, $this->action, Cache::get('counter' . $this->action . $postId));
-                return Cache::has('counter' . $this->action . $postId) ? Cache::get('counter' . $this->action . $postId) : -1;
+                $returnResult = Cache::has('counter' . $this->action . $postId) ? Cache::get('counter' . $this->action . $postId) : -1;
+                Cache::flush();
+                return $returnResult;
             } else {
                 // Write log
                 CronLog::log('Unknow', $this->action, 0);
+                Cache::flush();
                 return 0;
             }
         } else {
             // Write log
             CronLog::log('Invalid', $this->action, 0);
+            Cache::flush();
             return 0;
         }
     }
@@ -89,10 +93,9 @@ class FacebookAuto
      *
      * @param $postId target post id
      * @param $token access token
-     * @param $action action type
      * @return bool true: success / false: fail
      */
-    public function action($postId, $token, $action) {
+    public function action($postId, $token) {
         // Set default message
         if (!$this->message) {
             $this->message = env('DEFAULT_COMMENT');
@@ -108,22 +111,26 @@ class FacebookAuto
         $data['headers']['content-type'] = 'application/x-www-form-urlencoded';
 
         // Action like
-        if ($action == FacebookActionEnum::LIKE) {
+        if ($this->action == FacebookActionEnum::LIKE) {
             $uri  .= '/likes';
         }
         // Action react
-        else if ($action == FacebookActionEnum::REACT) {
+        else if ($this->action == FacebookActionEnum::REACT) {
             $uri .= '/reactions';
-            $data['form_param']['type'] = $this->reactionValue;
+            // Set reaction type
+            $data['form_params']['type'] = $this->reactionValue;
         }
         // Action comment
-        else if ($action == FacebookActionEnum::COMMENT) {
+        else if ($this->action == FacebookActionEnum::COMMENT) {
             $uri .= '/comments';
-            $data['form_param']['message'] = $this->message;
+            // Set message comment
+            $data['form_params']['message'] = $this->message;
         }
         // Action share
-        else if ($action == FacebookActionEnum::SHARE) {
+        else if ($this->action == FacebookActionEnum::SHARE) {
             $uri .= '/sharedposts';
+            // Set privacy to public
+            $data['form_params']['privacy'] = '{"description": "","value": "EVERYONE","friends": "","allow": "","deny": ""}';
         }
         // Invalid action
         else {
