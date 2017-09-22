@@ -4,22 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Vip extends Model
+class VipCmt extends Model
 {
-    protected $table = 'vip';
+    protected $table = 'vipcmt';
     public $timestamps = false;
     protected $fillable = [
         'idfb',
         'name',
         'user',
+        'noidung',
         'goi',
         'time',
-        'solike',
+        'socmt',
         'limitpost',
-        'chuthich',
     ];
 
-    public static function getVipList()
+    public static function getVipCmtList()
     {
         return Vip::where('goi', '>', '0')->inRandomOrder()->get();
     }

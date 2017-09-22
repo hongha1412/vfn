@@ -15,8 +15,8 @@ class VipSeeder extends Seeder
         Vip::query()->truncate();
 
         Vip::create([
-            'idfb'      => '100000137471731',
-            'name'      => 'V\u0169 H\u1ed3ng H\u00e0',
+            'idfb'      => '100003626686858',
+            'name'      => 'Jake Braun',
             'user'      => 1,
             'goi'       => 1,
             'time'      => 0,

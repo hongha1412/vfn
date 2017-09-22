@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Vip extends Model
+class VipReact extends Model
 {
-    protected $table = 'vip';
+    protected $table = 'vipreact';
     public $timestamps = false;
     protected $fillable = [
         'idfb',
@@ -14,12 +14,13 @@ class Vip extends Model
         'user',
         'goi',
         'time',
-        'solike',
+        'soreact',
+        'type',
         'limitpost',
         'chuthich',
     ];
 
-    public static function getVipList()
+    public static function getVipReactList()
     {
         return Vip::where('goi', '>', '0')->inRandomOrder()->get();
     }
