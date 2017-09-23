@@ -6,7 +6,7 @@
  * Time: 11:09 PM
  */
 
-namespace App\Http\Utils;
+namespace App\Http\Controllers\Common;
 
 
 class PasswordHasher

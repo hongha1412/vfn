@@ -21,7 +21,7 @@
                 <span>TRANG CHỦ</span></a></li>
 
         <!-- /dangky.php -->
-        <li><a href="{{ route('guest.register') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> <span>Đăng Ký</span></a>
+        <li><a href="{{ route('guest.register.index') }}"><i class="fa fa-user-plus" aria-hidden="true"></i> <span>Đăng Ký</span></a>
         </li>
         <li><a data-toggle="modal" data-target="#DANGNHAP"><i class="fa fa-user" aria-hidden="true"></i> <span>Đăng Nhập</span></a>
         </li>

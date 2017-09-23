@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Common\Message;
+use App\Http\Controllers\Common\PasswordHasher;
 use App\Http\Controllers\Controller;
-use App\Http\Utils\Message;
-use App\Http\Utils\PasswordHasher;
 use App\Models\Account;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;

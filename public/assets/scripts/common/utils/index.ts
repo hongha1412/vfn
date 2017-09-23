@@ -33,4 +33,11 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
     }
+
+    export const enum SweetAlertType {
+        WARNING = "warning",
+        ERROR = "error",
+        SUCCESS = "success",
+        INFO = "info"
+    }
 }

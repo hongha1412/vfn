@@ -220,7 +220,7 @@
     </div>
 
     <!-- Store login url -->
-    <input type="text" data-bind="visible: false" id="loginURL">{{ route('guest.login') }}</input>
+    <input type="text" data-bind="visible: false" id="loginURL" value="{{ route('guest.login') }}" />
 @endsection
 
 @section('page_js')

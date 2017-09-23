@@ -31,35 +31,5 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
         </div>
-        <script>
-            function dangnhap() {
-                if (!$('#username').val()) {
-                    toastr.error('Vui Lòng Nhập Tên Đăng Nhập', 'Thông báo lỗi');
-                } else if (!$('#password').val()) {
-                    toastr.error('Vui Lòng Nhập Mật Khẩu', 'Thông báo lỗi');
-                } else {
-                    xuly2();
-                }
-            }
-
-            function xuly2() {
-                $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Đang Xử Lý');
-                $.ajax({
-                    // ../like_modun/xuly_dangnhap.php
-                    url: "{{ route('guest.login') }}",
-                    type: "post",
-                    dateType: "text",
-                    data: {
-                        username: $('#username').val(),
-                        password: $('#password').val()
-                    },
-                    success: function (result) {
-                        $('#ketqua').html(result);
-                        $('#postdata2').html('Đăng Nhập');
-                    }
-                });
-            }
-
-        </script>
     </div>
 </div>

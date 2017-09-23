@@ -6,10 +6,10 @@
  * Time: 15:45
  */
 
-namespace App\Http\Utils;
+namespace App\Http\Controllers\Common;
 
 
-class Message
+class Message implements \JsonSerializable
 {
     // success: true - success / false - fail; message: return message
     private $success, $message = array();
@@ -32,5 +32,20 @@ class Message
 
     public function toJson() {
         return json_encode($this);
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'success'   => $this->success,
+            'message'   => $this->message,
+        ];
     }
 }

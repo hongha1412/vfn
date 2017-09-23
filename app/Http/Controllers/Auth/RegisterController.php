@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Utils\Message;
+use App\Http\Controllers\Common\Message;
+use App\Http\Controllers\Common\PasswordHasher;
 use App\Models\Account;
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -65,22 +65,26 @@ class RegisterController extends Controller
      */
     protected function guestRegister(Request $registerRequest)
     {
-        $validator = Validator::make($registerRequest->request->all(), [
+        // Check valid data
+        $validator = Validator::make($registerRequest->all(), [
             'fullname' => 'string|max:50',
             'email' => 'required|string|email|max:255',
             'username' => 'required|string|max:50',
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required|string|min:6'
         ]);
+
         if ($validator->fails()) {
             return (new Message(false, $validator->messages()->all()))->toJson();
         }
 
+        // Create account
+        $hasher = new PasswordHasher();
         $account = Account::create([
-            'fullname'      => $registerRequest->request->all()['fullname'],
-            'mail'          => $registerRequest->request->all()['email'],
-            'username'      => $registerRequest->request->all()['username'],
-            'password'      => $registerRequest->request->all()['password'],
+            'fullname'      => $registerRequest->all()['fullname'],
+            'mail'         => $registerRequest->all()['email'],
+            'username'      => $registerRequest->all()['username'],
+            'password'      => $hasher->encrypt($registerRequest->all()['password']),
         ]);
 
         if ($account) {

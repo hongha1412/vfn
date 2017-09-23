@@ -12,52 +12,60 @@ var com;
     (function (sabrac) {
         var vipfbnow;
         (function (vipfbnow) {
-            var HomeScreenModel = (function () {
-                function HomeScreenModel() {
+            var RegisterScreenModel = (function () {
+                function RegisterScreenModel() {
                     var self = this;
+                    self.fullname = ko.observable("");
+                    self.email = ko.observable("");
                     self.username = ko.observable("");
                     self.password = ko.observable("");
+                    self.password_confirmation = ko.observable("");
+                    self.registerResult = ko.observable("");
                     self.loginResult = ko.observable("");
                 }
-                HomeScreenModel.prototype.startPage = function () {
+                RegisterScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     dfd.resolve();
                     return dfd.promise();
                 };
-                HomeScreenModel.prototype.login = function () {
+                RegisterScreenModel.prototype.register = function () {
                     var self = this;
-                    var data = new UserInfo(self.username(), self.password());
-                    vipfbnow.Utils.postData($("#loginURL").val(), data).done(function (result) {
+                    var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+                    $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
+                    vipfbnow.Utils.postData($("#registerURL").val(), data).done(function (result) {
                         swal({
                             title: "Thành Công",
                             text: result.message,
                             type: "success" /* SUCCESS */
                         }, function () {
-                            location.reload();
+                            window.location.href = "/";
                         });
                     }).fail(function (result) {
-                        swal({
-                            title: "Lỗi",
-                            text: result.message,
-                            type: "error" /* ERROR */
-                        });
+                        swal("Lỗi", result.message, "error" /* ERROR */);
+                    }).then(function () {
+                        $('#postdata').html('Đăng Ký');
                     });
                 };
-                return HomeScreenModel;
+                RegisterScreenModel.prototype.login = function () {
+                };
+                return RegisterScreenModel;
             }());
-            vipfbnow.HomeScreenModel = HomeScreenModel;
-            var UserInfo = (function () {
-                function UserInfo(username, password) {
+            vipfbnow.RegisterScreenModel = RegisterScreenModel;
+            var RegisterUserInfo = (function () {
+                function RegisterUserInfo(fullname, email, username, password, password_confirmation) {
                     var self = this;
+                    self.email = email;
+                    self.fullname = fullname;
                     self.username = username;
                     self.password = password;
+                    self.password_confirmation = password_confirmation;
                 }
-                return UserInfo;
+                return RegisterUserInfo;
             }());
-            vipfbnow.UserInfo = UserInfo;
+            vipfbnow.RegisterUserInfo = RegisterUserInfo;
             $(document).ready(function () {
-                var screenModel = new HomeScreenModel();
+                var screenModel = new RegisterScreenModel();
                 $.blockUI();
                 screenModel.startPage().done(function () {
                     ko.applyBindings(screenModel);
