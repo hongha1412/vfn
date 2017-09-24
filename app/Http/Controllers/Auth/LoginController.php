@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Account;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -42,9 +45,25 @@ class LoginController extends Controller
     }
 
     public function guestLogin(Request $loginRequest) {
+        // Validate login info
+        $rules = array(
+            'username'      => 'required|string|min:6',
+            'password'      => 'required|string|min:6',
+        );
+
+        // Run validator
+        $validator = Validator::make(Input::all(), $rules);
+
+        if ($validator->fails()) {
+            return (new Message(false, $validator->messages()->all()))->toJson();
+        }
+
         $hasher = new PasswordHasher();
-        $accountInfo = Account::login($loginRequest->username, $hasher->encrypt($loginRequest->password));
-        if ($accountInfo) {
+        $userData = array(
+            'username'      => Input::get('username'),
+            'password'      => $hasher->encrypt(Input::get('password'))
+        );
+        if(Auth::attempt($userData)) {
             return (new Message(true, 'Login Success'))->toJson();
         } else {
             return (new Message(false, 'Login Information Invalid'))->toJson();

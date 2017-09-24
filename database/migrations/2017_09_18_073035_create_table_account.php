@@ -29,6 +29,7 @@ class CreateTableAccount extends Migration
             $table->string('facebook', 255)->nullable();
             $table->string('ip', 255)->nullable();
             $table->string('macode', 255)->nullable();
+            $table->string('remember_token', 100)->nullable();
         });
     }
 

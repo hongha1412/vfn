@@ -1,5 +1,7 @@
 /// <reference path="../../tsdefinition/jquery/index.d.ts" />
 /// <reference path="../../tsdefinition/jquery.blockui/index.d.ts/" />
+/// <reference path="../../tsdefinition/toastr/index.d.ts" />
+/// <reference path="../../tsdefinition/sweetalert/index.d.ts/" />
 
 module com.sabrac.vipfbnow {
 
@@ -8,6 +10,28 @@ module com.sabrac.vipfbnow {
 
         constructor() {
             this.self = this;
+        }
+
+        public static notify(result: any): JQueryPromise<any> {
+            var dfd = $.Deferred();
+            if (result.success) {
+                swal({
+                    title: "Thành Công",
+                    text: result.message,
+                    type: SweetAlertType.SUCCESS
+                }, function() {
+                    dfd.resolve();
+                });
+            } else {
+                swal({
+                    title: "Lỗi",
+                    text: result.message,
+                    type: SweetAlertType.ERROR
+                }, function() {
+                    dfd.reject();
+                });
+            }
+            return dfd.promise();
         }
 
         public static postData(url: string, data: any): JQueryPromise<any> {

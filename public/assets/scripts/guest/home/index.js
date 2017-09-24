@@ -18,6 +18,7 @@ var com;
                     self.username = ko.observable("");
                     self.password = ko.observable("");
                     self.loginResult = ko.observable("");
+                    self.isEnable = ko.observable(true);
                 }
                 HomeScreenModel.prototype.startPage = function () {
                     var self = this;
@@ -28,20 +29,18 @@ var com;
                 HomeScreenModel.prototype.login = function () {
                     var self = this;
                     var data = new UserInfo(self.username(), self.password());
+                    var titleNoti, typeNoti;
+                    self.isEnable(false);
+                    $('#postdata2').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
                     vipfbnow.Utils.postData($("#loginURL").val(), data).done(function (result) {
-                        swal({
-                            title: "Thành Công",
-                            text: result.message,
-                            type: "success" /* SUCCESS */
-                        }, function () {
+                        vipfbnow.Utils.notify(result).done(function () {
                             location.reload();
                         });
                     }).fail(function (result) {
-                        swal({
-                            title: "Lỗi",
-                            text: result.message,
-                            type: "error" /* ERROR */
-                        });
+                        vipfbnow.Utils.notify(result);
+                    }).then(function () {
+                        $('#postdata2').html('<i class="fa fa-sign-in"></i> Đăng Nhập');
+                        self.isEnable(true);
                     });
                 };
                 return HomeScreenModel;

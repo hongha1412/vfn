@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 
-class Account extends Model
+class Account extends User
 {
     protected $table = 'account';
     public $timestamps = false;

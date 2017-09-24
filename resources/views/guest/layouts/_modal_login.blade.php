@@ -19,7 +19,7 @@
                 <div class="footer text-center">
 
                     <button id="postdata2" class="btn btn-rounded btn-primary" name="login"
-                        data-bind="click: login"><i class="fa fa-sign-in"></i> Đăng Nhập
+                        data-bind="click: login, enable: isEnable"><i class="fa fa-sign-in"></i> Đăng Nhập
                     </button>
 
                 </div>
