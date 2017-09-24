@@ -7,6 +7,8 @@ use App\Http\Controllers\Common\PasswordHasher;
 use App\Models\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -81,10 +83,10 @@ class RegisterController extends Controller
         // Create account
         $hasher = new PasswordHasher();
         $account = Account::create([
-            'fullname'      => $registerRequest->all()['fullname'],
-            'mail'         => $registerRequest->all()['email'],
-            'username'      => $registerRequest->all()['username'],
-            'password'      => $hasher->encrypt($registerRequest->all()['password']),
+            'fullname'      => Input::get('fullname'),
+            'mail'          => Input::get('email'),
+            'username'      => Input::get('username'),
+            'password'      => Hash::make($hasher->encrypt(Input::get('password'))),
         ]);
 
         if ($account) {

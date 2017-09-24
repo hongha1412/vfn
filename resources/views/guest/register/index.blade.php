@@ -41,7 +41,7 @@
                     <div class="g-recaptcha" data-sitekey="6Lf--C8UAAAAAEZVx8v_6zB6VJzXUKf4EcuJN_X9"></div>
                     <br>
                     <center>
-                        <button id="postdata" class="btn btn-danger btn-fill btn-wd" name="dangky" data-bind="click: register">
+                        <button id="postdata" class="btn btn-danger btn-fill btn-wd" name="dangky" data-bind="click: register, enable: isEnable">
                             Đăng Ký
                         </button>
                     </center>

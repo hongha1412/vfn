@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-col-sm-4">
+<div class="modal-dialog modal-col-sm-4" id="modal-login-content">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -33,3 +33,8 @@
         </div>
     </div>
 </div>
+
+<!-- Store login url -->
+<input type="text" data-bind="visible: false" id="loginURL" value="{{ route('guest.login') }}" />
+
+<script src="{{ asset('assets/scripts/guest/home/_modal_login/index.js') }}" type="text/javascript"></script>

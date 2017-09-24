@@ -32,7 +32,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -63,10 +63,15 @@ class LoginController extends Controller
             'username'      => Input::get('username'),
             'password'      => $hasher->encrypt(Input::get('password'))
         );
-        if(Auth::attempt($userData)) {
-            return (new Message(true, 'Login Success'))->toJson();
-        } else {
-            return (new Message(false, 'Login Information Invalid'))->toJson();
+//        dd($userData);
+        try {
+            if (Auth::attempt($userData)) {
+                return (new Message(true, 'Login Success'))->toJson();
+            } else {
+                return (new Message(false, 'Login Information Invalid'))->toJson();
+            }
+        } catch (\Exception $ex) {
+            dd($ex);
         }
     }
 }

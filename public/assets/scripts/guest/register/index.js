@@ -21,7 +21,7 @@ var com;
                     self.password = ko.observable("");
                     self.password_confirmation = ko.observable("");
                     self.registerResult = ko.observable("");
-                    self.loginResult = ko.observable("");
+                    self.isEnable = ko.observable(true);
                 }
                 RegisterScreenModel.prototype.startPage = function () {
                     var self = this;
@@ -32,6 +32,7 @@ var com;
                 RegisterScreenModel.prototype.register = function () {
                     var self = this;
                     var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+                    self.isEnable(false);
                     $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
                     vipfbnow.Utils.postData($("#registerURL").val(), data).done(function (result) {
                         vipfbnow.Utils.notify(result).done(function () {
@@ -41,9 +42,8 @@ var com;
                         vipfbnow.Utils.notify(result);
                     }).then(function () {
                         $('#postdata').html('Đăng Ký');
+                        self.isEnable(true);
                     });
-                };
-                RegisterScreenModel.prototype.login = function () {
                 };
                 return RegisterScreenModel;
             }());

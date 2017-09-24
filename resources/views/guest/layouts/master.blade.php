@@ -42,7 +42,7 @@
         @include('guest.layouts._modal_price')
     </div>
 
-    <div class="modal fade" id="DANGNHAP" role="dialog">
+    <div class="modal fade" id="modal-login" role="dialog" data-bind="stopBinding: true">
         @include('guest.layouts._modal_login')
     </div>
 

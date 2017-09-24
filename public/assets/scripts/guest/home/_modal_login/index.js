@@ -1,10 +1,10 @@
-/// <reference path="../../tsdefinition/jquery/index.d.ts" />
-/// <reference path="../../tsdefinition/jquery.blockui/index.d.ts" />
-/// <reference path="../../tsdefinition/knockout/index.d.ts" />
-/// <reference path="../../tsdefinition/toastr/index.d.ts" />
-/// <reference path="../../tsdefinition/sweetalert/index.d.ts/" />
-/// <reference path="../../common/utils/index.ts" />
-/// <reference path="../../common/models/index.ts" />
+/// <reference path="../../../tsdefinition/jquery/index.d.ts" />
+/// <reference path="../../../tsdefinition/jquery.blockui/index.d.ts" />
+/// <reference path="../../../tsdefinition/knockout/index.d.ts" />
+/// <reference path="../../../tsdefinition/toastr/index.d.ts" />
+/// <reference path="../../../tsdefinition/sweetalert/index.d.ts/" />
+/// <reference path="../../../common/utils/index.ts" />
+/// <reference path="../../../common/models/index.ts" />
 'use strict';
 var com;
 (function (com) {
@@ -12,24 +12,23 @@ var com;
     (function (sabrac) {
         var vipfbnow;
         (function (vipfbnow) {
-            var HomeScreenModel = (function () {
-                function HomeScreenModel() {
+            var ModalLoginScreenModel = (function () {
+                function ModalLoginScreenModel() {
                     var self = this;
                     self.username = ko.observable("");
                     self.password = ko.observable("");
                     self.loginResult = ko.observable("");
                     self.isEnable = ko.observable(true);
                 }
-                HomeScreenModel.prototype.startPage = function () {
+                ModalLoginScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     dfd.resolve();
                     return dfd.promise();
                 };
-                HomeScreenModel.prototype.login = function () {
+                ModalLoginScreenModel.prototype.login = function () {
                     var self = this;
                     var data = new UserInfo(self.username(), self.password());
-                    var titleNoti, typeNoti;
                     self.isEnable(false);
                     $('#postdata2').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
                     vipfbnow.Utils.postData($("#loginURL").val(), data).done(function (result) {
@@ -43,9 +42,9 @@ var com;
                         self.isEnable(true);
                     });
                 };
-                return HomeScreenModel;
+                return ModalLoginScreenModel;
             }());
-            vipfbnow.HomeScreenModel = HomeScreenModel;
+            vipfbnow.ModalLoginScreenModel = ModalLoginScreenModel;
             var UserInfo = (function () {
                 function UserInfo(username, password) {
                     var self = this;
@@ -56,10 +55,10 @@ var com;
             }());
             vipfbnow.UserInfo = UserInfo;
             $(document).ready(function () {
-                var screenModel = new HomeScreenModel();
+                var screenModel = new ModalLoginScreenModel();
                 $.blockUI();
                 screenModel.startPage().done(function () {
-                    ko.applyBindings(screenModel);
+                    ko.applyBindings(screenModel, $("#modal-login-content")[0]);
                     $.unblockUI();
                 });
             });

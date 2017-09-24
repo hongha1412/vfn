@@ -15,7 +15,7 @@ class CreateTableRawtoken extends Migration
     {
         Schema::create('rawtoken', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('token', 255);
+            $table->string('token', 500);
         });
     }
 

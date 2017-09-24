@@ -16,7 +16,7 @@ module com.sabrac.vipfbnow {
         password: KnockoutObservable<string>;
         password_confirmation: KnockoutObservable<string>;
         registerResult: KnockoutObservable<string>;
-        loginResult: KnockoutObservable<string>;
+        isEnable: KnockoutObservable<boolean>;
 
         constructor() {
             var self = this;
@@ -26,7 +26,7 @@ module com.sabrac.vipfbnow {
             self.password = ko.observable<string>("");
             self.password_confirmation = ko.observable<string>("");
             self.registerResult = ko.observable<string>("");
-            self.loginResult = ko.observable<string>("");
+            self.isEnable = ko.observable<boolean>(true);
         }
 
         startPage(): JQueryPromise<any> {
@@ -39,6 +39,7 @@ module com.sabrac.vipfbnow {
         register(): void {
             var self = this;
             var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+            self.isEnable(false);
             $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
 
             Utils.postData($("#registerURL").val(), data).done(function(result) {
@@ -49,11 +50,8 @@ module com.sabrac.vipfbnow {
                 Utils.notify(result);
             }).then(function() {
                 $('#postdata').html('Đăng Ký');
+                self.isEnable(true);
             });
-        }
-
-        login() {
-
         }
     }
 

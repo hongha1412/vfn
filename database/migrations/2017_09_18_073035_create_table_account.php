@@ -16,7 +16,7 @@ class CreateTableAccount extends Migration
         Schema::create('account', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username', 32);
-            $table->string('password', 50);
+            $table->string('password', 64);
             $table->double('vnd')->nullable();
             $table->string('toida', 255)->nullable();
             $table->string('fullname', 255);

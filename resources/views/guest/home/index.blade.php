@@ -218,9 +218,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Store login url -->
-    <input type="text" data-bind="visible: false" id="loginURL" value="{{ route('guest.login') }}" />
 @endsection
 
 @section('page_js')

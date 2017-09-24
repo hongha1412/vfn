@@ -1,14 +1,14 @@
-/// <reference path="../../tsdefinition/jquery/index.d.ts" />
-/// <reference path="../../tsdefinition/jquery.blockui/index.d.ts" />
-/// <reference path="../../tsdefinition/knockout/index.d.ts" />
-/// <reference path="../../tsdefinition/toastr/index.d.ts" />
-/// <reference path="../../tsdefinition/sweetalert/index.d.ts/" />
-/// <reference path="../../common/utils/index.ts" />
-/// <reference path="../../common/models/index.ts" />
+/// <reference path="../../../tsdefinition/jquery/index.d.ts" />
+/// <reference path="../../../tsdefinition/jquery.blockui/index.d.ts" />
+/// <reference path="../../../tsdefinition/knockout/index.d.ts" />
+/// <reference path="../../../tsdefinition/toastr/index.d.ts" />
+/// <reference path="../../../tsdefinition/sweetalert/index.d.ts/" />
+/// <reference path="../../../common/utils/index.ts" />
+/// <reference path="../../../common/models/index.ts" />
 'use strict';
 
 module com.sabrac.vipfbnow {
-    export class HomeScreenModel {
+    export class ModalLoginScreenModel {
         username: KnockoutObservable<string>;
         password: KnockoutObservable<string>;
         loginResult: KnockoutObservable<string>;
@@ -32,7 +32,6 @@ module com.sabrac.vipfbnow {
         login(): void {
             var self = this;
             var data = new UserInfo(self.username(), self.password());
-            var titleNoti: string, typeNoti: string;
             self.isEnable(false);
             $('#postdata2').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
 
@@ -61,10 +60,10 @@ module com.sabrac.vipfbnow {
     }
 
     $(document).ready(function() {
-        var screenModel = new HomeScreenModel();
+        var screenModel = new ModalLoginScreenModel();
         $.blockUI();
         screenModel.startPage().done(function() {
-            ko.applyBindings(screenModel);
+            ko.applyBindings(screenModel, $("#modal-login-content")[0]);
             $.unblockUI();
         });
     });
