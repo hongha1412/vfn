@@ -42,19 +42,11 @@ module com.sabrac.vipfbnow {
             $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
 
             Utils.postData($("#registerURL").val(), data).done(function(result) {
-                swal({
-                    title: "Thành Công",
-                    text: result.message,
-                    type: SweetAlertType.SUCCESS
-                }, function() {
+                Utils.notify(result).done(function() {
                     window.location.href = "/";
                 });
             }).fail(function(result) {
-                swal(
-                    "Lỗi",
-                    result.message,
-                    SweetAlertType.ERROR
-                );
+                Utils.notify(result);
             }).then(function() {
                 $('#postdata').html('Đăng Ký');
             });

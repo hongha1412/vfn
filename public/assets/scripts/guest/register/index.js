@@ -34,15 +34,11 @@ var com;
                     var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
                     $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
                     vipfbnow.Utils.postData($("#registerURL").val(), data).done(function (result) {
-                        swal({
-                            title: "Thành Công",
-                            text: result.message,
-                            type: "success" /* SUCCESS */
-                        }, function () {
+                        vipfbnow.Utils.notify(result).done(function () {
                             window.location.href = "/";
                         });
                     }).fail(function (result) {
-                        swal("Lỗi", result.message, "error" /* ERROR */);
+                        vipfbnow.Utils.notify(result);
                     }).then(function () {
                         $('#postdata').html('Đăng Ký');
                     });
