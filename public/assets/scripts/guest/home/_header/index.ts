@@ -29,7 +29,7 @@ module com.sabrac.vipfbnow {
             var self = this;
             var dfd = $.Deferred();
             // Get logged in user info
-            Utils.postData($("#get-logged-in-user-info-URL").val(), null).done(function(result) {
+            Utils.postData($("#get-logged-in-user-info-URL").val(), '').done(function(result) {
                 if (result.message.length > 0) {
                     result = JSON.parse(result.message[0])
                     self.userInfo().load(result.avt, result.fullname, result.username);

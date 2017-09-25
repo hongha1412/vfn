@@ -8,6 +8,7 @@
 
 namespace App\Http\Middleware\Guest;
 
+use App\Http\Controllers\Common\Message;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -26,7 +27,7 @@ class CheckPermission
         if (Auth::check()) {
             return $next($request);
         } else {
-            return redirect()->route('guest.index');
+            return (new Message(false, "Do not have permission"))->toJson();
         }
     }
 }

@@ -9,16 +9,9 @@
 
 module com.sabrac.vipfbnow {
     export class HomeScreenModel {
-        allDone: KnockoutObservable<boolean>;
 
         constructor() {
             var self = this;
-            self.allDone = ko.observable<boolean>(false);
-        }
-
-        setAllDone(status: boolean): void {
-            var self = this;
-            self.allDone(status);
         }
 
         startPage(): JQueryPromise<any> {
@@ -29,23 +22,14 @@ module com.sabrac.vipfbnow {
         }
     }
 
-    class DfdStacker {
-        dfdArray: Array<any>;
-
-        constructor() {
-            var self = this;
-            self.dfdArray = [];
-        }
-    }
-
     $(document).ready(function() {
+        $.blockUI({ overlayCSS: { opacity:1 }, baseZ: 2000 });
         var homeScreenModel = new HomeScreenModel();
         var headerScreenModel = new HeaderScreenModel();
         var modalLoginScreenModel = new ModalLoginScreenModel();
         var dfdArray = [];
         var counter = 0;
 
-        $.blockUI({ overlayCSS: { opacity:1 }, baseZ: 2000 });
         dfdArray[counter++] = homeScreenModel.startPage();
         dfdArray[counter++] = headerScreenModel.startPage();
         dfdArray[counter++] = modalLoginScreenModel.startPage();

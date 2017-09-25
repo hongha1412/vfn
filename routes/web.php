@@ -29,10 +29,6 @@ Route::group(['domain' => $adminDomain], function () {
 
 Route::group(['domain' => $domain], function () {
 
-    // Login
-    Route::post('/login', 'Auth\LoginController@guestLogin')->name('guest.login');
-    // Register
-    Route::post('/register', 'Auth\RegisterController@guestRegister')->name('guest.register');
     // Index register
     Route::get('/register/index', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
@@ -41,6 +37,11 @@ Route::group(['domain' => $domain], function () {
     Route::get('/price', 'PriceController@index')->name('guest.price');
     // Home
     Route::get('/', 'Guest\HomeController@index')->name('guest.index');
+    // API
+    // Login
+    Route::post('/login', 'Auth\LoginController@guestLogin')->name('guest.login');
+    // Register
+    Route::post('/register', 'Auth\RegisterController@guestRegister')->name('guest.register');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionGuest']], function () {
         // User Info
