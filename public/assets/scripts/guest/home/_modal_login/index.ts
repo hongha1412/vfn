@@ -41,14 +41,14 @@ module com.sabrac.vipfbnow {
                 });
             }).fail(function(result) {
                 Utils.notify(result);
-            }).then(function() {
+            }).always(function() {
                 $('#postdata2').html('<i class="fa fa-sign-in"></i> Đăng Nhập');
                 self.isEnable(true);
             });
         }
     }
 
-    export class UserInfo {
+    class UserInfo {
         username: string;
         password: string;
 
@@ -59,12 +59,12 @@ module com.sabrac.vipfbnow {
         }
     }
 
-    $(document).ready(function() {
-        var screenModel = new ModalLoginScreenModel();
-        $.blockUI();
-        screenModel.startPage().done(function() {
-            ko.applyBindings(screenModel, $("#modal-login-content")[0]);
-            $.unblockUI();
-        });
-    });
+    // $(document).ready(function() {
+    //     var screenModel = new ModalLoginScreenModel();
+    //     $.blockUI();
+    //     screenModel.startPage().done(function() {
+    //         ko.applyBindings(screenModel, $("#modal-login-content")[0]);
+    //         $.unblockUI();
+    //     });
+    // });
 }

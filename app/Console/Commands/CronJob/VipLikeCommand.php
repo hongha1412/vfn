@@ -43,19 +43,19 @@ class VipLikeCommand extends Command
      */
     public function handle()
     {
-//        $this->rawTokenProcess();
-        $lsUser = Vip::getVipList();
-
-        foreach ($lsUser as $user) {
-            $delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi))) - intval(env('DEFAULT_TIME_BUFFER'));
-            $fbAutoLike = new FacebookAuto();
-            $fbAutoLike->lsToken = Token::getTokenList();
-            $fbAutoLike->userId = $user->idfb;
-            $fbAutoLike->targetNumber = LikePackageEnum::idToValue($user->goi);
-            $fbAutoLike->action = FacebookActionEnum::LIKE;
-            $fbAutoLike->delayTime = $delayTime <= 0 ? 0 : $delayTime;
-            $fbAutoLike->run();
-        }
+        $this->rawTokenProcess();
+//        $lsUser = Vip::getVipList();
+//
+//        foreach ($lsUser as $user) {
+//            $delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->goi))) - intval(env('DEFAULT_TIME_BUFFER'));
+//            $fbAutoLike = new FacebookAuto();
+//            $fbAutoLike->lsToken = Token::getTokenList();
+//            $fbAutoLike->userId = $user->idfb;
+//            $fbAutoLike->targetNumber = LikePackageEnum::idToValue($user->goi);
+//            $fbAutoLike->action = FacebookActionEnum::LIKE;
+//            $fbAutoLike->delayTime = $delayTime <= 0 ? 0 : $delayTime;
+//            $fbAutoLike->run();
+//        }
     }
 
     public function rawTokenProcess() {

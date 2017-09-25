@@ -38,7 +38,7 @@ module com.sabrac.vipfbnow {
 
         register(): void {
             var self = this;
-            var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+            var data = new UserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
             self.isEnable(false);
             $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
 
@@ -48,14 +48,14 @@ module com.sabrac.vipfbnow {
                 });
             }).fail(function(result) {
                 Utils.notify(result);
-            }).then(function() {
+            }).always(function() {
                 $('#postdata').html('Đăng Ký');
                 self.isEnable(true);
             });
         }
     }
 
-    export class RegisterUserInfo {
+    class UserInfo {
         fullname: string;
         email: string;
         username: string;

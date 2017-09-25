@@ -14,6 +14,9 @@ var com;
                 }
                 Utils.notify = function (result) {
                     var dfd = $.Deferred();
+                    if (result.status) {
+                        result = JSON.parse(result.responseText);
+                    }
                     if (result.success) {
                         swal({
                             title: "Thành Công",

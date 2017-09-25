@@ -53,6 +53,8 @@
 
         </div>
     </div>
+
+    <!-- Store register controller URL -->
     <input type="text" id="registerURL" value="{{ route('guest.register') }}" data-bind="visible: false" />
 @endsection
 

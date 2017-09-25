@@ -14,6 +14,11 @@ module com.sabrac.vipfbnow {
 
         public static notify(result: any): JQueryPromise<any> {
             var dfd = $.Deferred();
+
+            if (result.status) {
+                result = JSON.parse(result.responseText);
+            }
+
             if (result.success) {
                 swal({
                     title: "Thành Công",

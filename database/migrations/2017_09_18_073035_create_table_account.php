@@ -24,7 +24,7 @@ class CreateTableAccount extends Migration
             $table->string('sdt', 255)->nullable();
             $table->text('level')->nullable();
             $table->string('kichhoat', 10)->nullable();
-            $table->string('avt', 255)->nullable();
+            $table->string('avt', 255)->default('https://cdn3.iconfinder.com/data/icons/picons-social/57/46-facebook-512.png');
             $table->string('about', 255)->nullable();
             $table->string('facebook', 255)->nullable();
             $table->string('ip', 255)->nullable();

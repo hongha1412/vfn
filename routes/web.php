@@ -39,11 +39,16 @@ Route::group(['domain' => $domain], function () {
     Route::get('/getToken', 'GetTokenController@index')->name('guest.getToken');
     // Price
     Route::get('/price', 'PriceController@index')->name('guest.price');
+    // Home
+    Route::get('/', 'Guest\HomeController@index')->name('guest.index');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionGuest']], function () {
-        // Home
-        Route::get('/', 'Guest\HomeController@index')->name('guest.index');
+        // User Info
+        Route::get('/user', 'Guest\UserController@index')->name('guest.userIndex');
         // Change Password
-        Route::get('/changePassword', 'Guest\AuthController@changePassword')->name('guest.changePassword');
+        Route::get('/changePassword', 'Auth\ChangePasswordController@guestChangePassword')->name('guest.changePassword');
+        // API
+        // Get logged in user info
+        Route::post('/get-logged-in-user-info', 'Guest\UserController@getLoggedInUserInfo')->name('guest.getLoggedInUserInfo');
     });
 });

@@ -63,15 +63,15 @@ class LoginController extends Controller
             'username'      => Input::get('username'),
             'password'      => $hasher->encrypt(Input::get('password'))
         );
-//        dd($userData);
+
         try {
             if (Auth::attempt($userData)) {
-                return (new Message(true, 'Login Success'))->toJson();
+                return response((new Message(true, 'Login Success'))->toJson(), 200);
             } else {
-                return (new Message(false, 'Login Information Invalid'))->toJson();
+                return response((new Message(false, 'Login Information Invalid'))->toJson(), 500);
             }
         } catch (\Exception $ex) {
-            dd($ex);
+            return response((new Message(false, $ex->getMessage()))->toJson(), 500);
         }
     }
 }

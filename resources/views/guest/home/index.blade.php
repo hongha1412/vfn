@@ -111,7 +111,7 @@
                             <p><b class="xanh">UY TÍN - CHẤT LƯỢNG - BẢO HÀNH</b></p>
                             <p>
                                 <button type="button" class="btn btn-rounded btn-danger btn-fill btn-wd btn-lg"
-                                        data-toggle="modal" data-target="#DANGNHAP"><i
+                                        data-toggle="modal" data-target="#modal-login"><i
                                             class="fa fa-fw fa-rocket"></i> ĐĂNG NHẬP NGAY
                                 </button>
                             </p>
@@ -126,7 +126,7 @@
                             <p><b class="red">VIP LIKE - VIP COMMENT - VIP SHARE - BOT REACTION</b></p>
                             <p>
                                 <button type="button" class="btn btn-rounded btn-success btn-fill btn-wd btn-lg"
-                                        data-toggle="modal" data-target="#DANGNHAP"><i
+                                        data-toggle="modal" data-target="#modal-login"><i
                                             class="fa fa-fw fa-shopping-cart"></i> MUA NGAY
                                 </button>
                             </p>
