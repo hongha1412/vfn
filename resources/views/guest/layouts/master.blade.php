@@ -6,13 +6,13 @@
 </head>
 {{--<body class="hold-transition skin-blue sidebar-collapse sidebar-mini" style="display: none;" data-bind="visible: allDone">--}}
 <body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
-<div class="wrapper">
+<div class="wrapper" style="display: none" data-bind="visible: true">
 
     <header class="main-header" data-bind="stopBinding: true">
         @include('guest.layouts._header')
     </header>
 
-    <aside class="main-sidebar">
+    <aside class="main-sidebar" data-bind="stopBinding: true">
         @include('guest.layouts._sidebar')
         <!-- /.sidebar -->
     </aside>

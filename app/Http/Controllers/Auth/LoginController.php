@@ -44,6 +44,12 @@ class LoginController extends Controller
         // $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Login user
+     *
+     * @param Request $loginRequest
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function guestLogin(Request $loginRequest) {
         // Validate login info
         $rules = array(
@@ -54,10 +60,12 @@ class LoginController extends Controller
         // Run validator
         $validator = Validator::make(Input::all(), $rules);
 
+        // Validate input
         if ($validator->fails()) {
-            return (new Message(false, $validator->messages()->all()))->toJson();
+            return response((new Message(false, $validator->messages()->all()))->toJson(), 200);
         }
 
+        // Create user data from input
         $hasher = new PasswordHasher();
         $userData = array(
             'username'      => Input::get('username'),
@@ -65,13 +73,32 @@ class LoginController extends Controller
         );
 
         try {
+            // Log user in
             if (Auth::attempt($userData)) {
                 return response((new Message(true, 'Login Success'))->toJson(), 200);
             } else {
-                return response((new Message(false, 'Login Information Invalid'))->toJson(), 500);
+                return response((new Message(false, 'Login Information Invalid'))->toJson(), 200);
             }
         } catch (\Exception $ex) {
-            return response((new Message(false, $ex->getMessage()))->toJson(), 500);
+            return response((new Message(false, $ex->getMessage()))->toJson(), 200);
+        }
+    }
+
+    /**
+     * Logout user
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function logout(Request $request)
+    {
+        // Check if user logged in
+        if (Auth::check() && Auth::id() > 0) {
+            // Execute logout
+            Auth::logout();
+            return redirect()->route('guest.index');
+        } else {
+            return redirect()->route('guest.index')->withErrors(['Message' => 'User not logged in']);
         }
     }
 }

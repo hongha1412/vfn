@@ -90,9 +90,9 @@ class RegisterController extends Controller
         ]);
 
         if ($account) {
-            return (new Message(true, 'Register account success'))->toJson();
+            return response((new Message(true, 'Register account success'))->toJson(), 200);
         } else {
-            return (new Message(false, 'Cannot create account'))->toJson();
+            return response((new Message(false, 'Cannot create account'))->toJson(), 200);
         }
     }
 

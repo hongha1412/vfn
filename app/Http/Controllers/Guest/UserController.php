@@ -23,7 +23,7 @@ class UserController extends Controller
         if (Auth::check() && Auth::id() > 0) {
             return response((new Message(true, json_encode(Auth::user())))->toJson(), 200);
         } else {
-            return response((new Message(false, "User not login or user id invalid"))->toJson(), 500);
+            return response((new Message(false, "User not login or user id invalid"))->toJson(), 200);
         }
     }
 }

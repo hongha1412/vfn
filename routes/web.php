@@ -42,6 +42,8 @@ Route::group(['domain' => $domain], function () {
     Route::post('/login', 'Auth\LoginController@guestLogin')->name('guest.login');
     // Register
     Route::post('/register', 'Auth\RegisterController@guestRegister')->name('guest.register');
+    // Get logged in user info
+    Route::post('/get-logged-in-user-info', 'Guest\UserController@getLoggedInUserInfo')->name('guest.getLoggedInUserInfo');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionGuest']], function () {
         // User Info
@@ -49,7 +51,7 @@ Route::group(['domain' => $domain], function () {
         // Change Password
         Route::get('/changePassword', 'Auth\ChangePasswordController@guestChangePassword')->name('guest.changePassword');
         // API
-        // Get logged in user info
-        Route::post('/get-logged-in-user-info', 'Guest\UserController@getLoggedInUserInfo')->name('guest.getLoggedInUserInfo');
+        // Logout
+        Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
     });
 });

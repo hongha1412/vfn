@@ -1,8 +1,3 @@
-<?php
-/**
- * @var $userInfo App\Models\Account
- */
-?>
 <a href="/" class="logo">
     <span class="logo-mini"><!--img src="" alt="" /--><b>FB+</b></span>
     <span class="logo-lg"><!--img src="" alt="" /--><b><i class="fa fa-angellist"></i> VIPFBNOW.COM</b></span>
