@@ -3,16 +3,43 @@
                     class="fa fa-home bg-red"></i></a></li>
     <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
 </ul>
-<div class="tab-content">
+<div class="tab-content" id="control-sidebar-content">
     <div class="tab-pane active" id="control-sidebar-home-tab">
-        <ul class="control-sidebar-menu">
+        <ul class="control-sidebar-menu" data-bind="with: userInfo">
             <li class="list-group-item">
                 <h4>
                     <p class="text-danger">Welcome To VipFbnow.Com
                     </p>
                 </h4>
             </li>
-            <li class="list-group-item"><p class="text-info">Vui Lòng Đăng Nhập</p></li>
+            @if (!\Illuminate\Support\Facades\Auth::check())
+                <li class="list-group-item"><p class="text-info">Vui Lòng Đăng Nhập</p></li>
+            @else
+                <li class="list-group-item">
+                    <span class="badge bg-maroon" data-bind="text: fullname"></span>
+                    Name
+                </li>
+                <li class="list-group-item ">
+                    <span class="badge bg-navy"><span data-bind="text: vnd"></span><i class='fa fa-money'></i></span>
+                    VNĐ
+                </li>
+                <li class="list-group-item ">
+                    <span class="badge bg-navy"><span data-bind="text: toida"></span>ID</span>
+                    TỐI ĐA
+                </li>
+                <li class="list-group-item ">
+                    <span class="badge bg-green" data-bind="text: username"></span>
+                    Username
+                </li>
+                <li class="list-group-item">
+                    <span class="badge bg-red" data-bind="text: mail"></span>
+                    Email
+                </li>
+                <li class="list-group-item">
+                    <span class="badge bg-blue" data-bind="text: sdt"></span>
+                    Số Điện Thoại
+                </li>
+            @endif
         </ul>
         <h3 class="control-sidebar-heading">Recent Updates</h3>
         <ul class="control-sidebar-menu">

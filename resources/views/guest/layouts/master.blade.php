@@ -24,7 +24,7 @@
                 @include('guest.layouts._footer')
             </footer>
 
-            <aside class="control-sidebar control-sidebar-dark">
+            <aside class="control-sidebar control-sidebar-dark" data-bind="stopBinding: true">
                 @include('guest.layouts._control_sidebar')
             </aside>
         </section>
