@@ -32,7 +32,9 @@ Route::group(['domain' => $domain], function () {
     // Index register
     Route::get('/register/index', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
-    Route::get('/getToken', 'GetTokenController@index')->name('guest.getToken');
+    Route::get('/getToken', 'Guest\GetTokenController@index')->name('guest.getToken');
+    // Get token process controller
+    Route::post('/getTokenProcess', 'Guest\GetTokenController@process')->name('guest.getTokenProcess');
     // Price
     Route::get('/price', 'PriceController@index')->name('guest.price');
     // Home

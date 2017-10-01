@@ -5,7 +5,7 @@
     @yield('css')
 </head>
 {{--<body class="hold-transition skin-blue sidebar-collapse sidebar-mini" style="display: none;" data-bind="visible: allDone">--}}
-<body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
+<body class="hold-transition skin-blue sidebar-collapse sidebar-mini fixed">
 <div class="wrapper" style="display: none" data-bind="visible: true">
 
     <header class="main-header" data-bind="stopBinding: true">
@@ -20,16 +20,11 @@
         <section class="content">
             @yield('contents')
 
-            <footer class="main-footer">
-                @include('guest.layouts._footer')
-            </footer>
-
             <aside class="control-sidebar control-sidebar-dark" data-bind="stopBinding: true">
                 @include('guest.layouts._control_sidebar')
             </aside>
         </section>
     </div><!-- END -->
-
 
     <!-- Mainly scripts -->
     @include('guest.layouts._js')
@@ -55,6 +50,10 @@
         @include('guest.layouts._modal_like_price')
     </div>
 </div>
+
+<footer class="main-footer">
+    @include('guest.layouts._footer')
+</footer>
 
 </body>
 </html>

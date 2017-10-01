@@ -70,7 +70,7 @@
                     <li><a href="/camxuc.php"><i class="fa fa-plus-square"></i> BOT CẢM XÚC</a></li>
                 </ul>
             </li>
-            <li><a href="/get_token.php"><i class="fa fa-support" aria-hidden="true"></i> <span>Get Token</span></a></li>
+            <li><a href="{{ route('guest.getToken') }}"><i class="fa fa-support" aria-hidden="true"></i> <span>Get Token</span></a></li>
             <li><a href="/gift.php"><i class="fa fa-gift" aria-hidden="true"></i> <span>GIFT CODE</span></a></li>
             <li><a href="/napthe.php"><i class="fa fa-usd" aria-hidden="true"></i> <span>NẠP TIỀN</span></a></li>
             <li><a href="/banggia.php"><i class="fa fa-calculator" aria-hidden="true"></i> <span>BẢNG GIÁ</span></a></li>
