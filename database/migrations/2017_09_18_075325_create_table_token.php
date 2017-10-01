@@ -17,7 +17,7 @@ class CreateTableToken extends Migration
             $table->increments('id');
             $table->string('idfb', 32);
             $table->string('ten', 32);
-            $table->string('token', 500);
+            $table->string('token', 500)->unique();
         });
     }
 

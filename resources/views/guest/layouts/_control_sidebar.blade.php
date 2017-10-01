@@ -20,7 +20,7 @@
                     Name
                 </li>
                 <li class="list-group-item ">
-                    <span class="badge bg-navy"><span data-bind="text: vnd"></span><i class='fa fa-money'></i></span>
+                    <span class="badge bg-navy"><span data-bind="text: vnd"></span> <i class='fa fa-money'></i></span>
                     VNĐ
                 </li>
                 <li class="list-group-item ">
@@ -104,3 +104,5 @@
         </ul>
     </div>
 </div>
+
+<script src="{{ asset('assets/scripts/guest/home/_control_sidebar/index.js') }}" type="text/javascript"></script>
