@@ -10,6 +10,7 @@
 /// <reference path="../../common/utils/index.ts" />
 /// <reference path="../../common/models/index.ts" />
 'use strict';
+import {UserInfo} from "../../common/models/index";
 
 module com.sabrac.vipfbnow {
     export class HomeScreenModel {
@@ -23,68 +24,53 @@ module com.sabrac.vipfbnow {
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            self.getLoggedInUserInfo().done(function() {
-                dfd.resolve(self.userInfo());
+            Utils.getLoggedInUserInfo().done(function(userInfo) {
+                self.userInfo(userInfo);
             });
-            return dfd.promise();
-        }
-
-        getLoggedInUserInfo(): JQueryPromise<any> {
-            var self = this;
-            var dfd = $.Deferred();
-            // Get logged in user info
-            Utils.postData($("#get-logged-in-user-info-URL").val(), '').done(function(result) {
-                if (result.success && result.message.length > 0) {
-                    result = JSON.parse(result.message[0])
-                    self.userInfo().load(result.avt, result.fullname, result.username, result.vnd, result.toida, result.mail, result.sdt);
-                }
-                dfd.resolve(self.userInfo());
-            }).fail(function(result) {
-                dfd.resolve();
-            });
+            dfd.resolve(self.userInfo());
             return dfd.promise();
         }
     }
 
-    export class UserInfo {
-        avt: string;
-        fullname: string;
-        username: string;
-        vnd: number;
-        toida: number;
-        mail: string;
-        sdt: string;
-
-        constructor() {
-            var self = this;
-            self.avt = "Chưa cập nhật";
-            self.fullname = "Chưa cập nhật";
-            self.username = "Chưa cập nhật";
-            self.vnd = 0;
-            self.toida = 0;
-            self.mail = "Chưa cập nhật";
-            self.sdt = "Chưa cập nhật";
-        }
-
-        load(avt: string, fullname: string, username: string, vnd: number, toida: number, mail: string, sdt: string) {
-            var self = this;
-            self.avt = avt;
-            if (fullname) {
-                self.fullname = fullname;
-            }
-            if (username) {
-                self.username = username;
-            }
-            self.vnd = Utils.number_format(vnd, 0, ',', ',');
-            self.toida = toida;
-            if (mail) {
-                self.mail = mail;
-            }
-            if (sdt) {
-                self.sdt = sdt;
-            }
-        }
-    }
+    // export class UserInfo {
+    //     avt: string;
+    //     fullname: string;
+    //     username: string;
+    //     vnd: number;
+    //     toida: number;
+    //     mail: string;
+    //     sdt: string;
+    //
+    //     constructor() {
+    //         var self = this;
+    //         self.avt = "Chưa cập nhật";
+    //         self.fullname = "Chưa cập nhật";
+    //         self.username = "Chưa cập nhật";
+    //         self.vnd = 0;
+    //         self.toida = 0;
+    //         self.mail = "Chưa cập nhật";
+    //         self.sdt = "Chưa cập nhật";
+    //     }
+    //
+    //     load(avt: string, fullname: string, username: string, vnd: number, toida: number, mail: string, sdt: string) {
+    //         var self = this;
+    //         self.avt = avt;
+    //         if (fullname) {
+    //             self.fullname = fullname;
+    //         }
+    //         if (username) {
+    //             self.username = username;
+    //         }
+    //         self.vnd = Utils.number_format(vnd, 0, ',', ',');
+    //         self.toida = toida;
+    //         if (mail) {
+    //             self.mail = mail;
+    //         }
+    //         if (sdt) {
+    //             self.sdt = sdt;
+    //         }
+    //     }
+    // }
 
     $(document).ready(function() {
         $.blockUI({ baseZ: 2000 });

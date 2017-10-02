@@ -81,5 +81,3 @@
     </div>
     <input type="text" style="display: none" value="{{ route('guest.getLoggedInUserInfo') }}" id="get-logged-in-user-info-URL" />
 </nav>
-
-<script src="{{ asset('assets/scripts/guest/home/_header/index.js') }}" type="text/javascript"></script>

@@ -36,7 +36,7 @@ Route::group(['domain' => $domain], function () {
     // Get token process controller
     Route::post('/get-token-process', 'Guest\GetTokenController@process')->name('guest.getTokenProcess');
     // Price
-    Route::get('/price', 'PriceController@index')->name('guest.price');
+    Route::get('/price', 'Guest\PriceController@index')->name('guest.price');
     // Home
     Route::get('/', 'Guest\HomeController@index')->name('guest.index');
     // API
@@ -52,6 +52,8 @@ Route::group(['domain' => $domain], function () {
         Route::get('/user', 'Guest\UserController@index')->name('guest.userIndex');
         // Change Password
         Route::get('/changePassword', 'Auth\ChangePasswordController@guestChangePassword')->name('guest.changePassword');
+        // Recharge
+        Route::get('/recharge', 'Guest\RechargeController@index')->name('guest.recharge');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');

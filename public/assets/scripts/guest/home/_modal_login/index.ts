@@ -3,10 +3,11 @@
 /// <reference path="../../../tsdefinition/knockout/index.d.ts" />
 /// <reference path="../../../tsdefinition/toastr/index.d.ts" />
 /// <reference path="../../../tsdefinition/sweetalert/index.d.ts/" />
-/// <reference path="../index.ts" />
+// <reference path="../index.ts" />
 /// <reference path="../../../common/utils/index.ts" />
 /// <reference path="../../../common/models/index.ts" />
 'use strict';
+import {UserInfo} from "../../../common/models/index";
 
 module com.sabrac.vipfbnow {
     export class ModalLoginScreenModel {
@@ -59,13 +60,4 @@ module com.sabrac.vipfbnow {
             self.password = password;
         }
     }
-
-    // $(document).ready(function() {
-    //     var screenModel = new ModalLoginScreenModel();
-    //     $.blockUI();
-    //     screenModel.startPage().done(function() {
-    //         ko.applyBindings(screenModel, $("#modal-login-content")[0]);
-    //         $.unblockUI();
-    //     });
-    // });
 }

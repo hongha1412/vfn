@@ -2,6 +2,8 @@
 /// <reference path="../../tsdefinition/jquery.blockui/index.d.ts/" />
 /// <reference path="../../tsdefinition/toastr/index.d.ts" />
 /// <reference path="../../tsdefinition/sweetalert/index.d.ts/" />
+/// <reference path="../models/index.ts" />
+// <reference path="../../guest/home/index.ts" />
 var com;
 (function (com) {
     var sabrac;
@@ -12,6 +14,22 @@ var com;
                 function Utils() {
                     this.self = this;
                 }
+                Utils.getLoggedInUserInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    var userInfo = new vipfbnow.UserInfo();
+                    // Get logged in user info
+                    Utils.postData($("#get-logged-in-user-info-URL").val(), '').done(function (result) {
+                        if (result.success && result.message.length > 0) {
+                            result = JSON.parse(result.message[0]);
+                            userInfo.load(result.avt, result.fullname, result.username, result.vnd, result.toida, result.mail, result.sdt);
+                        }
+                        dfd.resolve(userInfo);
+                    }).fail(function (result) {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
                 Utils.notify = function (result) {
                     var dfd = $.Deferred();
                     if (result.status) {

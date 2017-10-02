@@ -1,5 +1,5 @@
 @extends('guest.layouts.master')
-@section('title', 'Register Page')
+@section('title', 'Đăng Ký')
 @section('contents')
     <div class="col-lg-12">
         <div class="box box-danger">
@@ -59,6 +59,5 @@
 @endsection
 
 @section('page_js')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('assets/scripts/guest/register/index.js') }}" type="text/javascript"></script>
 @endsection

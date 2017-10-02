@@ -19,66 +19,59 @@ var com;
             var HomeScreenModel = (function () {
                 function HomeScreenModel() {
                     var self = this;
-                    self.userInfo = ko.observable(new UserInfo());
+                    self.userInfo = ko.observable(new vipfbnow.UserInfo());
                 }
                 HomeScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    self.getLoggedInUserInfo().done(function () {
-                        dfd.resolve(self.userInfo());
+                    vipfbnow.Utils.getLoggedInUserInfo().done(function (userInfo) {
+                        self.userInfo(userInfo);
                     });
-                    return dfd.promise();
-                };
-                HomeScreenModel.prototype.getLoggedInUserInfo = function () {
-                    var self = this;
-                    var dfd = $.Deferred();
-                    // Get logged in user info
-                    vipfbnow.Utils.postData($("#get-logged-in-user-info-URL").val(), '').done(function (result) {
-                        if (result.success && result.message.length > 0) {
-                            result = JSON.parse(result.message[0]);
-                            self.userInfo().load(result.avt, result.fullname, result.username, result.vnd, result.toida, result.mail, result.sdt);
-                        }
-                        dfd.resolve(self.userInfo());
-                    }).fail(function (result) {
-                        dfd.resolve();
-                    });
+                    dfd.resolve(self.userInfo());
                     return dfd.promise();
                 };
                 return HomeScreenModel;
             }());
             vipfbnow.HomeScreenModel = HomeScreenModel;
-            var UserInfo = (function () {
-                function UserInfo() {
-                    var self = this;
-                    self.avt = "Chưa cập nhật";
-                    self.fullname = "Chưa cập nhật";
-                    self.username = "Chưa cập nhật";
-                    self.vnd = 0;
-                    self.toida = 0;
-                    self.mail = "Chưa cập nhật";
-                    self.sdt = "Chưa cập nhật";
-                }
-                UserInfo.prototype.load = function (avt, fullname, username, vnd, toida, mail, sdt) {
-                    var self = this;
-                    self.avt = avt;
-                    if (fullname) {
-                        self.fullname = fullname;
-                    }
-                    if (username) {
-                        self.username = username;
-                    }
-                    self.vnd = vipfbnow.Utils.number_format(vnd, 0, ',', ',');
-                    self.toida = toida;
-                    if (mail) {
-                        self.mail = mail;
-                    }
-                    if (sdt) {
-                        self.sdt = sdt;
-                    }
-                };
-                return UserInfo;
-            }());
-            vipfbnow.UserInfo = UserInfo;
+            // export class UserInfo {
+            //     avt: string;
+            //     fullname: string;
+            //     username: string;
+            //     vnd: number;
+            //     toida: number;
+            //     mail: string;
+            //     sdt: string;
+            //
+            //     constructor() {
+            //         var self = this;
+            //         self.avt = "Chưa cập nhật";
+            //         self.fullname = "Chưa cập nhật";
+            //         self.username = "Chưa cập nhật";
+            //         self.vnd = 0;
+            //         self.toida = 0;
+            //         self.mail = "Chưa cập nhật";
+            //         self.sdt = "Chưa cập nhật";
+            //     }
+            //
+            //     load(avt: string, fullname: string, username: string, vnd: number, toida: number, mail: string, sdt: string) {
+            //         var self = this;
+            //         self.avt = avt;
+            //         if (fullname) {
+            //             self.fullname = fullname;
+            //         }
+            //         if (username) {
+            //             self.username = username;
+            //         }
+            //         self.vnd = Utils.number_format(vnd, 0, ',', ',');
+            //         self.toida = toida;
+            //         if (mail) {
+            //             self.mail = mail;
+            //         }
+            //         if (sdt) {
+            //             self.sdt = sdt;
+            //         }
+            //     }
+            // }
             $(document).ready(function () {
                 $.blockUI({ baseZ: 2000 });
                 var homeScreenModel = new HomeScreenModel();

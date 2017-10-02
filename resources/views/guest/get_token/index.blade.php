@@ -1,5 +1,5 @@
 @extends('guest.layouts.master')
-@section('title', 'Home Page')
+@section('title', 'Get Token')
 @section('contents')
     <div class="row">
         <div class="container">

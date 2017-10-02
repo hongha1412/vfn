@@ -3,10 +3,11 @@
 /// <reference path="../../../tsdefinition/knockout/index.d.ts" />
 /// <reference path="../../../tsdefinition/toastr/index.d.ts" />
 /// <reference path="../../../tsdefinition/sweetalert/index.d.ts/" />
-/// <reference path="../index.ts" />
+// <reference path="../index.ts" />
 /// <reference path="../../../common/utils/index.ts" />
 /// <reference path="../../../common/models/index.ts" />
 'use strict';
+import {UserInfo} from "../../../common/models/index";
 
 module com.sabrac.vipfbnow {
     export class ControlSidebarScreenModel {
