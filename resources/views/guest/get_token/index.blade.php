@@ -18,7 +18,9 @@
                         </div>
                         <button type="button" class="btn btn-danger" data-bind="click: getToken, enable: isEnable" >Lấy Token</button>
                         <p>
-                        <li id="trave" class="list-group-item"><img src="https://i.imgur.com/4xwpZzp.png"> </li></p>
+                            {{--<li id="trave" class="list-group-item"><img src="https://i.imgur.com/4xwpZzp.png"> </li>--}}
+                            <li id="trave" class="list-group-item"><textarea class="form-control" data-bind="value: accessCode, enable: isEnable"></textarea></li>
+                        </p>
                     </div>
                 </div>
             </div>

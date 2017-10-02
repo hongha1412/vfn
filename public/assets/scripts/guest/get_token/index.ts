@@ -13,11 +13,13 @@ module com.sabrac.vipfbnow {
         user: KnockoutObservable<string>;
         pass: KnockoutObservable<string>;
         isEnable: KnockoutObservable<boolean>;
+        accessCode: KnockoutObservable<string>;
 
         constructor() {
             var self = this;
             self.user = ko.observable<string>('');
             self.pass = ko.observable<string>('');
+            self.accessCode = ko.observable<string>('');
             self.isEnable = ko.observable<boolean>(true);
         }
 
@@ -33,7 +35,11 @@ module com.sabrac.vipfbnow {
             let fbUser = new FbUser(self.user(), self.pass());
             self.isEnable(false);
             Utils.postData($('#getTokenProcessURL').val(), fbUser).done(function(result) {
-                Utils.notify(result);
+                if (result.success) {
+                    self.accessCode(result.message[0]);
+                } else {
+                    Utils.notify(result);
+                }
             }).fail(function(result) {
                 Utils.notify(result);
             }).always(function() {

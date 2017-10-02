@@ -14,6 +14,7 @@ class GetTokenController extends Controller
     }
 
     public function process(Request $request) {
+        // Create api data
         $data = array(
             "api_key" => "3e7c78e35a76a9299309885393b02d97",
             "email" => Input::get('user'),
@@ -24,11 +25,20 @@ class GetTokenController extends Controller
             "return_ssl_resources" => "0",
             "v" => "1.0"
         );
-        $data = sign_creator($data);
-        return response((new Message(true, http_build_query($data)))->toJson(), 200);
+        // Generate sign
+        $this->sign_creator($data);
+        // Get user info
+        $crawler = file_get_contents('https://api.facebook.com/restserver.php?' . http_build_query($data));
+        // Parse json
+        $crawler = json_decode($crawler);
+        if (property_exists($crawler, 'error_code')) {
+            return response((new Message(false, $crawler->error_msg))->toJson(), 200);
+        } else {
+            return response((new Message(true, $crawler->access_token))->toJson(), 200);
+        }
     }
 
-    public function sign_creator($data){
+    private function sign_creator(&$data){
         $sig = "";
         foreach($data as $key => $value){
             $sig .= "$key=$value";

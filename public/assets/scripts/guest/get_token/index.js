@@ -17,6 +17,7 @@ var com;
                     var self = this;
                     self.user = ko.observable('');
                     self.pass = ko.observable('');
+                    self.accessCode = ko.observable('');
                     self.isEnable = ko.observable(true);
                 }
                 GetTokenScreenModel.prototype.startPage = function () {
@@ -30,7 +31,12 @@ var com;
                     var fbUser = new FbUser(self.user(), self.pass());
                     self.isEnable(false);
                     vipfbnow.Utils.postData($('#getTokenProcessURL').val(), fbUser).done(function (result) {
-                        vipfbnow.Utils.notify(result);
+                        if (result.success) {
+                            self.accessCode(result.message[0]);
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
                     }).fail(function (result) {
                         vipfbnow.Utils.notify(result);
                     }).always(function () {
