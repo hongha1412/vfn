@@ -2,6 +2,10 @@
 /// <reference path="../../tsdefinition/jquery.blockui/index.d.ts/" />
 /// <reference path="../../tsdefinition/toastr/index.d.ts" />
 /// <reference path="../../tsdefinition/sweetalert/index.d.ts/" />
+/// <reference path="../../guest/layout/_header/index.ts" />
+/// <reference path="../../guest/layout/_sidebar/index.ts" />
+/// <reference path="../../guest/layout/_control_sidebar/index.ts" />
+/// <reference path="../../guest/layout/_modal_login/index.ts" />
 
 module com.sabrac.vipfbnow {
 
@@ -83,6 +87,47 @@ module com.sabrac.vipfbnow {
                 s[1] += new Array(prec - s[1].length + 1).join('0');
             }
             return s.join(dec);
+        }
+
+        public static getLoggedInUserInfo(): JQueryPromise<any> {
+            var dfd = $.Deferred();
+            var userInfo: UserInfo = new UserInfo();
+
+            // Get logged in user info
+            Utils.postData($("#get-logged-in-user-info-URL").val(), '').done(function(result) {
+                if (result.success && result.message.length > 0) {
+                    result = JSON.parse(result.message[0]);
+                    userInfo.load(result.avt, result.fullname, result.username, result.vnd, result.toida, result.mail, result.sdt);
+                }
+                dfd.resolve(userInfo);
+            }).fail(function(result) {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
+        public static loadLayoutScreenModel(userInfo: UserInfo): JQueryPromise<any> {
+            var dfd = $.Deferred();
+            var headerScreenModel = new HeaderScreenModel();
+            var modalLoginScreenModel = new ModalLoginScreenModel();
+            var sidebarScreenModel = new SidebarScreenModel();
+            var controlSidebarScreenModel = new ControlSidebarScreenModel();
+            var dfdArray = [];
+            var counter = 0;
+
+            dfdArray[counter++] = headerScreenModel.startPage(userInfo);
+            dfdArray[counter++] = sidebarScreenModel.startPage(userInfo);
+            dfdArray[counter++] = controlSidebarScreenModel.startPage(userInfo);
+            dfdArray[counter++] = modalLoginScreenModel.startPage();
+
+            $.when.apply($, dfdArray).done(function() {
+                ko.applyBindings(headerScreenModel, $("#header-content")[0]);
+                ko.applyBindings(sidebarScreenModel, $("#sidebar-content")[0]);
+                ko.applyBindings(controlSidebarScreenModel, $("#control-sidebar-content")[0]);
+                ko.applyBindings(modalLoginScreenModel, $("#modal-login-content")[0]);
+                dfd.resolve();
+            });
+            return dfd.promise();
         }
     }
 

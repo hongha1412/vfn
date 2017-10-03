@@ -19,11 +19,16 @@ var com;
                     self.pass = ko.observable('');
                     self.accessCode = ko.observable('');
                     self.isEnable = ko.observable(true);
+                    self.userInfo = ko.observable(new vipfbnow.UserInfo());
                 }
                 GetTokenScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    dfd.resolve();
+                    vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
+                        self.userInfo(result);
+                    }).always(function () {
+                        dfd.resolve(self.userInfo());
+                    });
                     return dfd.promise();
                 };
                 GetTokenScreenModel.prototype.getToken = function () {
@@ -56,10 +61,12 @@ var com;
             }());
             $(document).ready(function () {
                 var screenModel = new GetTokenScreenModel();
-                $.blockUI();
+                $.blockUI({ baseZ: 2000 });
                 screenModel.startPage().done(function () {
-                    ko.applyBindings(screenModel);
-                    $.unblockUI();
+                    vipfbnow.Utils.loadLayoutScreenModel(screenModel.userInfo()).done(function () {
+                        ko.applyBindings(screenModel);
+                        $.unblockUI();
+                    });
                 });
             });
         })(vipfbnow = sabrac.vipfbnow || (sabrac.vipfbnow = {}));

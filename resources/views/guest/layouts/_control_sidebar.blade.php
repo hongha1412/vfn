@@ -105,4 +105,4 @@
     </div>
 </div>
 
-<script src="{{ asset('assets/scripts/guest/home/_control_sidebar/index.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/scripts/guest/layout/_control_sidebar/index.js') }}" type="text/javascript"></script>

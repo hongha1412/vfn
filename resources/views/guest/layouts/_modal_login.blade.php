@@ -37,4 +37,4 @@
     <input type="text" style="display: none" id="loginURL" value="{{ route('guest.login') }}" />
 </div>
 
-<script src="{{ asset('assets/scripts/guest/home/_modal_login/index.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/scripts/guest/layout/_modal_login/index.js') }}" type="text/javascript"></script>

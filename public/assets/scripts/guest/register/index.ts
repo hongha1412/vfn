@@ -17,6 +17,7 @@ module com.sabrac.vipfbnow {
         password_confirmation: KnockoutObservable<string>;
         registerResult: KnockoutObservable<string>;
         isEnable: KnockoutObservable<boolean>;
+        userInfo: KnockoutObservable<UserInfo>;
 
         constructor() {
             var self = this;
@@ -27,18 +28,23 @@ module com.sabrac.vipfbnow {
             self.password_confirmation = ko.observable<string>("");
             self.registerResult = ko.observable<string>("");
             self.isEnable = ko.observable<boolean>(true);
+            self.userInfo = ko.observable<UserInfo>(new UserInfo());
         }
 
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            dfd.resolve();
+            Utils.getLoggedInUserInfo().done(function(result) {
+                self.userInfo(result);
+            }).always(function() {
+                dfd.resolve(self.userInfo());
+            });
             return dfd.promise();
         }
 
         register(): void {
             var self = this;
-            var data = new UserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+            var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
             self.isEnable(false);
             $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
 
@@ -55,7 +61,7 @@ module com.sabrac.vipfbnow {
         }
     }
 
-    class UserInfo {
+    class RegisterUserInfo {
         fullname: string;
         email: string;
         username: string;
@@ -74,10 +80,13 @@ module com.sabrac.vipfbnow {
 
     $(document).ready(function() {
         var screenModel = new RegisterScreenModel();
-        $.blockUI();
+        $.blockUI({ baseZ: 2000 });
+
         screenModel.startPage().done(function() {
-            ko.applyBindings(screenModel);
-            $.unblockUI();
+            Utils.loadLayoutScreenModel(screenModel.userInfo()).done(function() {
+                ko.applyBindings(screenModel);
+                $.unblockUI();
+            });
         });
     });
 }

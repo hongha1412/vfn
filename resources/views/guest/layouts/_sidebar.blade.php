@@ -80,4 +80,4 @@
     @endif
 </section>
 
-<script src="{{ asset('assets/scripts/guest/home/_sidebar/index.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/scripts/guest/layout/_sidebar/index.js') }}" type="text/javascript"></script>

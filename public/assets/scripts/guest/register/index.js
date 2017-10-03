@@ -22,16 +22,21 @@ var com;
                     self.password_confirmation = ko.observable("");
                     self.registerResult = ko.observable("");
                     self.isEnable = ko.observable(true);
+                    self.userInfo = ko.observable(new vipfbnow.UserInfo());
                 }
                 RegisterScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    dfd.resolve();
+                    vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
+                        self.userInfo(result);
+                    }).always(function () {
+                        dfd.resolve(self.userInfo());
+                    });
                     return dfd.promise();
                 };
                 RegisterScreenModel.prototype.register = function () {
                     var self = this;
-                    var data = new UserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
+                    var data = new RegisterUserInfo(self.fullname(), self.email(), self.username(), self.password(), self.password_confirmation());
                     self.isEnable(false);
                     $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Vui Lòng Đợi..');
                     vipfbnow.Utils.postData($("#registerURL").val(), data).done(function (result) {
@@ -48,8 +53,8 @@ var com;
                 return RegisterScreenModel;
             }());
             vipfbnow.RegisterScreenModel = RegisterScreenModel;
-            var UserInfo = (function () {
-                function UserInfo(fullname, email, username, password, password_confirmation) {
+            var RegisterUserInfo = (function () {
+                function RegisterUserInfo(fullname, email, username, password, password_confirmation) {
                     var self = this;
                     self.email = email;
                     self.fullname = fullname;
@@ -57,14 +62,16 @@ var com;
                     self.password = password;
                     self.password_confirmation = password_confirmation;
                 }
-                return UserInfo;
+                return RegisterUserInfo;
             }());
             $(document).ready(function () {
                 var screenModel = new RegisterScreenModel();
-                $.blockUI();
+                $.blockUI({ baseZ: 2000 });
                 screenModel.startPage().done(function () {
-                    ko.applyBindings(screenModel);
-                    $.unblockUI();
+                    vipfbnow.Utils.loadLayoutScreenModel(screenModel.userInfo()).done(function () {
+                        ko.applyBindings(screenModel);
+                        $.unblockUI();
+                    });
                 });
             });
         })(vipfbnow = sabrac.vipfbnow || (sabrac.vipfbnow = {}));

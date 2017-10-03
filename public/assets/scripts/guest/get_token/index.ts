@@ -14,6 +14,7 @@ module com.sabrac.vipfbnow {
         pass: KnockoutObservable<string>;
         isEnable: KnockoutObservable<boolean>;
         accessCode: KnockoutObservable<string>;
+        userInfo: KnockoutObservable<UserInfo>;
 
         constructor() {
             var self = this;
@@ -21,12 +22,17 @@ module com.sabrac.vipfbnow {
             self.pass = ko.observable<string>('');
             self.accessCode = ko.observable<string>('');
             self.isEnable = ko.observable<boolean>(true);
+            self.userInfo = ko.observable<UserInfo>(new UserInfo());
         }
 
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            dfd.resolve();
+            Utils.getLoggedInUserInfo().done(function(result) {
+                self.userInfo(result);
+            }).always(function() {
+                dfd.resolve(self.userInfo());
+            });
             return dfd.promise();
         }
 
@@ -61,10 +67,13 @@ module com.sabrac.vipfbnow {
 
     $(document).ready(function() {
         var screenModel = new GetTokenScreenModel();
-        $.blockUI();
+        $.blockUI({ baseZ: 2000 });
+
         screenModel.startPage().done(function() {
-            ko.applyBindings(screenModel);
-            $.unblockUI();
+            Utils.loadLayoutScreenModel(screenModel.userInfo()).done(function() {
+                ko.applyBindings(screenModel);
+                $.unblockUI();
+            });
         });
     });
 }
