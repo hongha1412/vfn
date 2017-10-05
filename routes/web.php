@@ -30,11 +30,9 @@ Route::group(['domain' => $adminDomain], function () {
 Route::group(['domain' => $domain], function () {
 
     // Index register
-    Route::get('/register/index', 'Auth\RegisterController@index')->name('guest.register.index');
+    Route::get('/register', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
     Route::get('/get-token', 'Guest\GetTokenController@index')->name('guest.getToken');
-    // Get token process controller
-    Route::post('/get-token-process', 'Guest\GetTokenController@process')->name('guest.getTokenProcess');
     // Price
     Route::get('/price', 'Guest\PriceController@index')->name('guest.price');
     // Home
@@ -43,9 +41,11 @@ Route::group(['domain' => $domain], function () {
     // Login
     Route::post('/login', 'Auth\LoginController@guestLogin')->name('guest.login');
     // Register
-    Route::post('/register', 'Auth\RegisterController@guestRegister')->name('guest.register');
+    Route::post('/register-process', 'Auth\RegisterController@guestRegister')->name('guest.register');
     // Get logged in user info
     Route::post('/get-logged-in-user-info', 'Guest\UserController@getLoggedInUserInfo')->name('guest.getLoggedInUserInfo');
+    // Get token process controller
+    Route::post('/get-token-process', 'Guest\GetTokenController@process')->name('guest.getTokenProcess');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionGuest']], function () {
         // User Info
@@ -57,5 +57,9 @@ Route::group(['domain' => $domain], function () {
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
+        // Process recharge
+        Route::post('/recharge-process', 'Guest\RechargeController@process')->name('guest.rechargeProcess');
+        // Get recharge log
+        Route::post('/recharge-log', 'Guest\RechargeController@getRechargeLog')->name('guest.rechargeLog');
     });
 });

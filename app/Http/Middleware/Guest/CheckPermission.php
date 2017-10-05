@@ -27,7 +27,11 @@ class CheckPermission
         if (Auth::check()) {
             return $next($request);
         } else {
-            return (new Message(false, "Do not have permission"))->toJson();
+            if ($request->isMethod('post')) {
+                return response((new Message(false, "Do not have permission"))->toJson(), 200);
+            } else {
+                return redirect()->route('guest.index');
+            }
         }
     }
 }

@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<footer class="main-footer">
+<footer class="main-footer" style="display: none" data-bind="visible: true">
     @include('guest.layouts._footer')
 </footer>
 

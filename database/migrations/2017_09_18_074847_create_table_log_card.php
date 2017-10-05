@@ -15,10 +15,15 @@ class CreateTableLogCard extends Migration
     {
         Schema::create('log_card', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nguoinhan', 32);
-            $table->string('time', 32);
-            $table->string('menhgia', 32);
-            $table->string('magift', 255);
+            $table->integer('userid');
+            $table->integer('receive_userid');
+            $table->string('telco', 10);
+            $table->string('serial', 100);
+            $table->string('cardcode', 100);
+            $table->integer('amount');
+            $table->integer('price');
+            $table->string('transid', 255);
+            $table->timestampsTz();
         });
     }
 

@@ -53,14 +53,6 @@ var com;
                 }
                 return UserInfo;
             }());
-            // $(document).ready(function() {
-            //     var screenModel = new ModalLoginScreenModel();
-            //     $.blockUI();
-            //     screenModel.startPage().done(function() {
-            //         ko.applyBindings(screenModel, $("#modal-login-content")[0]);
-            //         $.unblockUI();
-            //     });
-            // });
         })(vipfbnow = sabrac.vipfbnow || (sabrac.vipfbnow = {}));
     })(sabrac = com.sabrac || (com.sabrac = {}));
 })(com || (com = {}));

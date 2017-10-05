@@ -17,8 +17,8 @@ class CreateTableAccount extends Migration
             $table->increments('id');
             $table->string('username', 32);
             $table->string('password', 64);
-            $table->double('vnd')->nullable();
-            $table->string('toida', 255)->nullable();
+            $table->double('vnd')->default(0);
+            $table->string('toida', 255)->default(0);
             $table->string('fullname', 255);
             $table->string('mail', 255);
             $table->string('sdt', 255)->nullable();

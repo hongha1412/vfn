@@ -7,46 +7,42 @@
                 <h3 class="box-title">Đăng Ký Tài Khoản</h3>
             </div>
             <div class="panel-body">
-                <div class="input-group">
-                    <span class="input-group-addon">Tên Đầy Đủ</span>
-                    <input type="text" class="form-control" id="fullname" name="fullname" data-bind="value: fullname" placeholder="Họ Và Tên">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon">Email</span>
-                    <input type="email" class="form-control" id="mail" name="mail" data-bind="value: email"
-                           placeholder="Nhập Email Thật Để Xác Minh">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon">Tài Khoản</span>
-                    <input type="text" class="form-control" id="username" data-bind="value: username" name="username" placeholder="Nhập Tài Khoản">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon">Mật Khẩu</span>
-                    <input type="password" class="form-control" id="password" name="password" data-bind="value: password"
-                           placeholder="Nhập Mật Khẩu">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon">Nhập Lại Mật Khẩu</span>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" data-bind="value: password_confirmation"
-                           placeholder="Nhập Lại Mật Khẩu">
-                </div>
-                <br>
-
-
-                <center>
-                    <div class="g-recaptcha" data-sitekey="6Lf--C8UAAAAAEZVx8v_6zB6VJzXUKf4EcuJN_X9"></div>
+                <form data-bind="submit: register">
+                    <div class="input-group">
+                        <span class="input-group-addon">Tên Đầy Đủ</span>
+                        <input type="text" class="form-control" id="fullname" name="fullname" data-bind="value: fullname" placeholder="Họ Và Tên">
+                    </div>
                     <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">Email</span>
+                        <input type="email" class="form-control" id="mail" name="mail" data-bind="value: email"
+                               placeholder="Nhập Email Thật Để Xác Minh">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">Tài Khoản</span>
+                        <input type="text" class="form-control" id="username" data-bind="value: username" name="username" placeholder="Nhập Tài Khoản">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">Mật Khẩu</span>
+                        <input type="password" class="form-control" id="password" name="password" data-bind="value: password"
+                               placeholder="Nhập Mật Khẩu">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                        <span class="input-group-addon">Nhập Lại Mật Khẩu</span>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" data-bind="value: password_confirmation"
+                               placeholder="Nhập Lại Mật Khẩu">
+                    </div>
+                    <br>
+
                     <center>
-                        <button id="postdata" class="btn btn-danger btn-fill btn-wd" name="dangky" data-bind="click: register, enable: isEnable">
+                        <button id="postdata" type="submit" class="btn btn-danger btn-fill btn-wd" name="dangky" data-bind="enable: isEnable">
                             Đăng Ký
                         </button>
                     </center>
-                </center>
-
+                </form>
             </div>
 
             <div id="result" data-bind="text: registerResult"></div>
@@ -59,6 +55,5 @@
 @endsection
 
 @section('page_js')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ asset('assets/scripts/guest/register/index.js') }}" type="text/javascript"></script>
 @endsection

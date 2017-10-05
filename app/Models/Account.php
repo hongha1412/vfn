@@ -32,6 +32,7 @@ class Account extends User
     protected $table = 'account';
     public $timestamps = false;
     protected $fillable = [
+        'id',
         'username',
         'password',
         'vnd',
@@ -48,17 +49,17 @@ class Account extends User
         'macode',
     ];
 
+    public function logCard() {
+        return $this->belongsToMany(LogCard::class);
+    }
+
     /**
-     * Get account info from username and password
+     * Get user from username
      *
      * @param $username
-     * @param $password
-     * @return $this account info
+     * @return user object
      */
-    public static function login($username, $password) {
-        return Account::where([
-            ['username', '=', $username],
-            ['password', '=', $password]
-        ]);
+    public static function getIdByUsername($username) {
+        return Account::where('username', '=', strtolower($username))->limit(1)->get()[0];
     }
 }

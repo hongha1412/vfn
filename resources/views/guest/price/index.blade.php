@@ -4,15 +4,14 @@
     <div class="col-lg-12">
         <div class="alert alert-danger">
             <strong>
-                <marquee>BẢNG GIÁ HỆ THỐNG VIP TẠI VIPFBNOW.COM - ĐẠI LÝ + CTV VUI LÒNG INBOX ADMIN ĐỂ NHẬN ĐƯỢC ƯU ĐÃI
-                    HẤP DẪN
+                <marquee>
+                    BẢNG GIÁ HỆ THỐNG VIP TẠI VIPFBNOW.COM - ĐẠI LÝ + CTV VUI LÒNG INBOX ADMIN ĐỂ NHẬN ĐƯỢC ƯU ĐÃI HẤP DẪN
                 </marquee>
             </strong>
         </div>
-
-
-        <button type="button" class="close" data-dismiss="modal">×</button>
+        {{--<button type="button" class="close" data-dismiss="modal">×</button>--}}
     </div>
+
     <div class="modal-body">
         <ul class="nav nav-tabs">
             <li class="active">

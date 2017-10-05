@@ -5,25 +5,27 @@
             <h4 class="modal-title">Đăng Nhập Hệ Thống</h4>
         </div>
         <div class="modal-body">
-            <div class="form-group">
+            <form data-bind="submit: login">
                 <div class="form-group">
-                    <label for="usr">Tên tài khoản:</label>
-                    <star>*</star>
-                    <input type="text" class="form-control" data-bind="value: username" id="username" name="username">
-                </div>
-                <div class="form-group">
-                    <label for="pwd">Mật khẩu:</label>
-                    <star>*</star>
-                    <input type="password" class="form-control" data-bind="value: password" id="password" name="password">
-                </div>
-                <div class="footer text-center">
+                    <div class="form-group">
+                        <label for="usr">Tên tài khoản:</label>
+                        <star>*</star>
+                        <input type="text" class="form-control" data-bind="value: username" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Mật khẩu:</label>
+                        <star>*</star>
+                        <input type="password" class="form-control" data-bind="value: password" id="password" name="password">
+                    </div>
+                    <div class="footer text-center">
 
-                    <button id="postdata2" class="btn btn-rounded btn-primary" name="login"
-                        data-bind="click: login, enable: isEnable"><i class="fa fa-sign-in"></i> Đăng Nhập
-                    </button>
+                        <button id="postdata2" type="submit" class="btn btn-rounded btn-primary" name="login"
+                            data-bind="enable: isEnable"><i class="fa fa-sign-in"></i> Đăng Nhập
+                        </button>
 
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div id="result" data-bind="text: loginResult"></div>

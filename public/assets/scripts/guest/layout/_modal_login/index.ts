@@ -58,13 +58,4 @@ module com.sabrac.vipfbnow {
             self.password = password;
         }
     }
-
-    // $(document).ready(function() {
-    //     var screenModel = new ModalLoginScreenModel();
-    //     $.blockUI();
-    //     screenModel.startPage().done(function() {
-    //         ko.applyBindings(screenModel, $("#modal-login-content")[0]);
-    //         $.unblockUI();
-    //     });
-    // });
 }

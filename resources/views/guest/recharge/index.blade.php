@@ -15,41 +15,38 @@
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-fw fa-dashboard"></i> Chọn Mạng</span>
-                    <select name="chonmang" id="chonmang" class="form-control" data-toggle="tooltip"
-                            data-title="Nhà Mạng"/>
-                    <option value="VIETEL">Viettel</option>
-                    <option value="MOBI">Mobifone</option>
-                    <option value="VINA">Vinaphone</option>
-                    <option value="GATE">Gate</option>
-                    <option value="VTC">VTC</option>
+                    <select name="chonmang" id="chonmang" class="form-control" data-bind="value: rechargeInfo().provider, enable: isEnable" data-toggle="tooltip" data-title="Nhà Mạng">
+                        <option value="VIETTEL">Viettel</option>
+                        <option value="MOBI">Mobifone</option>
+                        <option value="VINA">Vinaphone</option>
+                        <option value="GATE">Gate</option>
+                        <option value="VTC">VTC</option>
                     </select>
                 </div>
                 <br>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-fw fa-credit-card"></i> Mã Serial</span>
-                    <input type="text" class="form-control" name="txtseri" id="txtseri"
+                    <input type="text" class="form-control" name="txtseri" id="txtseri" data-bind="value: rechargeInfo().seri,enable: isEnable"
                            placeholder="Nhập mã serial nằm sau thẻ" value="" data-toggle="tooltip"
                            data-title="Mã seri nằm sau thẻ" required="" autofocus="">
                 </div>
                 <br/>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-fw fa-credit-card"></i> Mã Thẻ</span>
-                    <input type="text" class="form-control" name="txtpin" id="txtpin"
+                    <input type="text" class="form-control" name="txtpin" id="txtpin" data-bind="value: rechargeInfo().pin, enable: isEnable"
                            placeholder="Nhập mã số sau lớp bạc mỏng" value="" data-toggle="tooltip"
                            data-title="Mã số sau lớp bạc mỏng" required="" autofocus="">
                 </div>
                 <br/></div>
             <div class="modal-footer">
                 <center>
-                    <button id="postdata" class="btn btn-danger" name="napthe" onclick="napthe()"><i
+                    <button id="postdata" class="btn btn-danger" name="napthe" data-bind="click: processRecharge, enable: isEnable"><i
                                 class="fa fa-fw fa-cart-plus"></i> Nạp Ngay
                     </button>
                 </center>
             </div><!--end .form_row_right-->
 
             <div id="ketqua"></div>
-
-
         </div>
     </div>
     <div class="col-sm-6">
@@ -123,46 +120,41 @@
                         <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Tài Khoản</th>
+                            <th>Tài Khoản Nhận</th>
                             <th>Loại Thẻ</th>
-                            <th>Mã Thẻ</th>
                             <th>Mã Seri</th>
-                            <th>Nạp Lúc</th>
+                            <th>Mã Thẻ</th>
                             <th>Mệnh Giá</th>
+                            <th>Thời Gian</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <!-- id -->
-                                <b>#</b>
-                            </td>
-                            <td>
-                                <!-- nguoi nhan -->
-                            </td>
-                            <td>
-                                <!-- loai the -->
-                            </td>
-                            <td>
-                                <!-- ma the -->
-                            </td>
-                            <td>
-                                <!-- seri -->
-                            </td>
-                            <td>
-                                <!-- time -->
-                            </td>
-                            <td>
-                                <!-- number_format($res['menhgia'], 0, ',', ','); -->
-                                 VNĐ
-                            </td>
-                        </tr>
+                        <tbody data-bind="foreach: lsLog, visible: lsLog().length > 0">
+                            <tr>
+                                <td>
+                                    <b>#<span data-bind="text: ($index() + 1)"></span></b>
+                                </td>
+                                <td data-bind="text: receiveUsername">
+                                </td>
+                                <td data-bind="text: provider">
+                                </td>
+                                <td data-bind="text: seri">
+                                </td>
+                                <td data-bind="text: pin">
+                                </td>
+                                <td>
+                                    <span data-bind="text: amount"></span> VNĐ
+                                </td>
+                                <td data-bind="text: time">
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+    <input type="text" style="display: none" value="{{ route('guest.rechargeProcess') }}" id="rechargeProcessURL" />
+    <input type="text" style="display: none" value="{{ route('guest.rechargeLog') }}" id="rechargeLogURL" />
 @endsection
 
 @section('page_js')
