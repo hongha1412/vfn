@@ -84,8 +84,8 @@ class RegisterController extends Controller
         $hasher = new PasswordHasher();
         $account = Account::create([
             'fullname'      => Input::get('fullname'),
-            'mail'          => Input::get('email'),
-            'username'      => Input::get('username'),
+            'mail'          => strtolower(Input::get('email')),
+            'username'      => strtolower(Input::get('username')),
             'password'      => Hash::make($hasher->encrypt(Input::get('password'))),
         ]);
 

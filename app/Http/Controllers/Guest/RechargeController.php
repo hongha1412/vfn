@@ -84,7 +84,12 @@ class RechargeController extends Controller
         // Get recharge user info
         $rechargeUser = null;
         if (env('ENABLE_GIFT')) {
-            $rechargeUser = Account::getIdByUsername(Input::get('username'));
+            $rechargeUser = Account::getUserByUsername(Input::get('username'));
+            if (count($rechargeUser) > 0) {
+                $rechargeUser = $rechargeUser[0];
+            } else {
+                return response((new Message(false, 'Cannot get user info'))->toJson(), 200);
+            }
         } else {
             $rechargeUser = Auth::user();
         }

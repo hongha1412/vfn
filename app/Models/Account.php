@@ -53,13 +53,17 @@ class Account extends User
         return $this->belongsToMany(LogCard::class);
     }
 
+    public function logGift() {
+        return $this->belongsTo(GiftLike::class);
+    }
+
     /**
      * Get user from username
      *
      * @param $username
      * @return user object
      */
-    public static function getIdByUsername($username) {
-        return Account::where('username', '=', strtolower($username))->limit(1)->get()[0];
+    public static function getUserByUsername($username) {
+        return Account::where('username', '=', strtolower($username))->limit(1)->get();
     }
 }

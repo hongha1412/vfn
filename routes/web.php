@@ -54,6 +54,8 @@ Route::group(['domain' => $domain], function () {
         Route::get('/change-password', 'Auth\ChangePasswordController@guestChangePassword')->name('guest.changePassword');
         // Recharge
         Route::get('/recharge', 'Guest\RechargeController@index')->name('guest.recharge');
+        // Gift
+        Route::get('/gift', 'Guest\GiftController@index')->name('guest.gift');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
@@ -61,5 +63,7 @@ Route::group(['domain' => $domain], function () {
         Route::post('/recharge-process', 'Guest\RechargeController@process')->name('guest.rechargeProcess');
         // Get recharge log
         Route::post('/recharge-log', 'Guest\RechargeController@getRechargeLog')->name('guest.rechargeLog');
+        // Process gift
+        Route::post('/gift-process', 'Guest\GiftController@gift')->name('guest.giftProcess');
     });
 });

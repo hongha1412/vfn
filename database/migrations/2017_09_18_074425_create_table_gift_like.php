@@ -15,10 +15,11 @@ class CreateTableGiftLike extends Migration
     {
         Schema::create('gift_like', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('magift');
-            $table->text('time');
-            $table->text('user');
-            $table->text('menhgia');
+            $table->integer('userid')->nullable();
+            $table->string('giftcode', 50)->unique();
+            $table->dateTimeTz('expiretime')->nullable();
+            $table->integer('amount');
+            $table->dateTimeTz('usedtime')->nullable();
         });
     }
 
