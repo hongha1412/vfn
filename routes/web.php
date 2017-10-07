@@ -65,5 +65,7 @@ Route::group(['domain' => $domain], function () {
         Route::post('/recharge-log', 'Guest\RechargeController@getRechargeLog')->name('guest.rechargeLog');
         // Process gift
         Route::post('/gift-process', 'Guest\GiftController@gift')->name('guest.giftProcess');
+        // Gift log
+        Route::post('/gift-log', 'Guest\GiftController@giftLog')->name('guest.giftLog');
     });
 });

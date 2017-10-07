@@ -36,25 +36,22 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Mã Dự Thưởng <star>*</star></th>
+                            <th>STT <star>*</star></th>
                             <th>Tên</th>
                             <th>Mã Gift</th>
-                            <th>Nhận Lúc</th>
                             <th>Mệnh Giá</th>
+                            <th>Thời Gian Nạp</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-bind="foreach: lsLog, visible: lsLog().length > 0">
                             <tr>
                                 <td>
+                                    <b>#<span data-bind="text: ($index() + 1)"></span></b>
                                 </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
+                                <td data-bind="text: username"></td>
+                                <td data-bind="text: giftCode"></td>
+                                <td data-bind="text: amount"></td>
+                                <td data-bind="text: usedtime"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,6 +61,7 @@
         </div>
     </div>
     <input type="text" style="display: none" value="{{ route('guest.giftProcess') }}" id="giftProcessURL" />
+    <input type="text" style="display: none" value="{{ route('guest.giftLog') }}" id="giftLogURL" />
 @endsection
 
 @section('page_js')

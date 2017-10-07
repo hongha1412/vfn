@@ -54,7 +54,7 @@ class Account extends User
     }
 
     public function logGift() {
-        return $this->belongsTo(GiftLike::class);
+        return $this->hasMany(GiftLike::class);
     }
 
     /**

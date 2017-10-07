@@ -46,7 +46,12 @@ module com.sabrac.vipfbnow {
             self.rechargeInfo().username = self.userInfo().username;
 
             Utils.postData($('#rechargeProcessURL').val(), self.rechargeInfo()).done(function(result) {
-                Utils.notify(result);
+                Utils.notify(result).done(function() {
+                    Utils.getLoggedInUserInfo().done(function(result) {
+                        self.userInfo(result);
+                        Utils.reloadLayoutData(self.userInfo());
+                    });
+                });
             }).fail(function(result) {
                 Utils.notify(result);
             }).always(function() {

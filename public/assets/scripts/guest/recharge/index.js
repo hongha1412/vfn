@@ -42,7 +42,12 @@ var com;
                     $('#postdata').html('<i class="fa fa-spinner fa-spin"></i> Đang Xử Lý');
                     self.rechargeInfo().username = self.userInfo().username;
                     vipfbnow.Utils.postData($('#rechargeProcessURL').val(), self.rechargeInfo()).done(function (result) {
-                        vipfbnow.Utils.notify(result);
+                        vipfbnow.Utils.notify(result).done(function () {
+                            vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
+                                self.userInfo(result);
+                                vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                            });
+                        });
                     }).fail(function (result) {
                         vipfbnow.Utils.notify(result);
                     }).always(function () {

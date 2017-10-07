@@ -14,7 +14,7 @@ var com;
         (function (vipfbnow) {
             var Utils = (function () {
                 function Utils() {
-                    this.self = this;
+                    var self = this;
                 }
                 Utils.notify = function (result) {
                     var dfd = $.Deferred();
@@ -101,24 +101,30 @@ var com;
                 };
                 Utils.loadLayoutScreenModel = function (userInfo) {
                     var dfd = $.Deferred();
-                    var headerScreenModel = new vipfbnow.HeaderScreenModel();
-                    var modalLoginScreenModel = new vipfbnow.ModalLoginScreenModel();
-                    var sidebarScreenModel = new vipfbnow.SidebarScreenModel();
-                    var controlSidebarScreenModel = new vipfbnow.ControlSidebarScreenModel();
+                    Utils.headerScreenModel = ko.observable(new vipfbnow.HeaderScreenModel());
+                    Utils.modalLoginScreenModel = ko.observable(new vipfbnow.ModalLoginScreenModel());
+                    Utils.sidebarScreenModel = ko.observable(new vipfbnow.SidebarScreenModel);
+                    Utils.controlSidebarScreenModel = ko.observable(new vipfbnow.ControlSidebarScreenModel);
                     var dfdArray = [];
                     var counter = 0;
-                    dfdArray[counter++] = headerScreenModel.startPage(userInfo);
-                    dfdArray[counter++] = sidebarScreenModel.startPage(userInfo);
-                    dfdArray[counter++] = controlSidebarScreenModel.startPage(userInfo);
-                    dfdArray[counter++] = modalLoginScreenModel.startPage();
+                    dfdArray[counter++] = Utils.headerScreenModel().startPage(userInfo);
+                    dfdArray[counter++] = Utils.sidebarScreenModel().startPage(userInfo);
+                    dfdArray[counter++] = Utils.controlSidebarScreenModel().startPage(userInfo);
+                    dfdArray[counter++] = Utils.modalLoginScreenModel().startPage();
                     $.when.apply($, dfdArray).done(function () {
-                        ko.applyBindings(headerScreenModel, $("#header-content")[0]);
-                        ko.applyBindings(sidebarScreenModel, $("#sidebar-content")[0]);
-                        ko.applyBindings(controlSidebarScreenModel, $("#control-sidebar-content")[0]);
-                        ko.applyBindings(modalLoginScreenModel, $("#modal-login-content")[0]);
+                        ko.applyBindings(Utils.headerScreenModel(), $("#header-content")[0]);
+                        ko.applyBindings(Utils.sidebarScreenModel(), $("#sidebar-content")[0]);
+                        ko.applyBindings(Utils.controlSidebarScreenModel(), $("#control-sidebar-content")[0]);
+                        ko.applyBindings(Utils.modalLoginScreenModel(), $("#modal-login-content")[0]);
                         dfd.resolve();
                     });
                     return dfd.promise();
+                };
+                Utils.reloadLayoutData = function (userInfo) {
+                    var self = this;
+                    Utils.headerScreenModel().userInfo(userInfo);
+                    Utils.sidebarScreenModel().userInfo(userInfo);
+                    Utils.controlSidebarScreenModel().userInfo(userInfo);
                 };
                 return Utils;
             }());

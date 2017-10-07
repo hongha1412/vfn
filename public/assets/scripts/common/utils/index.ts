@@ -10,10 +10,13 @@
 module com.sabrac.vipfbnow {
 
     export class Utils {
-        self: any;
+        static headerScreenModel: KnockoutObservable<HeaderScreenModel>;
+        static modalLoginScreenModel: KnockoutObservable<ModalLoginScreenModel>;
+        static sidebarScreenModel: KnockoutObservable<SidebarScreenModel>;
+        static controlSidebarScreenModel: KnockoutObservable<ControlSidebarScreenModel>;
 
         constructor() {
-            this.self = this;
+            var self = this;
         }
 
         public static notify(result: any): JQueryPromise<any> {
@@ -108,26 +111,33 @@ module com.sabrac.vipfbnow {
 
         public static loadLayoutScreenModel(userInfo: UserInfo): JQueryPromise<any> {
             var dfd = $.Deferred();
-            var headerScreenModel = new HeaderScreenModel();
-            var modalLoginScreenModel = new ModalLoginScreenModel();
-            var sidebarScreenModel = new SidebarScreenModel();
-            var controlSidebarScreenModel = new ControlSidebarScreenModel();
+            Utils.headerScreenModel = ko.observable<HeaderScreenModel>(new HeaderScreenModel());
+            Utils.modalLoginScreenModel = ko.observable<ModalLoginScreenModel>(new ModalLoginScreenModel());
+            Utils.sidebarScreenModel = ko.observable<SidebarScreenModel>(new SidebarScreenModel);
+            Utils.controlSidebarScreenModel = ko.observable<ControlSidebarScreenModel>(new ControlSidebarScreenModel);
             var dfdArray = [];
             var counter = 0;
 
-            dfdArray[counter++] = headerScreenModel.startPage(userInfo);
-            dfdArray[counter++] = sidebarScreenModel.startPage(userInfo);
-            dfdArray[counter++] = controlSidebarScreenModel.startPage(userInfo);
-            dfdArray[counter++] = modalLoginScreenModel.startPage();
+            dfdArray[counter++] = Utils.headerScreenModel().startPage(userInfo);
+            dfdArray[counter++] = Utils.sidebarScreenModel().startPage(userInfo);
+            dfdArray[counter++] = Utils.controlSidebarScreenModel().startPage(userInfo);
+            dfdArray[counter++] = Utils.modalLoginScreenModel().startPage();
 
             $.when.apply($, dfdArray).done(function() {
-                ko.applyBindings(headerScreenModel, $("#header-content")[0]);
-                ko.applyBindings(sidebarScreenModel, $("#sidebar-content")[0]);
-                ko.applyBindings(controlSidebarScreenModel, $("#control-sidebar-content")[0]);
-                ko.applyBindings(modalLoginScreenModel, $("#modal-login-content")[0]);
+                ko.applyBindings(Utils.headerScreenModel(), $("#header-content")[0]);
+                ko.applyBindings(Utils.sidebarScreenModel(), $("#sidebar-content")[0]);
+                ko.applyBindings(Utils.controlSidebarScreenModel(), $("#control-sidebar-content")[0]);
+                ko.applyBindings(Utils.modalLoginScreenModel(), $("#modal-login-content")[0]);
                 dfd.resolve();
             });
             return dfd.promise();
+        }
+
+        public static reloadLayoutData(userInfo: UserInfo): void {
+            var self = this;
+            Utils.headerScreenModel().userInfo(userInfo);
+            Utils.sidebarScreenModel().userInfo(userInfo);
+            Utils.controlSidebarScreenModel().userInfo(userInfo);
         }
     }
 

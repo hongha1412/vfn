@@ -17,7 +17,7 @@ class GiftLike extends Model
     ];
 
     public function account() {
-        return $this->hasOne(Account::class, 'id', 'userid');
+        return $this->belongsTo(Account::class, 'userid', 'id');
     }
 
     /**
@@ -27,7 +27,9 @@ class GiftLike extends Model
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public static function getLogByUserId($userId) {
-        return GiftLike::with('account')->where('userid', '=', $userId)->orderBy('usedtime', 'DESC')->get();
+        return GiftLike::with(['account' => function($query) {
+            $query->select(['id', 'username']);
+        }])->where('userid', '=', $userId)->orderBy('usedtime', 'DESC')->get();
     }
 
     /**

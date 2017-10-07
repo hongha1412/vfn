@@ -11,12 +11,14 @@ module com.sabrac.vipfbnow {
     export class GiftScreenModel {
         userInfo: KnockoutObservable<UserInfo>;
         giftCode: KnockoutObservable<string>;
+        lsLog: KnockoutObservableArray<GiftInfo>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
             var self = this;
             self.userInfo = ko.observable<UserInfo>(new UserInfo());
             self.giftCode = ko.observable<string>('');
+            self.lsLog = ko.observableArray<GiftInfo>([]);
             self.isEnable = ko.observable<boolean>(true);
         }
 
@@ -25,6 +27,9 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
+                self.getGiftLog().done(function() {
+                    dfd.resolve();
+                });
             }).always(function() {
                 dfd.resolve();
             });
@@ -41,7 +46,10 @@ module com.sabrac.vipfbnow {
 
             Utils.postData($('#giftProcessURL').val(), giftInfo).done(function(result) {
                 Utils.notify(result).done(function() {
-                    location.reload();
+                    Utils.getLoggedInUserInfo().done(function(result) {
+                        self.userInfo(result);
+                        Utils.reloadLayoutData(self.userInfo());
+                    });
                 });
             }).fail(function(result) {
                 swal("ERROR", "Lỗi không xác định, vui lòng liên hệ quản trị viên.", SweetAlertType.ERROR);
@@ -51,22 +59,50 @@ module com.sabrac.vipfbnow {
                 $.unblockUI();
             });
         }
+
+        getGiftLog(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            Utils.postData($('#giftLogURL').val(), null).done(function(result) {
+                if (result.success) {
+                    let lsResult = JSON.parse(result.message);
+                    for (let log of lsResult) {
+                        let giftInfo = new GiftInfo(log.account.username);
+                        giftInfo.load(log.account.username, log.giftcode, log.amount, log.usedtime);
+                        self.lsLog.push(giftInfo);
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function(result) {
+                swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', SweetAlertType.ERROR);
+            }).always(function() {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
     }
 
     class GiftInfo {
         username: string;
         giftCode: string;
+        amount: string;
+        usedtime: string;
 
         constructor(username: string) {
             var self = this;
             self.username = username;
             self.giftCode = '';
+            self.amount = '0';
+            self.usedtime = '';
         }
 
-        load(username: string, giftCode: string) {
+        load(username: string, giftCode: string, amount: string, usedtime: string) {
             var self = this;
             self.username = username;
             self.giftCode = giftCode;
+            self.amount = amount;
+            self.usedtime = usedtime;
         }
     }
 

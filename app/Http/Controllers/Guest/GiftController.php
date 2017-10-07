@@ -55,4 +55,9 @@ class GiftController extends Controller
             return response((new Message(false, 'Mã Sai Hoặc Đã Được Sử Dụng!'))->toJson(), 200);
         }
     }
+
+    public function giftLog() {
+        $giftLog = GiftLike::getLogByUserId(Auth::id());
+        return response((new Message(true, json_encode($giftLog)))->toJson(), 200);
+    }
 }
