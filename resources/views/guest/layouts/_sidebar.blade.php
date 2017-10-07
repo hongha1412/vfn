@@ -64,7 +64,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu" style="display: none;">
-                    <li><a href="/viplike.php"><i class="fa fa-plus-square"></i> VIP LIKE</a></li>
+                    <li><a href="{{ route('guest.storeVipLike') }}"><i class="fa fa-plus-square"></i> VIP LIKE</a></li>
                     <li><a href="/vipcmt.php"><i class="fa fa-plus-square"></i> VIP COMMENT</a></li>
                     <li><a href="/vipshare.php"><i class="fa fa-plus-square"></i> VIP SHARE</a></li>
                     <li><a href="/camxuc.php"><i class="fa fa-plus-square"></i> BOT CẢM XÚC</a></li>

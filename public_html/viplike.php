@@ -6,12 +6,12 @@ include 'like_hethong/functions.php';
 
 
 <?php
-if(!$_SESSION['user']){
-?>
+if (!$_SESSION['user']) {
+    ?>
 
-<!-- chưa login -->
-<?php
-}else{
+    <!-- chưa login -->
+    <?php
+} else {
 $user = mysql_fetch_assoc(mysql_query("SELECT * FROM `ACCOUNT` WHERE `id`=".$_SESSION['user'].""));
 if($user['kichhoat'] <  1) { 
 include 'bangtb.php';

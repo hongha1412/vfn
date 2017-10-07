@@ -56,6 +56,8 @@ Route::group(['domain' => $domain], function () {
         Route::get('/recharge', 'Guest\RechargeController@index')->name('guest.recharge');
         // Gift
         Route::get('/gift', 'Guest\GiftController@index')->name('guest.gift');
+        // Store vip like
+        Route::get('/store-viplike', 'Guest\StoreVipLikeController@index')->name('guest.storeVipLike');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
@@ -67,5 +69,7 @@ Route::group(['domain' => $domain], function () {
         Route::post('/gift-process', 'Guest\GiftController@gift')->name('guest.giftProcess');
         // Gift log
         Route::post('/gift-log', 'Guest\GiftController@giftLog')->name('guest.giftLog');
+        // Store vip like init data
+        Route::get('/store-viplike-init', 'Guest\StoreVipLikeController@init')->name('guest.storeVipLikeInit');
     });
 });
