@@ -17,7 +17,7 @@ class VipSeeder extends Seeder
         Vip::create([
             'idfb'      => '100003626686858',
             'name'      => 'Jake Braun',
-            'user'      => 1,
+            'userid'      => 1,
             'goi'       => 1,
             'time'      => 0,
             'solike'    => 100,

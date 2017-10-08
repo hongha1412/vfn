@@ -10,10 +10,10 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label>ID mới cần thêm:</label>
-                    <input type="number" class="form-control" name="id" required="" autofocus=""></div>
+                    <input type="number" class="form-control" name="id" data-bind="value: fbId" required="true" autofocus=""></div>
                 <div class="form-group">
                     <label>Tên Người Dùng:</label>
-                    <input type="text" class="form-control" name="name" required="" autofocus=""></div>
+                    <input type="text" class="form-control" name="name" data-bind="value: " required="true" autofocus=""></div>
                 <div class="form-group"><label>Số Status/1 Ngày:</label>
                     <select name="limitpost" class="form-control">
                         <option value="5">5 bài</option>

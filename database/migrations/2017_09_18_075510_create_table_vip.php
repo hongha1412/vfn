@@ -17,7 +17,7 @@ class CreateTableVip extends Migration
             $table->increments('id');
             $table->bigInteger('idfb');
             $table->string('name', 32);
-            $table->integer('user');
+            $table->integer('userid');
             $table->string('goi', 2);
             $table->integer('time');
             $table->integer('solike');
