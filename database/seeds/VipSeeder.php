@@ -16,13 +16,13 @@ class VipSeeder extends Seeder
 
         Vip::create([
             'idfb'      => '100003626686858',
-            'name'      => 'Jake Braun',
+            'fbname'      => 'Jake Braun',
             'userid'      => 1,
-            'goi'       => 1,
-            'time'      => 0,
-            'solike'    => 100,
+            'package'       => 1,
+            'expiretime'      => 0,
+            'likespeed'    => 100,
             'limitpost' => 0,
-            'chuthich'  => '',
+            'note'  => '',
         ]);
     }
 }

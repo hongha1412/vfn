@@ -16,13 +16,13 @@ class CreateTableVip extends Migration
         Schema::create('vip', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('idfb');
-            $table->string('name', 32);
+            $table->string('fbname', 32);
             $table->integer('userid');
-            $table->string('goi', 2);
-            $table->integer('time');
-            $table->integer('solike');
+            $table->string('package', 2);
+            $table->integer('expiretime');
+            $table->integer('likespeed');
             $table->integer('limitpost');
-            $table->text('chuthich');
+            $table->text('note');
         });
     }
 

@@ -10,17 +10,17 @@ class Vip extends Model
     public $timestamps = false;
     protected $fillable = [
         'idfb',
-        'name',
-        'user',
-        'goi',
-        'time',
-        'solike',
+        'fbname',
+        'userid',
+        'package',
+        'expiretime',
+        'likespeed',
         'limitpost',
-        'chuthich',
+        'note',
     ];
 
     public static function getVipList()
     {
-        return Vip::where('goi', '>', '0')->inRandomOrder()->get();
+        return Vip::where('package', '>', '0')->inRandomOrder()->get();
     }
 }

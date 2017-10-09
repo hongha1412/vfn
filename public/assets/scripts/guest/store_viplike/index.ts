@@ -11,10 +11,24 @@ module com.sabrac.vipfbnow {
 
     export class StoreVipLikeScreenModel {
         userInfo: KnockoutObservable<UserInfo>;
+        fbURL: KnockoutObservable<string>;
+        fbId: KnockoutObservable<string>;
+        fbName: KnockoutObservable<string>;
+        package: KnockoutObservable<number>;
+        likeSpeed: KnockoutObservable<number>;
+        expireTime: KnockoutObservable<number>;
+        note: KnockoutObservable<string>;
 
         constructor() {
             var self = this;
             self.userInfo = ko.observable<UserInfo>(new UserInfo());
+            self.fbURL = ko.observable<string>('');
+            self.fbId = ko.observable<string>('');
+            self.fbName = ko.observable<string>('');
+            self.package = ko.observable<number>(-1);
+            self.likeSpeed = ko.observable<number>(-1);
+            self.expireTime = ko.observable<number>(-1);
+            self.note = ko.observable<string>('');
         }
 
         startPage(): JQueryPromise<any> {

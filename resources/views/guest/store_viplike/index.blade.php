@@ -9,23 +9,20 @@
         <div class="panel-body">
             <form action="" method="POST">
                 <div class="form-group">
-                    <label>ID mới cần thêm:</label>
-                    <input type="number" class="form-control" name="id" data-bind="value: fbId" required="true" autofocus=""></div>
+                    <label>Facebook Profile URL (Đường dẫn facebook cá nhân / page / nhóm công khai):</label>
+                    <input type="number" class="form-control" name="id" data-bind="value: fbURL" required="" autofocus="">
+                </div>
                 <div class="form-group">
-                    <label>Tên Người Dùng:</label>
-                    <input type="text" class="form-control" name="name" data-bind="value: " required="true" autofocus=""></div>
-                <div class="form-group"><label>Số Status/1 Ngày:</label>
-                    <select name="limitpost" class="form-control">
-                        <option value="5">5 bài</option>
-                        <option value="10">10 bài</option>
-                        <option value="20">20 bài</option>
-                        <option value="30">30 bài</option>
-                        <option value="50">50 bài</option>
-                    </select></div>
+                    <label>Facebook ID: </label> <span data-bind="text: fbId"></span>
+                </div>
+                <div class="form-group">
+                    <label>Tên Facebook: </label> <span data-bind="text: fbName"></span>
+                </div>
+                <div class="form-group"><label>Số Status/1 Ngày:</label> Unlimited</div>
                 <div class="form-group">
                     <label>Số Lượng Like:</label>
 
-                    <select name="goi" id="goi" class="form-control">
+                    <select name="goi" id="goi" class="form-control" data-bind="value: package">
                         <option value="1">150 like</option>
                         <option value="2">300 like</option>
                         <option value="3">500 like</option>
@@ -37,7 +34,7 @@
                 <div class="form-group">
                     <label>Tốc Độ Like/5 Phút:</label>
 
-                    <select name="solike" class="form-control">
+                    <select name="solike" class="form-control" data-bind="value: likeSpeed">
 
                         <option value="5">5 Like</option>
                         <option value="10">10 Like</option>
@@ -50,16 +47,17 @@
                     </select></div>
                 <div class="form-group">
                     <label>Thời Hạn:</label>
-                    <select name="time" id="time" class="form-control">
+                    <select name="time" id="time" class="form-control" data-bind="value: expireTime">
                         <option value="30">1 Tháng</option>
                         <option value="60">2 Tháng</option>
                         <option value="90">3 Tháng</option>
                         <option value="120">4 Tháng</option>
                         <option value="150">5 Tháng</option>
-                    </select></div>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Nội dung ghi chú</label>
-                    <textarea class="form-control" rows="3" name="chuthich" placeholder="Ghi chú để nhận biết"></textarea>
+                    <textarea class="form-control" data-bind="value: note" rows="3" name="chuthich" placeholder="Ghi chú để nhận biết"></textarea>
                 </div>
                 Thành Tiền:
 
@@ -69,7 +67,7 @@
                 </br>
 
                 <button type="submit" name="submit" class="btn btn-danger">Cài VIP Like</button>
-                <button name="tinhtien" type="button" class="btn btn-danger" onclick="getItems()">Tính Tiền</button>
+                <button name="tinhtien" type="button" class="btn btn-danger">Tính Tiền</button>
             </form>
 
         </div>

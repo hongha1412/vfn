@@ -16,6 +16,13 @@ var com;
                 function StoreVipLikeScreenModel() {
                     var self = this;
                     self.userInfo = ko.observable(new vipfbnow.UserInfo());
+                    self.fbURL = ko.observable('');
+                    self.fbId = ko.observable('');
+                    self.fbName = ko.observable('');
+                    self.package = ko.observable(-1);
+                    self.likeSpeed = ko.observable(-1);
+                    self.expireTime = ko.observable(-1);
+                    self.note = ko.observable('');
                 }
                 StoreVipLikeScreenModel.prototype.startPage = function () {
                     var self = this;
