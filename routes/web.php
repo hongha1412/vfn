@@ -70,6 +70,8 @@ Route::group(['domain' => $domain], function () {
         // Gift log
         Route::post('/gift-log', 'Guest\GiftController@giftLog')->name('guest.giftLog');
         // Store vip like init data
-        Route::get('/store-viplike-init', 'Guest\StoreVipLikeController@init')->name('guest.storeVipLikeInit');
+        Route::post('/store-viplike-init', 'Guest\StoreVipLikeController@init')->name('guest.storeVipLikeInit');
+        // Get facebook user info
+        Route::post('/get-facebook-user-info', 'Common\CommonAPIController@getFacebookUserInfo')->name('common.getFacebookUserInfo');
     });
 });

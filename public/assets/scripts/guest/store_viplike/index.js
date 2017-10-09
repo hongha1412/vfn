@@ -23,6 +23,16 @@ var com;
                     self.likeSpeed = ko.observable(-1);
                     self.expireTime = ko.observable(-1);
                     self.note = ko.observable('');
+                    self.totalID = ko.observable(0);
+                    self.isEnable = ko.observable(true);
+                    self.fbURL.subscribe(function () {
+                        $.blockUI();
+                        self.isEnable(false);
+                        self.getFbUserInfo().always(function () {
+                            self.isEnable(true);
+                            $.unblockUI();
+                        });
+                    });
                 }
                 StoreVipLikeScreenModel.prototype.startPage = function () {
                     var self = this;
@@ -34,16 +44,25 @@ var com;
                     });
                     return dfd.promise();
                 };
+                StoreVipLikeScreenModel.prototype.getFbUserInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    vipfbnow.Utils.getFacebookInfo(self.fbURL()).done(function (result) {
+                        if (result.success) {
+                            self.fbId(result.message[0].fbid);
+                            self.fbName(result.message[0].fbname);
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
                 return StoreVipLikeScreenModel;
             }());
             vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
-            var StoreVipLike = (function () {
-                function StoreVipLike() {
-                    var self = this;
-                    self.countID = 0;
-                }
-                return StoreVipLike;
-            }());
             $(document).ready(function () {
                 var screenModel = new StoreVipLikeScreenModel();
                 $.blockUI({ baseZ: 2000 });

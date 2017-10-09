@@ -10,19 +10,19 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label>Facebook Profile URL (Đường dẫn facebook cá nhân / page / nhóm công khai):</label>
-                    <input type="number" class="form-control" name="id" data-bind="value: fbURL" required="" autofocus="">
+                    <input type="text" class="form-control" name="id" data-bind="value: fbURL, enable: isEnable" required="" autofocus="">
                 </div>
                 <div class="form-group">
-                    <label>Facebook ID: </label> <span data-bind="text: fbId"></span>
+                    <label>Facebook ID: </label> <label data-bind="text: fbId, enable: isEnable"></label>
                 </div>
                 <div class="form-group">
-                    <label>Tên Facebook: </label> <span data-bind="text: fbName"></span>
+                    <label>Tên Facebook: </label> <label data-bind="text: fbName, enable: isEnable"></label>
                 </div>
-                <div class="form-group"><label>Số Status/1 Ngày:</label> Unlimited</div>
+                <div class="form-group"><label>Số Status/1 Ngày:</label> <label>Unlimited</label></div>
                 <div class="form-group">
                     <label>Số Lượng Like:</label>
 
-                    <select name="goi" id="goi" class="form-control" data-bind="value: package">
+                    <select name="goi" id="goi" class="form-control" data-bind="value: package, enable: isEnable">
                         <option value="1">150 like</option>
                         <option value="2">300 like</option>
                         <option value="3">500 like</option>
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label>Tốc Độ Like/5 Phút:</label>
 
-                    <select name="solike" class="form-control" data-bind="value: likeSpeed">
+                    <select name="solike" class="form-control" data-bind="value: likeSpeed, enable: isEnable">
 
                         <option value="5">5 Like</option>
                         <option value="10">10 Like</option>
@@ -47,7 +47,7 @@
                     </select></div>
                 <div class="form-group">
                     <label>Thời Hạn:</label>
-                    <select name="time" id="time" class="form-control" data-bind="value: expireTime">
+                    <select name="time" id="time" class="form-control" data-bind="value: expireTime, enable: isEnable">
                         <option value="30">1 Tháng</option>
                         <option value="60">2 Tháng</option>
                         <option value="90">3 Tháng</option>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nội dung ghi chú</label>
-                    <textarea class="form-control" data-bind="value: note" rows="3" name="chuthich" placeholder="Ghi chú để nhận biết"></textarea>
+                    <textarea class="form-control" data-bind="value: note, enable: isEnable" rows="3" name="chuthich" placeholder="Ghi chú để nhận biết"></textarea>
                 </div>
                 Thành Tiền:
 
@@ -66,8 +66,8 @@
                 </div>
                 </br>
 
-                <button type="submit" name="submit" class="btn btn-danger">Cài VIP Like</button>
-                <button name="tinhtien" type="button" class="btn btn-danger">Tính Tiền</button>
+                <button type="submit" name="submit" class="btn btn-danger" data-bind="enable: isEnable">Cài VIP Like</button>
+                <button name="tinhtien" type="button" class="btn btn-danger" data-bind="enable: isEnable">Tính Tiền</button>
             </form>
 
         </div>
@@ -77,7 +77,8 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <b><i class="fa fa-gears"></i> Danh Sách ID VIP
-                <span data-toggle="tooltip" title="" class="pull-right badge bg-yellow" data-original-title="0 ID VIP">0 ID VIP</span>
+                <span data-toggle="tooltip" title="" class="pull-right badge bg-yellow"
+                      data-bind="text: totalID() + ' ID VIP', attr: { 'data-original-title': totalID() + ' ID VIP' }"></span>
             </b>
         </div>
         <div class="panel-body">

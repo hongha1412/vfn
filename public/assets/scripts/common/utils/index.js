@@ -121,10 +121,31 @@ var com;
                     return dfd.promise();
                 };
                 Utils.reloadLayoutData = function (userInfo) {
-                    var self = this;
                     Utils.headerScreenModel().userInfo(userInfo);
                     Utils.sidebarScreenModel().userInfo(userInfo);
                     Utils.controlSidebarScreenModel().userInfo(userInfo);
+                };
+                Utils.getFacebookInfo = function (fbURL) {
+                    var dfd = $.Deferred();
+                    var data = {
+                        fbURL: fbURL
+                    };
+                    Utils.postData('/get-facebook-user-info', data).done(function (result) {
+                        if (result.success) {
+                            result.message[0].fbname = Utils.decodeUTF8(result.message[0].fbname);
+                        }
+                        dfd.resolve(result);
+                    }).fail(function (result) {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
+                Utils.decodeUTF8 = function (string) {
+                    var r = /\\u([\d\w]{4})/gi;
+                    var x = string.replace(r, function (match, grp) {
+                        return String.fromCharCode(parseInt(grp, 16));
+                    });
+                    return x;
                 };
                 return Utils;
             }());

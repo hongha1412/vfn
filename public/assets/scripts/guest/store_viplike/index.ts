@@ -18,6 +18,8 @@ module com.sabrac.vipfbnow {
         likeSpeed: KnockoutObservable<number>;
         expireTime: KnockoutObservable<number>;
         note: KnockoutObservable<string>;
+        totalID: KnockoutObservable<number>;
+        isEnable: KnockoutObservable<boolean>;
 
         constructor() {
             var self = this;
@@ -29,6 +31,18 @@ module com.sabrac.vipfbnow {
             self.likeSpeed = ko.observable<number>(-1);
             self.expireTime = ko.observable<number>(-1);
             self.note = ko.observable<string>('');
+            self.totalID = ko.observable<number>(0);
+            self.isEnable = ko.observable<boolean>(true);
+
+            self.fbURL.subscribe(function() {
+                $.blockUI();
+                self.isEnable(false);
+
+                self.getFbUserInfo().always(function() {
+                    self.isEnable(true);
+                    $.unblockUI();
+                });
+            });
         }
 
         startPage(): JQueryPromise<any> {
@@ -41,14 +55,23 @@ module com.sabrac.vipfbnow {
             });
             return dfd.promise();
         }
-    }
 
-    class StoreVipLike {
-        countID: number;
-
-        constructor() {
+        getFbUserInfo(): JQueryPromise<any> {
             var self = this;
-            self.countID = 0;
+            var dfd = $.Deferred();
+
+            Utils.getFacebookInfo(self.fbURL()).done(function(result) {
+                if (result.success) {
+                    self.fbId(result.message[0].fbid);
+                    self.fbName(result.message[0].fbname);
+                } else {
+                    Utils.notify(result);
+                }
+            }).always(function() {
+                dfd.resolve();
+            });
+
+            return dfd.promise();
         }
     }
 
