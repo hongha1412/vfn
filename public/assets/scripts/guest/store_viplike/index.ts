@@ -14,11 +14,12 @@ module com.sabrac.vipfbnow {
         fbURL: KnockoutObservable<string>;
         fbId: KnockoutObservable<string>;
         fbName: KnockoutObservable<string>;
-        package: KnockoutObservable<number>;
+        likePackage: KnockoutObservable<number>;
         likeSpeed: KnockoutObservable<number>;
-        expireTime: KnockoutObservable<number>;
+        dayPackage: KnockoutObservable<number>;
         note: KnockoutObservable<string>;
         totalID: KnockoutObservable<number>;
+        price: KnockoutObservable<number>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
@@ -27,11 +28,12 @@ module com.sabrac.vipfbnow {
             self.fbURL = ko.observable<string>('');
             self.fbId = ko.observable<string>('');
             self.fbName = ko.observable<string>('');
-            self.package = ko.observable<number>(-1);
-            self.likeSpeed = ko.observable<number>(-1);
-            self.expireTime = ko.observable<number>(-1);
+            self.likePackage = ko.observable<number>(1);
+            self.likeSpeed = ko.observable<number>(5);
+            self.dayPackage = ko.observable<number>(30);
             self.note = ko.observable<string>('');
             self.totalID = ko.observable<number>(0);
+            self.price = ko.observable<number>(0);
             self.isEnable = ko.observable<boolean>(true);
 
             self.fbURL.subscribe(function() {
@@ -50,7 +52,10 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
-            }).always(function () {
+                self.calculate().always(function() {
+                    dfd.resolve();
+                });
+            }).fail(function () {
                 dfd.resolve();
             });
             return dfd.promise();
@@ -68,6 +73,33 @@ module com.sabrac.vipfbnow {
                     Utils.notify(result);
                 }
             }).always(function() {
+                dfd.resolve();
+            });
+
+            return dfd.promise();
+        }
+
+        calculate(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            $.blockUI();
+            self.isEnable(false);
+            let data = {
+                likePackage: self.likePackage(),
+                dayPackage: self.dayPackage()
+            };
+
+            Utils.postData($('#calculateURL').val(), data).done(function(result) {
+                if (result.success) {
+                    self.price(result.vnd);
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function(result) {
+                swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', SweetAlertType.ERROR);
+            }).always(function() {
+                self.isEnable(true);
+                $.unblockUI();
                 dfd.resolve();
             });
 

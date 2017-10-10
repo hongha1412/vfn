@@ -19,11 +19,12 @@ var com;
                     self.fbURL = ko.observable('');
                     self.fbId = ko.observable('');
                     self.fbName = ko.observable('');
-                    self.package = ko.observable(-1);
-                    self.likeSpeed = ko.observable(-1);
-                    self.expireTime = ko.observable(-1);
+                    self.likePackage = ko.observable(1);
+                    self.likeSpeed = ko.observable(5);
+                    self.dayPackage = ko.observable(30);
                     self.note = ko.observable('');
                     self.totalID = ko.observable(0);
+                    self.price = ko.observable(0);
                     self.isEnable = ko.observable(true);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
@@ -39,7 +40,10 @@ var com;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
-                    }).always(function () {
+                        self.calculate().always(function () {
+                            dfd.resolve();
+                        });
+                    }).fail(function () {
                         dfd.resolve();
                     });
                     return dfd.promise();
@@ -56,6 +60,31 @@ var com;
                             vipfbnow.Utils.notify(result);
                         }
                     }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
+                StoreVipLikeScreenModel.prototype.calculate = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    $.blockUI();
+                    self.isEnable(false);
+                    var data = {
+                        likePackage: self.likePackage(),
+                        dayPackage: self.dayPackage()
+                    };
+                    vipfbnow.Utils.postData($('#calculateURL').val(), data).done(function (result) {
+                        if (result.success) {
+                            self.price(result.vnd);
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', "error" /* ERROR */);
+                    }).always(function () {
+                        self.isEnable(true);
+                        $.unblockUI();
                         dfd.resolve();
                     });
                     return dfd.promise();

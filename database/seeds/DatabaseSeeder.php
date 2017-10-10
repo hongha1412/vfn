@@ -13,5 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RawTokenSeeder::class);
         $this->call(VipSeeder::class);
+        $this->call(DayPackageSeeder::class);
+        $this->call(LikePackageSeeder::class);
+        $this->call(LikePriceSeeder::class);
     }
 }

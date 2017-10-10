@@ -33,7 +33,7 @@ Route::group(['domain' => $domain], function () {
     Route::get('/register', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
     Route::get('/get-token', 'Guest\GetTokenController@index')->name('guest.getToken');
-    // Price
+    // LikePrice
     Route::get('/price', 'Guest\PriceController@index')->name('guest.price');
     // Home
     Route::get('/', 'Guest\HomeController@index')->name('guest.index');
@@ -73,5 +73,8 @@ Route::group(['domain' => $domain], function () {
         Route::post('/store-viplike-init', 'Guest\StoreVipLikeController@init')->name('guest.storeVipLikeInit');
         // Get facebook user info
         Route::post('/get-facebook-user-info', 'Common\CommonAPIController@getFacebookUserInfo')->name('common.getFacebookUserInfo');
+        // Calculate like price
+        Route::post('/calculate-like-price', 'Guest\StoreVipLikeController@calculate')->name('guest.calculateVipLike');
+
     });
 });
