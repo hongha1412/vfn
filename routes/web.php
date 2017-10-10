@@ -25,6 +25,9 @@ Route::group(['domain' => $adminDomain], function () {
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionAdmin']], function () {
     });
+
+    // Dashboard
+    Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
 });
 
 Route::group(['domain' => $domain], function () {
