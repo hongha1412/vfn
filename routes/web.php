@@ -75,6 +75,7 @@ Route::group(['domain' => $domain], function () {
         Route::post('/get-facebook-user-info', 'Common\CommonAPIController@getFacebookUserInfo')->name('common.getFacebookUserInfo');
         // Calculate like price
         Route::post('/calculate-like-price', 'Guest\StoreVipLikeController@calculate')->name('guest.calculateVipLike');
-
+        // Get package info
+        Route::post('/get-package', 'Common\CommonAPIController@getPackage')->name('common.getPackage');
     });
 });

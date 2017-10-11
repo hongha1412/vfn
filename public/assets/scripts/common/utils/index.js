@@ -64,6 +64,9 @@ var com;
                     return dfd.promise();
                 };
                 Utils.number_format = function (number, decimals, decPoint, thousandsSep) {
+                    if (decimals === void 0) { decimals = 0; }
+                    if (decPoint === void 0) { decPoint = '.'; }
+                    if (thousandsSep === void 0) { thousandsSep = ','; }
                     number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
                     var n = !isFinite(+number) ? 0 : +number;
                     var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
@@ -146,6 +149,9 @@ var com;
                         return String.fromCharCode(parseInt(grp, 16));
                     });
                     return x;
+                };
+                Utils.unexpectedError = function () {
+                    swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', "error" /* ERROR */);
                 };
                 return Utils;
             }());

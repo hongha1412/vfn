@@ -22,15 +22,18 @@
                     <div class="form-group">
                         <label>Số Lượng Like:</label>
 
-                        <select name="goi" id="goi" class="form-control" data-bind="value: likePackage, enable: isEnable">
-                            <option value="150">150 like</option>
-                            <option value="300">300 like</option>
-                            <option value="500">500 like</option>
-                            <option value="700">700 like</option>
-                            <option value="1000">1.000 like</option>
-                            <option value="1500">1.500 like</option>
-                            <option value="2000">2.000 like</option>
-                        </select></div>
+                        <select class="form-control"
+                                data-bind="enable: isEnable, options: lsLikePackage, value: likePackage, optionsText: 'value', optionsValue: 'id'"></select>
+                        {{--<select name="goi" id="goi" class="form-control" data-bind="value: likePackage, enable: isEnable">--}}
+                            {{--<option value="150">150 like</option>--}}
+                            {{--<option value="300">300 like</option>--}}
+                            {{--<option value="500">500 like</option>--}}
+                            {{--<option value="700">700 like</option>--}}
+                            {{--<option value="1000">1.000 like</option>--}}
+                            {{--<option value="1500">1.500 like</option>--}}
+                            {{--<option value="2000">2.000 like</option>--}}
+                        {{--</select>--}}
+                    </div>
                     <div class="form-group">
                         <label>Tốc Độ Like/5 Phút:</label>
 
@@ -47,13 +50,16 @@
                         </select></div>
                     <div class="form-group">
                         <label>Thời Hạn:</label>
-                        <select name="time" id="time" class="form-control" data-bind="value: dayPackage, enable: isEnable">
-                            <option value="30">1 Tháng</option>
-                            <option value="60">2 Tháng</option>
-                            <option value="90">3 Tháng</option>
-                            <option value="120">4 Tháng</option>
-                            <option value="150">5 Tháng</option>
-                        </select>
+
+                        <select class="form-control"
+                                data-bind="enable: isEnable, options: lsDayPackage, value: dayPackage, optionsText: 'value', optionsValue: 'id'"></select>
+                        {{--<select name="time" id="time" class="form-control" data-bind="value: dayPackage, enable: isEnable">--}}
+                            {{--<option value="30">1 Tháng</option>--}}
+                            {{--<option value="60">2 Tháng</option>--}}
+                            {{--<option value="90">3 Tháng</option>--}}
+                            {{--<option value="120">4 Tháng</option>--}}
+                            {{--<option value="150">5 Tháng</option>--}}
+                        {{--</select>--}}
                     </div>
                     <div class="form-group">
                         <label>Nội dung ghi chú</label>
@@ -67,7 +73,6 @@
                     </br>
 
                     <button type="submit" name="submit" class="btn btn-danger" data-bind="enable: isEnable">Cài VIP Like</button>
-                    <button name="tinhtien" type="button" class="btn btn-danger" data-bind="enable: isEnable">Tính Tiền</button>
                 </form>
 
             </div>
@@ -110,6 +115,7 @@
         </div>
     </div>
     <input type="text" style="display: none;" value="{{ route('guest.calculateVipLike') }}" id="calculateURL" />
+    <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
 @endsection
 
 @section('page_js')

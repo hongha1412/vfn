@@ -12,7 +12,7 @@ class LikePackage extends Model
         'liketotal',
     ];
 
-    public static function getPackageByValue($value) {
-        return LikePackage::where('liketotal', '=', $value)->first();
+    public static function getPackageById($id) {
+        return LikePackage::where('id', '=', $id)->first();
     }
 }

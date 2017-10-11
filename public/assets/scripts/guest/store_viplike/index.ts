@@ -20,6 +20,8 @@ module com.sabrac.vipfbnow {
         note: KnockoutObservable<string>;
         totalID: KnockoutObservable<number>;
         price: KnockoutObservable<number>;
+        lsLikePackage: KnockoutObservableArray<PackageObject>;
+        lsDayPackage: KnockoutObservableArray<PackageObject>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
@@ -30,10 +32,12 @@ module com.sabrac.vipfbnow {
             self.fbName = ko.observable<string>('');
             self.likePackage = ko.observable<number>(1);
             self.likeSpeed = ko.observable<number>(5);
-            self.dayPackage = ko.observable<number>(30);
+            self.dayPackage = ko.observable<number>(1);
             self.note = ko.observable<string>('');
             self.totalID = ko.observable<number>(0);
             self.price = ko.observable<number>(0);
+            self.lsLikePackage = ko.observableArray<PackageObject>([]);
+            self.lsDayPackage = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
 
             self.fbURL.subscribe(function() {
@@ -45,6 +49,14 @@ module com.sabrac.vipfbnow {
                     $.unblockUI();
                 });
             });
+
+            self.price = ko.computed(function() {
+                var tmp = this;
+                self.calculate().then(function(result) {
+                    return result;
+                });
+                return 10;
+            });
         }
 
         startPage(): JQueryPromise<any> {
@@ -52,7 +64,7 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
-                self.calculate().always(function() {
+                self.getPackageInfo().always(function() {
                     dfd.resolve();
                 });
             }).fail(function () {
@@ -79,9 +91,32 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
+        getPackageInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            Utils.postData($('#packageURL').val(), PackageType.LIKE).done(function(result) {
+                if (result.success) {
+                    for (let likePackage of result.message[0].likePackage) {
+                        self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.liketotal));
+                    }
+                    for (let dayPackage of result.message[0].dayPackage) {
+                        self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function(result) {
+                Utils.unexpectedError();
+            }).always(function (result) {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
         calculate(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
+            var price = 0;
             $.blockUI();
             self.isEnable(false);
             let data = {
@@ -91,19 +126,30 @@ module com.sabrac.vipfbnow {
 
             Utils.postData($('#calculateURL').val(), data).done(function(result) {
                 if (result.success) {
-                    self.price(result.vnd);
+                    price = Utils.number_format(result.message[0].vnd);
                 } else {
                     Utils.notify(result);
                 }
             }).fail(function(result) {
-                swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', SweetAlertType.ERROR);
+                Utils.unexpectedError();
             }).always(function() {
                 self.isEnable(true);
                 $.unblockUI();
-                dfd.resolve();
+                dfd.resolve(price);
             });
 
             return dfd.promise();
+        }
+    }
+
+    class PackageObject {
+        id: number;
+        value: number;
+
+        constructor(id: number, value: number) {
+            var self = this;
+            self.id = id;
+            self.value = value;
         }
     }
 

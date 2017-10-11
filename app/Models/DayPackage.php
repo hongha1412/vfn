@@ -12,7 +12,7 @@ class DayPackage extends Model
         'daytotal',
     ];
 
-    public static function getPackageByValue($value) {
-        return DayPackage::where('daytotal', '=', $value)->first();
+    public static function getPackageById($id) {
+        return DayPackage::where('id', '=', $id)->first();
     }
 }

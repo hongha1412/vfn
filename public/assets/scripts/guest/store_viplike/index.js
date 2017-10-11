@@ -21,10 +21,12 @@ var com;
                     self.fbName = ko.observable('');
                     self.likePackage = ko.observable(1);
                     self.likeSpeed = ko.observable(5);
-                    self.dayPackage = ko.observable(30);
+                    self.dayPackage = ko.observable(1);
                     self.note = ko.observable('');
                     self.totalID = ko.observable(0);
                     self.price = ko.observable(0);
+                    self.lsLikePackage = ko.observableArray([]);
+                    self.lsDayPackage = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
@@ -34,13 +36,20 @@ var com;
                             $.unblockUI();
                         });
                     });
+                    self.price = ko.computed(function () {
+                        var tmp = this;
+                        self.calculate().then(function (result) {
+                            return result;
+                        });
+                        return 10;
+                    });
                 }
                 StoreVipLikeScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
-                        self.calculate().always(function () {
+                        self.getPackageInfo().always(function () {
                             dfd.resolve();
                         });
                     }).fail(function () {
@@ -64,9 +73,34 @@ var com;
                     });
                     return dfd.promise();
                 };
+                StoreVipLikeScreenModel.prototype.getPackageInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    vipfbnow.Utils.postData($('#packageURL').val(), 0 /* LIKE */).done(function (result) {
+                        if (result.success) {
+                            for (var _i = 0, _a = result.message[0].likePackage; _i < _a.length; _i++) {
+                                var likePackage = _a[_i];
+                                self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.liketotal));
+                            }
+                            for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
+                                var dayPackage = _c[_b];
+                                self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function (result) {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
                 StoreVipLikeScreenModel.prototype.calculate = function () {
                     var self = this;
                     var dfd = $.Deferred();
+                    var price = 0;
                     $.blockUI();
                     self.isEnable(false);
                     var data = {
@@ -75,23 +109,31 @@ var com;
                     };
                     vipfbnow.Utils.postData($('#calculateURL').val(), data).done(function (result) {
                         if (result.success) {
-                            self.price(result.vnd);
+                            price = vipfbnow.Utils.number_format(result.message[0].vnd);
                         }
                         else {
                             vipfbnow.Utils.notify(result);
                         }
                     }).fail(function (result) {
-                        swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', "error" /* ERROR */);
+                        vipfbnow.Utils.unexpectedError();
                     }).always(function () {
                         self.isEnable(true);
                         $.unblockUI();
-                        dfd.resolve();
+                        dfd.resolve(price);
                     });
                     return dfd.promise();
                 };
                 return StoreVipLikeScreenModel;
             }());
             vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
+            var PackageObject = (function () {
+                function PackageObject(id, value) {
+                    var self = this;
+                    self.id = id;
+                    self.value = value;
+                }
+                return PackageObject;
+            }());
             $(document).ready(function () {
                 var screenModel = new StoreVipLikeScreenModel();
                 $.blockUI({ baseZ: 2000 });

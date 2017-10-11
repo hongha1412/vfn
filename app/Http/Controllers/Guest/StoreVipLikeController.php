@@ -33,8 +33,8 @@ class StoreVipLikeController extends Controller
         }
 
         // Validate data in database
-        $likePackage = LikePackage::getPackageByValue(Input::get('likePackage'));
-        $dayPackage = DayPackage::getPackageByValue(Input::get('dayPackage'));
+        $likePackage = LikePackage::getPackageById(Input::get('likePackage'));
+        $dayPackage = DayPackage::getPackageById(Input::get('dayPackage'));
         if ($likePackage === null || $dayPackage === null) {
             return response((new Message(false, 'Dữ liệu không đúng'))->toJson(), 200);
         }
@@ -46,6 +46,6 @@ class StoreVipLikeController extends Controller
             return response((new Message(false, 'Không có giá tiền tương ứng với gói hiện tại'))->toJson(), 200);
         }
 
-        return response((new Message(true, $price))->toJson(), 200);
+        return response((new Message(true, $price[0]))->toJson(), 200);
     }
 }

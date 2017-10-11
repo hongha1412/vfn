@@ -69,7 +69,7 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        public static number_format (number, decimals, decPoint, thousandsSep) {
+        public static number_format (number, decimals = 0, decPoint = '.', thousandsSep = ',') {
             number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
             var n = !isFinite(+number) ? 0 : +number;
             var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
@@ -162,12 +162,23 @@ module com.sabrac.vipfbnow {
             });
             return x;
         }
+
+        public static unexpectedError() {
+            swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', SweetAlertType.ERROR);
+        }
     }
 
     export const enum SweetAlertType {
-        WARNING = "warning",
-        ERROR = "error",
-        SUCCESS = "success",
-        INFO = "info"
+        WARNING     = "warning",
+        ERROR       = "error",
+        SUCCESS     = "success",
+        INFO        = "info"
+    }
+
+    export const enum PackageType {
+        LIKE          = 0,
+        COMMENT       = 1,
+        SHARE         = 2,
+        REACT         = 3
     }
 }

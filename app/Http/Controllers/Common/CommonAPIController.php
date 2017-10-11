@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Common;
 
+use App\Enum\PackageType;
+use App\Models\DayPackage;
+use App\Models\LikePackage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -51,5 +54,27 @@ class CommonAPIController extends Controller
         $resultData['fbname'] = $matches[1];
 
         return response((new Message(true, $resultData))->toJson(), 200);
+    }
+
+    public function getPackage(Request $request) {
+        $result = array();
+
+        switch (Input::get('packageType')) {
+            case PackageType::LIKE:
+                $result['likePackage'] = LikePackage::all();
+                break;
+            case PackageType::COMMENT:
+                $result['commentPackage'] = null;
+                break;
+            case PackageType::SHARE:
+                $result['sharePackage'] = null;
+                break;
+            case PackageType::REACT:
+                $result['reactPackage'] = null;
+                break;
+        }
+        $result['dayPackage'] = DayPackage::all();
+
+        return response((new Message(true, $result))->toJson(), 200);
     }
 }
