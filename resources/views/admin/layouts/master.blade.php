@@ -55,6 +55,7 @@
 <script type="text/javascript"src="{{asset("assets/scripts")}}/dataTables.bootstrap.min.js"></script>
 <script src="{{asset("assets/scripts")}}/sweetalert.min.js"></script>
 <script type="text/javascript"src="{{asset("assets/scripts")}}/table.js"></script>
+@yield("js")
 <script type="text/javascript">
     $(document).ready(function(){
         toastr.options = {

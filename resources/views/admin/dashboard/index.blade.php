@@ -7,6 +7,9 @@
 ?>
 @extends('admin.layouts.master')
 
+@section('link-header')
+    <meta id="token" name="token" value="{{ csrf_token() }}">
+@endsection
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -34,7 +37,18 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-
+                                        <tr v-for="item in items">
+                                            <td>@{{ item.id }}</td>
+                                            <td>@{{ item.username }}</td>
+                                            <td>@{{ item.fullname }}</td>
+                                            <td>@{{ item.kichhoat }}</td>
+                                            <td>@{{ item.vnd }}</td>
+                                            <td>@{{ item.mail }}</td>
+                                            <td>    
+                                                <button class="btn btn-primary" @click.prevent="editItem(item)">Edit</button>
+                                                <button class="btn btn-danger" @click.prevent="deleteItem(item)">Delete</button>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -44,4 +58,8 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('js')
+    <script type="" src="{{ url('assets/scripts/admin/dashboard.js') }}"></script>
 @stop
