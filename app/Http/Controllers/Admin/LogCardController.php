@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\Account;
+use App\Http\Controllers\Controller;
+use App\Models\LogCard;
 
-class AccountController extends Controller
+class LogCardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +15,18 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::latest()->paginate(10);
-
+        $logCards = VipCmt::paginate(10);
+        
         $response = [
             'pagination' => [
-                'total'        => $accounts->total(),
-                'per_page'     => $accounts->perPage(),
-                'current_page' => $accounts->currentPage(),
-                'last_page'    => $accounts->lastPage(),
-                'from'         => $accounts->firstItem(),
-                'to'           => $accounts->lastItem()
+                'total'        => $logCards->total(),
+                'per_page'     => $logCards->perPage(),
+                'current_page' => $logCards->currentPage(),
+                'last_page'    => $logCards->lastPage(),
+                'from'         => $logCards->firstItem(),
+                'to'           => $logCards->lastItem()
             ],
-            'data' => $accounts
+            'data' => $logCards
         ];
 
         return response()->json($response);

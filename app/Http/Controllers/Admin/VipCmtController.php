@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Account;
+use App\Models\VipCmt;
 
-class AccountController extends Controller
+class VipCmtController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +14,18 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::latest()->paginate(10);
-
+        $vipCmts = VipCmt::paginate(10);
+        
         $response = [
             'pagination' => [
-                'total'        => $accounts->total(),
-                'per_page'     => $accounts->perPage(),
-                'current_page' => $accounts->currentPage(),
-                'last_page'    => $accounts->lastPage(),
-                'from'         => $accounts->firstItem(),
-                'to'           => $accounts->lastItem()
+                'total'        => $vipCmts->total(),
+                'per_page'     => $vipCmts->perPage(),
+                'current_page' => $vipCmts->currentPage(),
+                'last_page'    => $vipCmts->lastPage(),
+                'from'         => $vipCmts->firstItem(),
+                'to'           => $vipCmts->lastItem()
             ],
-            'data' => $accounts
+            'data' => $vipCmts
         ];
 
         return response()->json($response);

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Account;
+use App\Models\VipShare;
 
-class AccountController extends Controller
+class VipShareController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +14,18 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::latest()->paginate(10);
-
+        $vipShares = VipShare::paginate(10);
+        
         $response = [
             'pagination' => [
-                'total'        => $accounts->total(),
-                'per_page'     => $accounts->perPage(),
-                'current_page' => $accounts->currentPage(),
-                'last_page'    => $accounts->lastPage(),
-                'from'         => $accounts->firstItem(),
-                'to'           => $accounts->lastItem()
+                'total'        => $vipShares->total(),
+                'per_page'     => $vipShares->perPage(),
+                'current_page' => $vipShares->currentPage(),
+                'last_page'    => $vipShares->lastPage(),
+                'from'         => $vipShares->firstItem(),
+                'to'           => $vipShares->lastItem()
             ],
-            'data' => $accounts
+            'data' => $vipShares
         ];
 
         return response()->json($response);
