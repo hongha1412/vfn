@@ -48,6 +48,11 @@
                 </div>
             </div>
         </div>
+
+        @component("admin.dashboard._logcard")
+        @endcomponent
+
+
     </div>
 @stop
 

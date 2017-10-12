@@ -15,7 +15,7 @@ class LogCardController extends Controller
      */
     public function index()
     {
-        $logCards = VipCmt::paginate(10);
+        $logCards = LogCard::paginate(10);
         
         $response = [
             'pagination' => [
