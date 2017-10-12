@@ -7,52 +7,43 @@
 ?>
 @extends('admin.layouts.master')
 
-@section('link-header')
+@section('link-head')
     <meta id="token" name="token" value="{{ csrf_token() }}">
 @endsection
 @section('content')
-    <div class="row">
+    <div class="row" id="dashboard">
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active">
                         <a href="#tab_1" data-toggle="tab">Account</a>
                     </li>
+                    <li>
+                        <a href="#tab_2" data-toggle="tab">VIP LIKE</a>
+                    </li>
+                    <li>
+                        <a href="#tab_3" data-toggle="tab">VIP CMT</a>
+                    </li>
+                    <li>
+                        <a href="#tab_4" data-toggle="tab">VIP SHARE</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tài Khoản</th>
-                                        <th>Tên Hiển Thị</th>
-                                        <th>Trạng Thái</th>
-                                        <th>Tiền + ID</th>
-                                        <th>Email</th>
-                                        <th>Hành Động</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="item in items">
-                                            <td>@{{ item.id }}</td>
-                                            <td>@{{ item.username }}</td>
-                                            <td>@{{ item.fullname }}</td>
-                                            <td>@{{ item.kichhoat }}</td>
-                                            <td>@{{ item.vnd }}</td>
-                                            <td>@{{ item.mail }}</td>
-                                            <td>    
-                                                <button class="btn btn-primary" @click.prevent="editItem(item)">Edit</button>
-                                                <button class="btn btn-danger" @click.prevent="deleteItem(item)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        @component("admin.dashboard._account")
+                        @endcomponent
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        @component("admin.dashboard._vip")
+                        @endcomponent
+                    </div>
+                    <div class="tab-pane" id="tab_3">
+                        @component("admin.dashboard._vipcmt")
+                        @endcomponent
+                    </div>
+                    <div class="tab-pane" id="tab_4">
+                        @component("admin.dashboard._vipshare")
+                        @endcomponent
                     </div>
                 </div>
             </div>
@@ -61,5 +52,7 @@
 @stop
 
 @section('js')
-    <script type="" src="{{ url('assets/scripts/admin/dashboard.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/vue.resource/0.9.3/vue-resource.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/scripts/admin/dboard5.js') }}"></script>
 @stop
