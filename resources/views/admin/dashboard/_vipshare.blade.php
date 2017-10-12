@@ -27,7 +27,7 @@
             </tbody>
         </table>
         <!-- Pagination -->
-        <nav>
+        <nav class="pull-right">
             <ul class="pagination">
                 <li v-if="paginationVipShare.current_page > 1">
                     <a href="#" aria-label="Previous"

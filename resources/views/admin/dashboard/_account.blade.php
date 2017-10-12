@@ -41,7 +41,7 @@
             </tbody>
         </table>
             <!-- Pagination -->
-        <nav class="pull-right1">
+        <nav class="pull-right">
             <ul class="pagination">
                 <li v-if="paginationAccount.current_page > 1">
                     <a href="#" aria-label="Previous"
