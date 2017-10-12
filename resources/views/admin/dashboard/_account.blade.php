@@ -4,7 +4,6 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Tài Khoản</th>
                 <th>Tên Hiển Thị</th>
                 <th>Trạng Thái</th>
                 <th>Tiền + ID</th>
@@ -15,14 +14,28 @@
             </thead>
             <tbody>
                 <tr v-for="item in itemsAccount">
-                    <td>@{{ item.id }}</td>
-                    <td>@{{ item.username }}</td>
-                    <td>@{{ item.fullname }}</td>
-                    <td>@{{ item.kichhoat }}</td>
-                    <td>@{{ item.vnd }}</td>
-                    <td>@{{ item.mail }}</td>
-                    <td>    
-                        
+                    <td><a class="btn btn-xs btn-info" href="">@{{ item.id }}</a></td>
+                    <td><a class="btn btn-xs btn-primary"><i class="fa fa-address-card-o" aria-hidden="true"></i> @{{ item.fullname }}</a></td>
+                    <td>
+                        <button class='btn btn-rounded btn-xs ' v-bind:class="{'btn-danger': item.kichhoat <= 0, 'btn-success': item.kickhoat > 0}"><i class='fa fa-times'></i>
+                            <b v-if="item.kichhoat <= 0">Chưa Kích Hoạt</b>
+                            <b v-if="item.kichhoat > 0">Đã Kích Hoạt</b>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-xs btn-success"><i class="fa fa-money" aria-hidden="true"></i>@{{ item.vnd }} VNĐ</a>
+                        <span class="label label-warning pull-right">@{{ item.toida }}</span>
+                    </td>
+                    <td>
+                        <a class="btn btn-xs btn-default">
+                            <b v-if="item.mail != null && item.mail != ''">@{{ item.mail }}</b>
+                            <b v-if="item.mail == null || item.mail == ''">Không xác định</b>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" data-toggle="tooltip" title="Cộng Tiền" class="btn btn-success btn-simple btn-xs"><i class="fa fa-cog"></i></a>
+                        <a href="#" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Thêm ID"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                        <a href="#" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa Members"><i class="fa fa-trash-o"></i></a>
                     </td>
                 </tr>
             </tbody>
