@@ -13,15 +13,15 @@
             </tr>
             </thead>
             <tbody>
-                <tr v-for="item in items">
+                <tr v-for="item in itemsVipCmt">
                     <td>@{{ item.idfb }}</td>
                     <td>@{{ item.name }}</td>
-                    <td>@{{ item.goi }}</td>
-                    <td>@{{ item.socmt }}</td>
-                    <td>@{{ item.time }}</td>
-                    <td>    
-                        <button class="btn btn-primary" @click.prevent="editItem(item)">Edit</button>
-                        <button class="btn btn-danger" @click.prevent="deleteItem(item)">Delete</button>
+                    <td><a class="btn btn-xs btn-primary"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @{{ item.goi }} CMT</a></td>
+                    <td><a class="btn btn-xs btn-primary"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> @{{ item.socmt }} CMT</a></td>
+                    <td><a class="btn btn-xs btn-success"><i class="fa fa-history" aria-hidden="true"></i> @{{ item.time }}</a></td>
+                    <td>
+                        <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-user-times" aria-hidden="true"></i> Xóa Tài Khoản</a>
+                        <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a>
                     </td>
                 </tr>
             </tbody>
@@ -29,20 +29,20 @@
         <!-- Pagination -->
         <nav>
             <ul class="pagination">
-                <li v-if="pagination.current_page > 1">
+                <li v-if="paginationVipCmt.current_page > 1">
                     <a href="#" aria-label="Previous"
-                       @click.prevent="changePageVipCmt(pagination.current_page - 1)">
+                       @click.prevent="changePageVipCmt(paginationVipCmt.current_page - 1)">
                         <span aria-hidden="true">«</span>
                     </a>
                 </li>
-                <li v-for="page in pagesNumber"
-                    v-bind:class="[ page == isActived ? 'active' : '']">
+                <li v-for="page in pagesNumberVipCmt"
+                    v-bind:class="[ page == isActivedVipCmt ? 'active' : '']">
                     <a href="#"
-                       @click.prevent="changePage(page)">@{{ page }}</a>
+                       @click.prevent="changePageVipCmt(page)">@{{ page }}</a>
                 </li>
-                <li v-if="pagination.current_page < pagination.last_page">
+                <li v-if="paginationVipCmt.current_page < paginationVipCmt.last_page">
                     <a href="#" aria-label="Next"
-                       @click.prevent="changePage(pagination.current_page + 1)">
+                       @click.prevent="changePageVipCmt(paginationVipCmt.current_page + 1)">
                         <span aria-hidden="true">»</span>
                     </a>
                 </li>
