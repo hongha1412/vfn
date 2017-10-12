@@ -14,7 +14,7 @@
             </thead>
             <tbody>
                 <tr v-for="item in itemsAccount">
-                    <td><a class="btn btn-xs btn-info" href="">@{{ item.id }}</a></td>
+                    <td><b>#</b>@{{ item.id }}</td>
                     <td><a class="btn btn-xs btn-primary"><i class="fa fa-address-card-o" aria-hidden="true"></i> @{{ item.fullname }}</a></td>
                     <td>
                         <button class='btn btn-rounded btn-xs ' v-bind:class="{'btn-danger': item.kichhoat <= 0, 'btn-success': item.kickhoat > 0}"><i class='fa fa-times'></i>
