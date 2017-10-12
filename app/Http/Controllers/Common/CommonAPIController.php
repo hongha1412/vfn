@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Common;
 
 use App\Enum\PackageType;
+use App\Models\Account;
 use App\Models\DayPackage;
 use App\Models\LikePackage;
+use App\Models\LikePrice;
+use App\Models\LikeSpeed;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -47,7 +51,7 @@ class CommonAPIController extends Controller
         $resultData['fbid'] = $matches[1];
 
         // Get facebook name
-        $fbUserPattern = '/\"setPageTitle\",\[\],\["([[:ascii:]]+)\",false\]/';
+        $fbUserPattern = '/\"setPageTitle\",\[\],\["([^"]+)\",false\]/';
         if (!preg_match($fbUserPattern, $fbsite, $matches)) {
             return response((new Message(false, 'Không thể lấy thông tin tên facebook'))->toJson(), 200);
         }
@@ -76,5 +80,49 @@ class CommonAPIController extends Controller
         $result['dayPackage'] = DayPackage::all();
 
         return response((new Message(true, $result))->toJson(), 200);
+    }
+
+    public function getLikeSpeed() {
+        return response((new Message(true, LikeSpeed::all()))->toJson(), 200);
+    }
+
+    /**
+     * Check valid like, day, price package info
+     *
+     * @param $selectedLikePackage
+     * @param $selectedDayPackage
+     * @return Message: fail | LikePrice: success
+     */
+    public static function checkValidPackage($selectedLikePackage, $selectedDayPackage) {
+        // Validate data in database
+        $likePackage = LikePackage::getPackageById($selectedLikePackage);
+        $dayPackage = DayPackage::getPackageById($selectedDayPackage);
+        if ($likePackage === null || $dayPackage === null) {
+            return new Message(false, 'Dữ liệu không đúng');
+        }
+
+        // Get price from day package and like package
+        $price = LikePrice::getPriceByPackage($likePackage, $dayPackage);
+
+        if ($price === null) {
+            return new Message(false, 'Không có giá tiền tương ứng với gói hiện tại');
+        }
+
+        return $price;
+    }
+
+    /**
+     * Check funds account
+     *
+     * @param $money money to charge
+     * @return Message: fail | \Illuminate\Foundation\Auth\User: logged in user info
+     */
+    public static function checkFundsAccount($money) {
+        $loggedUser = Account::getUserByUsername(Auth::user()->username)[0];
+        if ($loggedUser->vnd < $money) {
+            return new Message(false, 'Tài khoản không đủ tiền để mua gói này');
+        }
+
+        return $loggedUser;
     }
 }

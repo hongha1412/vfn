@@ -54,7 +54,7 @@ module com.sabrac.vipfbnow {
             }).fail(function(result) {
                 swal("ERROR", "Lỗi không xác định, vui lòng liên hệ quản trị viên.", SweetAlertType.ERROR);
             }).always(function(result) {
-                $('#postdata').html('Nạp Thẻ');
+                $('#postdata').html('Nhập Quà');
                 self.isEnable(true);
                 $.unblockUI();
             });

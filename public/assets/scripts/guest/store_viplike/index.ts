@@ -22,6 +22,7 @@ module com.sabrac.vipfbnow {
         price: KnockoutObservable<number>;
         lsLikePackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
+        lsLikeSpeed: KnockoutObservableArray<PackageObject>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
@@ -31,13 +32,14 @@ module com.sabrac.vipfbnow {
             self.fbId = ko.observable<string>('');
             self.fbName = ko.observable<string>('');
             self.likePackage = ko.observable<number>(1);
-            self.likeSpeed = ko.observable<number>(5);
+            self.likeSpeed = ko.observable<number>(1);
             self.dayPackage = ko.observable<number>(1);
             self.note = ko.observable<string>('');
             self.totalID = ko.observable<number>(0);
             self.price = ko.observable<number>(0);
             self.lsLikePackage = ko.observableArray<PackageObject>([]);
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
+            self.lsLikeSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
 
             self.fbURL.subscribe(function() {
@@ -50,12 +52,15 @@ module com.sabrac.vipfbnow {
                 });
             });
 
-            self.price = ko.computed(function() {
-                var tmp = this;
-                self.calculate().then(function(result) {
-                    return result;
+            self.likePackage.subscribe(function() {
+                self.calculate().done(function(result) {
+                    self.price(result);
                 });
-                return 10;
+            });
+            self.dayPackage.subscribe(function() {
+                self.calculate().done(function(result) {
+                    self.price(result);
+                });
             });
         }
 
@@ -65,7 +70,13 @@ module com.sabrac.vipfbnow {
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
                 self.getPackageInfo().always(function() {
-                    dfd.resolve();
+                    self.getLikeSpeedInfo().always(function () {
+                        self.calculate().done(function(result) {
+                            self.price(result);
+                        }).always(function() {
+                            dfd.resolve();
+                        });
+                    });
                 });
             }).fail(function () {
                 dfd.resolve();
@@ -113,6 +124,25 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
+        getLikeSpeedInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            Utils.postData($('#likeSpeedURL').val(), null).done(function(result) {
+                if (result.success) {
+                    for (let likeSpeedObject of result.message[0]) {
+                        self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
         calculate(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
@@ -139,6 +169,52 @@ module com.sabrac.vipfbnow {
             });
 
             return dfd.promise();
+        }
+
+        buyVipLike() {
+            var self = this;
+            $.blockUI();
+            self.isEnable(false);
+            let data = new StoreVipLike();
+            data.fbId = self.fbId();
+            data.fbName = self.fbName();
+            data.likePackage = self.likePackage();
+            data.likeSpeed = self.likeSpeed();
+            data.dayPackage = self.dayPackage();
+            data.note = self.note();
+
+            Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
+                Utils.notify(result).done(function () {
+                    Utils.getLoggedInUserInfo().done(function(result) {
+                        self.userInfo(result);
+                        Utils.reloadLayoutData(self.userInfo());
+                    });
+                });
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                self.isEnable(true);
+                $.unblockUI();
+            });
+        }
+    }
+
+    class StoreVipLike {
+        fbId: string;
+        fbName: string;
+        likePackage: number;
+        likeSpeed: number;
+        dayPackage: number;
+        note: string;
+
+        constructor() {
+            var self = this;
+            self.fbId = '';
+            self.fbName = '';
+            self.likePackage = 1;
+            self.likeSpeed = 1;
+            self.dayPackage = 1;
+            self.note = '';
         }
     }
 

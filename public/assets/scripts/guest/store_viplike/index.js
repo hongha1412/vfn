@@ -20,13 +20,14 @@ var com;
                     self.fbId = ko.observable('');
                     self.fbName = ko.observable('');
                     self.likePackage = ko.observable(1);
-                    self.likeSpeed = ko.observable(5);
+                    self.likeSpeed = ko.observable(1);
                     self.dayPackage = ko.observable(1);
                     self.note = ko.observable('');
                     self.totalID = ko.observable(0);
                     self.price = ko.observable(0);
                     self.lsLikePackage = ko.observableArray([]);
                     self.lsDayPackage = ko.observableArray([]);
+                    self.lsLikeSpeed = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
@@ -36,12 +37,15 @@ var com;
                             $.unblockUI();
                         });
                     });
-                    self.price = ko.computed(function () {
-                        var tmp = this;
-                        self.calculate().then(function (result) {
-                            return result;
+                    self.likePackage.subscribe(function () {
+                        self.calculate().done(function (result) {
+                            self.price(result);
                         });
-                        return 10;
+                    });
+                    self.dayPackage.subscribe(function () {
+                        self.calculate().done(function (result) {
+                            self.price(result);
+                        });
                     });
                 }
                 StoreVipLikeScreenModel.prototype.startPage = function () {
@@ -50,7 +54,13 @@ var com;
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
                         self.getPackageInfo().always(function () {
-                            dfd.resolve();
+                            self.getLikeSpeedInfo().always(function () {
+                                self.calculate().done(function (result) {
+                                    self.price(result);
+                                }).always(function () {
+                                    dfd.resolve();
+                                });
+                            });
                         });
                     }).fail(function () {
                         dfd.resolve();
@@ -97,6 +107,26 @@ var com;
                     });
                     return dfd.promise();
                 };
+                StoreVipLikeScreenModel.prototype.getLikeSpeedInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    vipfbnow.Utils.postData($('#likeSpeedURL').val(), null).done(function (result) {
+                        if (result.success) {
+                            for (var _i = 0, _a = result.message[0]; _i < _a.length; _i++) {
+                                var likeSpeedObject = _a[_i];
+                                self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
                 StoreVipLikeScreenModel.prototype.calculate = function () {
                     var self = this;
                     var dfd = $.Deferred();
@@ -123,9 +153,46 @@ var com;
                     });
                     return dfd.promise();
                 };
+                StoreVipLikeScreenModel.prototype.buyVipLike = function () {
+                    var self = this;
+                    $.blockUI();
+                    self.isEnable(false);
+                    var data = new StoreVipLike();
+                    data.fbId = self.fbId();
+                    data.fbName = self.fbName();
+                    data.likePackage = self.likePackage();
+                    data.likeSpeed = self.likeSpeed();
+                    data.dayPackage = self.dayPackage();
+                    data.note = self.note();
+                    vipfbnow.Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
+                        vipfbnow.Utils.notify(result).done(function () {
+                            vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
+                                self.userInfo(result);
+                                vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                            });
+                        });
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function () {
+                        self.isEnable(true);
+                        $.unblockUI();
+                    });
+                };
                 return StoreVipLikeScreenModel;
             }());
             vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
+            var StoreVipLike = (function () {
+                function StoreVipLike() {
+                    var self = this;
+                    self.fbId = '';
+                    self.fbName = '';
+                    self.likePackage = 1;
+                    self.likeSpeed = 1;
+                    self.dayPackage = 1;
+                    self.note = '';
+                }
+                return StoreVipLike;
+            }());
             var PackageObject = (function () {
                 function PackageObject(id, value) {
                     var self = this;
