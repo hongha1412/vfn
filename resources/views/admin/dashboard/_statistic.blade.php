@@ -8,46 +8,46 @@
             <div class="progress-group">
 
                 <span class="progress-text">VIP LIKE ACTIVE</span>
-                <span class="progress-number"><b><?php echo $showgoivip ?></b>/100</span>
+                <span class="progress-number"><b>@{{ paginationVipLike.total }}</b>/100</span>
 
                 <div class="progress sm">
                     <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar"
                          aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                         style="width: <?php echo $showgoivip ?>%">
+                         v-bind:style="{width: paginationVipLike.total + '%'}">
 
                     </div>
                 </div>
                 <!-- /.progress-group -->
                 <div class="progress-group">
                     <span class="progress-text">VIP COMMENT ACTVIE</span>
-                    <span class="progress-number"><b><?php echo $showgoicmt ?></b>/100</span>
+                    <span class="progress-number"><b>@{{ paginationVipCmt.total }}</b>/100</span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar"
                              aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                             style="width: <?php echo $showgoicmt ?>%"></div>
+                             v-bind:style="{width: paginationVipCmt.total + '%'}"></div>
                     </div>
                 </div>
                 <!-- /.progress-group -->
                 <div class="progress-group">
                     <span class="progress-text">VIP SHARE ACTIVE</span>
-                    <span class="progress-number"><b><?php echo $showgoishare ?></b>/100</span>
+                    <span class="progress-number"><b>@{{ paginationVipShare.total }}</b>/100</span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
                              aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                             style="width: <?php echo $showgoishare ?>%"></div>
+                             v-bind:style="{width: paginationVipShare.total + '%'}"></div>
                     </div>
                 </div>
                 <!-- /.progress-group -->
                 <div class="progress-group">
                     <span class="progress-text">BOT REACTION ACTIVE</span>
-                    <span class="progress-number"><b><?php echo $showgoicx ?></b>/100</span>
+                    <span class="progress-number"><b>@{{ paginationLogCard.total }}</b>/100</span>
 
                     <div class="progress sm">
                         <div class="progress-bar progress-bar-yellow progress-bar-striped" role="progressbar"
                              aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                             style="width: <?php echo $showgoicx ?>%"></div>
+                             v-bind:style="{width: paginationLogCard.total + '%'}"></div>
                     </div>
                 </div>
                 <!-- /.progress-group -->

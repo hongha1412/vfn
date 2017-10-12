@@ -52,7 +52,8 @@
         @component("admin.dashboard._logcard")
         @endcomponent
 
-
+        @component("admin.dashboard._statistic")
+        @endcomponent
     </div>
 @stop
 
