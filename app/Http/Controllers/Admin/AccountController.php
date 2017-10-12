@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Account;
 
@@ -14,7 +15,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::latest()->paginate(10);
+        $accounts = Account::paginate(10);
 
         $response = [
             'pagination' => [
