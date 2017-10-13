@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('admin/account', 'Admin\AccountController@index');
+Route::get('admin/viplike', 'Admin\VipController@index');
+Route::get('admin/vipcmt', 'Admin\VipCmtController@index');
+Route::get('admin/vipshare', 'Admin\VipShareController@index');
+Route::get('admin/logcard', 'Admin\LogCardController@index');
+Route::get('admin/camxuc', 'Admin\CamXucController@index');
