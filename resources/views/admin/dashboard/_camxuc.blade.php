@@ -14,17 +14,8 @@
                 <tr v-for="item in itemsCamXuc">
                     <td>@{{ item.name }}</td>
                     <td><a class="btn btn-xs btn-primary">@{{ item.camxuc }}</a></td>
-                    <td><?php
-                        $token = item.access_token;
-                        $me = json_decode(file_get_contents('https://graph.facebook.com/me?access_token='.$token), true);
-                        $live = '';										
-                        if(!$me['id']){
-                            $live = "<button class='btn btn-rounded btn-xs btn-danger'><i class='fa fa-times'></i> <b>Token Die</b></button>";
-                        }else{											
-                            $live = "<button class='btn btn-rounded btn-xs btn-success'><i class='fa fa-check'></i> <b>Hoạt Động</b></button>";
-                        }
-                        echo $live;
-                        ?>
+                    <td>
+                        @{{ item.access_token  }}
                     </td>
                     <td>@{{ date("d-m-20y", item.time) }}</td>
                     <td>
