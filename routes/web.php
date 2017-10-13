@@ -27,7 +27,7 @@ Route::group(['domain' => $adminDomain], function () {
     });
 
     // Dashboard
-    Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+    Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
 });
 
 Route::group(['domain' => $domain], function () {
