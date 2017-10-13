@@ -45,6 +45,14 @@ new Vue({
             to: 0,
             current_page: 1
         },
+        itemsCamXuc: [],
+        paginationCamXuc: {
+            total: 0,
+            per_page: 2,
+            from: 1,
+            to: 0,
+            current_page: 1
+        },
         itemsLogCard: [],
         paginationLogCard: {
             total: 0,
@@ -172,6 +180,29 @@ new Vue({
             return pagesArray;
         },
 
+        isActivedCamXuc: function () {
+            return this.paginationCamXuc.current_page;
+        },
+        pagesNumberCamXuc: function () {
+            if (!this.paginationCamXuc.to) {
+                return [];
+            }
+            var from = this.paginationCamXuc.current_page - this.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + (this.offset * 2);
+            if (to >= this.paginationCamXuc.last_page) {
+                to = this.paginationCamXuc.last_page;
+            }
+            var pagesArray = [];
+            while (from <= to) {
+                pagesArray.push(from);
+                from++;
+            }
+            return pagesArray;
+        },
+
         isActivedLogCard: function () {
             return this.paginationLogCard.current_page;
         },
@@ -201,6 +232,7 @@ new Vue({
         this.getvueviplike(this.paginationVipLike.current_page);
         this.getvueVipCmt(this.paginationVipCmt.current_page);
         this.getvueVipShare(this.paginationVipShare.current_page);
+        this.getvueCamXuc(this.paginationCamXuc.current_page);
         this.getvueLogCard(this.paginationLogCard.current_page);
     },
 
@@ -262,8 +294,23 @@ new Vue({
         },
 
         changePageVipShare: function (page) {
-            this.paginationVipShare.current_page = page;
+            this.paginationCamXuc.current_page = page;
             this.getvueVipShare(page);
+        },
+
+        getvueCamXuc: function(page){
+            this.$http.get('/api/admin/camxuc?page='+page).then((response) => {
+                if (response) {
+                    var $response = JSON.parse(response.data);
+                    this.$set('itemsCamXuc', $response.data.data);
+                    this.$set('paginationCamXuc', $response.pagination);
+                }
+            });
+        },
+
+        changePageCamXuc: function (page) {
+            this.paginationCamXuc.current_page = page;
+            this.getvueCamXuc(page);
         },
 
         getvueLogCard: function(page){

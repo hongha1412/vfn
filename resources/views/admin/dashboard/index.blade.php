@@ -27,6 +27,9 @@
                     <li>
                         <a href="#tab_4" data-toggle="tab">VIP SHARE</a>
                     </li>
+                    <li>
+                        <a href="#tab_5" data-toggle="tab">CẢM XÚC</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
@@ -43,6 +46,10 @@
                     </div>
                     <div class="tab-pane" id="tab_4">
                         @component("admin.dashboard._vipshare")
+                        @endcomponent
+                    </div>
+                    <div class="tab-pane" id="tab_5">
+                        @component("admin.dashboard._camxuc")
                         @endcomponent
                     </div>
                 </div>
