@@ -89,6 +89,46 @@ class AccountController extends Controller
     }
 
     /**
+     * Update VND the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateVnd(Request $request, $id)
+    {
+        $this->validate($request, [
+            'vnd'    => 'required'
+        ]);
+
+        $edit = Account::find($id);
+        $edit->vnd = $edit->vnd + intval($request->vnd);
+        $edit->save();
+
+        return response()->json($edit);
+    }
+
+    /**
+     * Update VND the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateToiDa(Request $request, $id)
+    {
+        $this->validate($request, [
+            'toida'    => 'required'
+        ]);
+
+        $edit = Account::find($id);
+        $edit->toida = $edit->toida + intval($request->toida);
+        $edit->save();
+
+        return response()->json($edit);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id

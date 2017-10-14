@@ -39,7 +39,7 @@
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-xs btn-success"><i class="fa fa-money" aria-hidden="true"></i>@{{ item.vnd }} VNĐ</a>
+                        <a class="btn btn-xs btn-success"><i class="fa fa-money" aria-hidden="true"></i> @{{ item.vnd }} VNĐ</a>
                         <span class="label label-warning pull-right">@{{ item.toida }}</span>
                     </td>
                     <td>
@@ -49,9 +49,9 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#" data-toggle="tooltip" title="Cộng Tiền" class="btn btn-success btn-simple btn-xs"><i class="fa fa-cog"></i></a>
-                        <a href="#" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Thêm ID"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
-                        <a href="javascript:void(0);" @click.prevent="deleteAccount(item)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa Members"><i class="fa fa-trash-o"></i></a>
+                        <a href="javascript:void(0);" @click.prevent="congTien(item)" data-toggle="tooltip" title="Cộng Tiền" class="btn btn-success btn-simple btn-xs"><i class="fa fa-cog"></i></a>
+                        <a href="javascript:void(0);" @click.prevent="themId(item)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Thêm ID"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0);" @click.prevent="showConfirmDelete('account', item.id)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa Members"><i class="fa fa-trash-o"></i></a>
                     </td>
                 </tr>
             </tbody>
@@ -79,4 +79,9 @@
             </ul>
         </nav>
     </div>
+
+    @component("admin.account._congtien")
+    @endcomponent
+    @component("admin.account._themId")
+    @endcomponent
 </div>

@@ -61,6 +61,9 @@
 
         @component("admin.dashboard._statistic")
         @endcomponent
+
+        @component("admin.layouts._confirm")
+        @endcomponent
     </div>
 @stop
 

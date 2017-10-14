@@ -35,7 +35,7 @@
                     </td>
                     <td>@{{ date("d-m-20y", item.time) }}</td>
                     <td>
-                        <a href="javascript:void(0);" @click.prevent="deleteCamXuc(item)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa"><i style="font-size:15px;" class="fa fa-trash-o"></i></a>
+                        <a href="javascript:void(0);" @click.prevent="showConfirmDelete('camxuc', item.id)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa"><i style="font-size:15px;" class="fa fa-trash-o"></i></a>
                         <a v-bind:href="chinhsua.php?edit=item.access_token" data-toggle="tooltip" title="Cập Nhật" class="btn btn-success btn-simple btn-xs"><i style="font-size:15px;" class="fa fa-cog"></i></a>
                     </td>
                 </tr>
@@ -46,18 +46,18 @@
             <ul class="pagination">
                 <li v-if="paginationCamXuc.current_page > 1">
                     <a href="#" aria-label="Previous"
-                       @click.prevent="changePageCamXuc(paginationCamXuc.current_page - 1)">
+                       @click.prevent="changePageCamXuc(paginationCamXuc.current_page - 1, paginationCamXuc.per_page)">
                         <span aria-hidden="true">«</span>
                     </a>
                 </li>
                 <li v-for="page in pagesNumberCamXuc"
                     v-bind:class="[ page == isActivedCamXuc ? 'active' : '']">
                     <a href="#"
-                       @click.prevent="changePageCamXuc(page)">@{{ page }}</a>
+                       @click.prevent="changePageCamXuc(page, paginationCamXuc.per_page)">@{{ page }}</a>
                 </li>
                 <li v-if="paginationCamXuc.current_page < paginationCamXuc.last_page">
                     <a href="#" aria-label="Next"
-                       @click.prevent="changePageCamXuc(paginationCamXuc.current_page + 1)">
+                       @click.prevent="changePageCamXuc(paginationCamXuc.current_page + 1, paginationCamXuc.per_page)">
                         <span aria-hidden="true">»</span>
                     </a>
                 </li>

@@ -61,7 +61,12 @@ new Vue({
             to: 0,
             current_page: 1
         },
-        offset: 4
+        offset: 4,
+
+        formDelete: {'action':'', 'id': ''},
+        formErrors:{},
+        itemAccount : {'vnd':'', 'toida': ''},
+        fillItemAccount : {'vnd':'', 'toida': '', 'id':''}
     },
 
     computed: {
@@ -237,7 +242,7 @@ new Vue({
     },
 
     methods : {
-
+        //////////////////////////////// Danh sach ////////////////////////////////////////
         getvueAccount: function(page, per_page){
             this.$http.get('/api/admin/account?page='+page + '&perPage=' + per_page).then((response) => {
                 if (response) {
@@ -333,39 +338,105 @@ new Vue({
             this.getvueLogCard(page);
         },
 
-        deleteAccount: function(item){
-            this.$http.delete('/api/admin/account/'+item.id).then((response) => {
+        //////////////////////////////// DELETE ////////////////////////////////////////
+        showConfirmDelete: function(action, id) {
+            this.formDelete.action = action;
+            this.formDelete.id = id;
+            $("#confirmDeleteModal").modal('show');
+        },
+
+        submitDelete: function(){
+            switch (this.formDelete.action) {
+                case "account":
+                    this.deleteAccount(this.formDelete.id);
+                    break;
+                case "viplike":
+                    this.deleteVipLike(this.formDelete.id);
+                    break;
+                case "vipcmt":
+                    this.deleteVipCmt(this.formDelete.id);
+                    break;
+                case "vipshare":
+                    this.deleteVipShare(this.formDelete.id);
+                    break;
+                case "camxuc":
+                    this.deleteCamXuc(this.formDelete.id);
+                    break;
+            }
+
+            $("#confirmDeleteModal").modal('hide');
+        },
+
+        deleteAccount: function(id){
+            this.$http.delete('/api/admin/account/'+ id).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
                 toastr.success('Xóa Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipLike: function(item){
-            this.$http.delete('/api/admin/viplike/'+item.id).then((response) => {
+        deleteVipLike: function(id){
+            this.$http.delete('/api/admin/viplike/'+ id).then((response) => {
                 this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipCmt: function(item){
-            this.$http.delete('/api/admin/vipcmt/'+item.id).then((response) => {
+        deleteVipCmt: function(id){
+            this.$http.delete('/api/admin/vipcmt/'+ id).then((response) => {
                 this.changePageVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipShare: function(item){
-            this.$http.delete('/api/admin/vipshare/'+item.id).then((response) => {
+        deleteVipShare: function(id){
+            this.$http.delete('/api/admin/vipshare/'+ id).then((response) => {
                 this.changePageVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteCamXuc: function(item){
-            this.$http.delete('/api/admin/camxuc/'+item.id).then((response) => {
+        deleteCamXuc: function(id){
+            this.$http.delete('/api/admin/camxuc/'+ id).then((response) => {
                 this.changePageCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
+
+        //////////////////////////////// Edit ////////////////////////////////////////
+        congTien: function(item){
+            this.fillItemAccount.id = item.id;
+            $("#congtienModal").modal('show');
+        },
+
+        updateCongTien: function(id){
+            var input = this.fillItemAccount;
+            this.$http.put('/api/admin/account/congtien/'+id, input).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+            this.fillItemAccount = {'vnd':'','id':''};
+            $("#edit-item").modal('hide');
+            toastr.success('Cộng tiền vào tài khoản thành công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
+                this.formErrorsUpdate = response.data;
+            });
+        },
+
+        themId: function(item){
+            this.fillItemAccount.id = item.id;
+            $("#themIdModal").modal('show');
+        },
+
+        updateToiDa: function(id){
+            var input = this.fillItemAccount;
+            this.$http.put('/api/admin/account/themid/'+id, input).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+            this.fillItemAccount = {'vnd':'','id':''};
+            $("#edit-item").modal('hide');
+            toastr.success('Thêm id vào Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
+                this.formErrorsUpdate = response.data;
+            });
+        },
+
+        //////////////////////////////// Add /////////////////////////////////////////
     }
 });

@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // account
 Route::get('admin/account', 'Admin\AccountController@index');
 Route::delete('admin/account/{id}', 'Admin\AccountController@destroy');
+Route::put('admin/account/congtien/{id}', 'Admin\AccountController@updateVnd');
+Route::put('admin/account/themid/{id}', 'Admin\AccountController@updateToiDa');
 // vip
 Route::get('admin/viplike', 'Admin\VipController@index');
 Route::delete('admin/viplike/{id}', 'Admin\VipController@destroy');
