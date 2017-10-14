@@ -33,6 +33,11 @@ var com;
                     self.fbURL.subscribe(function () {
                         $.blockUI();
                         self.isEnable(false);
+                        if (!self.fbURL()) {
+                            self.isEnable(true);
+                            $.unblockUI();
+                            return;
+                        }
                         self.getFbUserInfo().always(function () {
                             self.isEnable(true);
                             $.unblockUI();
@@ -49,6 +54,17 @@ var com;
                         });
                     });
                 }
+                StoreVipLikeScreenModel.prototype.reset = function () {
+                    var self = this;
+                    self.fbURL('');
+                    self.fbId('');
+                    self.fbName('');
+                    self.likePackage(1);
+                    self.likeSpeed(1);
+                    self.dayPackage(1);
+                    self.note('');
+                    self.isEnable(true);
+                };
                 StoreVipLikeScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
@@ -171,7 +187,10 @@ var com;
                         vipfbnow.Utils.notify(result).done(function () {
                             vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                                 self.userInfo(result);
-                                vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                self.reset();
+                                self.getListVipID().always(function () {
+                                    vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                });
                             });
                         });
                     }).fail(function (result) {

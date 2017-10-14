@@ -20,6 +20,11 @@ var com;
                     self.lsLog = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
                 }
+                GiftScreenModel.prototype.reset = function () {
+                    var self = this;
+                    self.giftCode('');
+                    self.isEnable(true);
+                };
                 GiftScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
@@ -44,7 +49,10 @@ var com;
                         vipfbnow.Utils.notify(result).done(function () {
                             vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                                 self.userInfo(result);
-                                vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                self.reset();
+                                self.getGiftLog().always(function () {
+                                    vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                });
                             });
                         });
                     }).fail(function (result) {

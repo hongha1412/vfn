@@ -22,6 +22,12 @@ module com.sabrac.vipfbnow {
             self.isEnable = ko.observable<boolean>(true);
         }
 
+        reset() {
+            var self = this;
+            self.giftCode('');
+            self.isEnable(true);
+        }
+
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
@@ -48,7 +54,10 @@ module com.sabrac.vipfbnow {
                 Utils.notify(result).done(function() {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
-                        Utils.reloadLayoutData(self.userInfo());
+                        self.reset();
+                        self.getGiftLog().always(function () {
+                            Utils.reloadLayoutData(self.userInfo());
+                        });
                     });
                 });
             }).fail(function(result) {

@@ -48,6 +48,11 @@ module com.sabrac.vipfbnow {
                 $.blockUI();
                 self.isEnable(false);
 
+                if (!self.fbURL()) {
+                    self.isEnable(true);
+                    $.unblockUI();
+                    return;
+                }
                 self.getFbUserInfo().always(function() {
                     self.isEnable(true);
                     $.unblockUI();
@@ -64,6 +69,18 @@ module com.sabrac.vipfbnow {
                     self.price(result);
                 });
             });
+        }
+
+        reset() {
+            var self = this;
+            self.fbURL('');
+            self.fbId('');
+            self.fbName('');
+            self.likePackage(1);
+            self.likeSpeed(1);
+            self.dayPackage(1);
+            self.note('');
+            self.isEnable(true);
         }
 
         startPage(): JQueryPromise<any> {
@@ -191,7 +208,10 @@ module com.sabrac.vipfbnow {
                 Utils.notify(result).done(function () {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
-                        Utils.reloadLayoutData(self.userInfo());
+                        self.reset();
+                        self.getListVipID().always(function () {
+                            Utils.reloadLayoutData(self.userInfo());
+                        });
                     });
                 });
             }).fail(function (result) {
