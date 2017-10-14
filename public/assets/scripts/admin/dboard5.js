@@ -66,7 +66,8 @@ new Vue({
         formDelete: {'action':'', 'id': ''},
         formErrors:{},
         itemAccount : {'vnd':'', 'toida': ''},
-        fillItemAccount : {'vnd':'', 'toida': '', 'id':''}
+        fillItemAccount : {'vnd':'', 'toida': '', 'id':''},
+        fillItemVipLike : {'idfb':'', 'fbname': '', 'package': '', 'time': '', 'id':''}
     },
 
     computed: {
@@ -403,6 +404,7 @@ new Vue({
         },
 
         //////////////////////////////// Edit ////////////////////////////////////////
+        // Account
         congTien: function(item){
             this.fillItemAccount.id = item.id;
             $("#congtienModal").modal('show');
@@ -412,11 +414,14 @@ new Vue({
             var input = this.fillItemAccount;
             this.$http.put('/api/admin/account/congtien/'+id, input).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
-            this.fillItemAccount = {'vnd':'','id':''};
-            $("#edit-item").modal('hide');
+            this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
+            $("#congtienModal").modal('hide');
             toastr.success('Cộng tiền vào tài khoản thành công!', 'Success Alert', {timeOut: 5000});
         }, (response) => {
-                this.formErrorsUpdate = response.data;
+                if (response && response.data) {
+                    var $response = JSON.parse(response.data);
+                    this.formErrors = $response;
+                }
             });
         },
 
@@ -429,13 +434,45 @@ new Vue({
             var input = this.fillItemAccount;
             this.$http.put('/api/admin/account/themid/'+id, input).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
-            this.fillItemAccount = {'vnd':'','id':''};
-            $("#edit-item").modal('hide');
+            this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
+            $("#themIdModal").modal('hide');
             toastr.success('Thêm id vào Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
         }, (response) => {
-                this.formErrorsUpdate = response.data;
+                if (response && response.data) {
+                    var $response = JSON.parse(response.data);
+                    this.formErrors = $response;
+                }
             });
         },
+
+        // Vip like
+        editVipLike: function (item) {
+            this.fillItemVipLike.id = item.id;
+            this.fillItemVipLike.idfb = item.idfb;
+            this.fillItemVipLike.fbname = item.fbname;
+            this.fillItemVipLike.package = item.package;
+            this.fillItemVipLike.time = item.expiretime;
+            $("#editVipLikeModal").modal('show');
+        },
+        updateVipLike: function (id) {
+            var input = this.fillItemVipLike;
+            this.$http.put('/api/admin/viplike/'+id, input).then((response) => {
+                this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
+            this.fillItemVipLike = {'idfb':'', 'fbname': '', 'package': '', 'time': '', 'id':''};
+            $("#editVipLikeModal").modal('hide');
+            toastr.success('Chỉnh Sửa Cập Nhật Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
+                if (response && response.data) {
+                    var $response = JSON.parse(response.data);
+                    this.formErrors = $response;
+                }
+            });
+        },
+        // Vip cmt
+
+        // Vip share
+
+        // Cam xuc
 
         //////////////////////////////// Add /////////////////////////////////////////
     }

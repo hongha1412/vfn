@@ -85,7 +85,15 @@ class VipController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'idfb'    => 'required',
+            'fbname'    => 'required',
+            'package'    => 'required'
+        ]);
+
+        $edit = Vip::find($id)->update($request->all());
+
+        return response()->json($edit);
     }
 
     /**

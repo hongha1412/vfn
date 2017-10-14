@@ -24,12 +24,15 @@ Route::put('admin/account/congtien/{id}', 'Admin\AccountController@updateVnd');
 Route::put('admin/account/themid/{id}', 'Admin\AccountController@updateToiDa');
 // vip
 Route::get('admin/viplike', 'Admin\VipController@index');
+Route::put('admin/viplike/{id}', 'Admin\VipController@update');
 Route::delete('admin/viplike/{id}', 'Admin\VipController@destroy');
 // vip cmt
 Route::get('admin/vipcmt', 'Admin\VipCmtController@index');
+Route::put('admin/vipcmt/{id}', 'Admin\VipCmtController@update');
 Route::delete('admin/vipcmt/{id}', 'Admin\VipCmtController@destroy');
 // vip share
 Route::get('admin/vipshare', 'Admin\VipShareController@index');
+Route::put('admin/vipshare/{id}', 'Admin\VipShareController@update');
 Route::delete('admin/vipshare/{id}', 'Admin\VipShareController@destroy');
 // cam xuc
 Route::get('admin/camxuc', 'Admin\CamXucController@index');

@@ -39,7 +39,7 @@
                     <td><a class="btn btn-xs btn-success"><i class="fa fa-history" aria-hidden="true"></i> @{{ date("d-m-20y",item.expiretime) }}</a></td>
                     <td>
                         <a href="javascript:void(0);" @click.prevent="showConfirmDelete('viplike', item.id)" class="btn btn-xs btn-danger"><i class="fa fa-user-times" aria-hidden="true"></i> Xóa Tài Khoản</a>
-                        <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a>
+                        <a href="javascript:void(0);" @click.prevent="editVipLike(item)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a>
                     </td>
                 </tr>
             </tbody>
@@ -68,3 +68,7 @@
         </nav>
     </div>
 </div>
+@component("admin.viplike._edit")
+@endcomponent
+@component("admin.viplike._detail")
+@endcomponent
