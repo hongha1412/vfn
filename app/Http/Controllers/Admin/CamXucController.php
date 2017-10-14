@@ -15,7 +15,8 @@ class CamXucController extends Controller
      */
     public function index()
     {
-        $camXucs = CamXuc::paginate(10);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $camXucs = CamXuc::paginate($perPage);
         
         $response = [
             'pagination' => [
@@ -95,6 +96,7 @@ class CamXucController extends Controller
      */
     public function destroy($id)
     {
-        //
+        CamXuc::find($id)->delete();
+        return response()->json(['done']);
     }
 }

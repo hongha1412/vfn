@@ -16,7 +16,7 @@ new Vue({
         itemsAccount: [],
         paginationAccount: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -24,7 +24,7 @@ new Vue({
         itemsVipLike: [],
         paginationVipLike: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -32,7 +32,7 @@ new Vue({
         itemsVipCmt: [],
         paginationVipCmt: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -40,7 +40,7 @@ new Vue({
         itemsVipShare: [],
         paginationVipShare: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -48,7 +48,7 @@ new Vue({
         itemsCamXuc: [],
         paginationCamXuc: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -56,7 +56,7 @@ new Vue({
         itemsLogCard: [],
         paginationLogCard: {
             total: 0,
-            per_page: 2,
+            per_page: 10,
             from: 1,
             to: 0,
             current_page: 1
@@ -228,18 +228,18 @@ new Vue({
     },
 
     ready : function(){
-    	this.getvueAccount(this.paginationAccount.current_page);
-        this.getvueviplike(this.paginationVipLike.current_page);
-        this.getvueVipCmt(this.paginationVipCmt.current_page);
-        this.getvueVipShare(this.paginationVipShare.current_page);
-        this.getvueCamXuc(this.paginationCamXuc.current_page);
+    	this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+        this.getvueviplike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
+        this.getvueVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
+        this.getvueVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
+        this.getvueCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
         this.getvueLogCard(this.paginationLogCard.current_page);
     },
 
     methods : {
 
-        getvueAccount: function(page){
-            this.$http.get('/api/admin/account?page='+page).then((response) => {
+        getvueAccount: function(page, per_page){
+            this.$http.get('/api/admin/account?page='+page + '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsAccount', $response.data.data);
@@ -248,13 +248,14 @@ new Vue({
             });
         },
 
-        changePageAccount: function (page) {
+        changePageAccount: function (page, per_page) {
             this.paginationAccount.current_page = page;
-            this.getvueAccount(page);
+            this.paginationAccount.per_page = per_page;
+            this.getvueAccount(page, per_page);
         },
 
-        getvueviplike: function(page){
-            this.$http.get('/api/admin/viplike?page='+page).then((response) => {
+        getvueviplike: function(page, per_page){
+            this.$http.get('/api/admin/viplike?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipLike', $response.data.data);
@@ -263,13 +264,14 @@ new Vue({
             });
         },
 
-        changePageVipLike: function (page) {
+        changePageVipLike: function (page, per_page) {
             this.paginationVipLike.current_page = page;
-            this.getvueviplike(page);
+            this.paginationVipLike.per_page = per_page;
+            this.getvueviplike(page,per_page);
         },
 
-        getvueVipCmt: function(page){
-            this.$http.get('/api/admin/vipcmt?page='+page).then((response) => {
+        getvueVipCmt: function(page, per_page){
+            this.$http.get('/api/admin/vipcmt?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipCmt', $response.data.data);
@@ -278,13 +280,14 @@ new Vue({
             });
         },
 
-        changePageVipCmt: function (page) {
-            this.pagination.current_page = page;
-            this.getvueVipCmt(page);
+        changePageVipCmt: function (page, per_page) {
+            this.paginationVipCmt.current_page = page;
+            this.paginationVipCmt.per_page = per_page;
+            this.getvueVipCmt(page, per_page);
         },
 
-        getvueVipShare: function(page){
-            this.$http.get('/api/admin/vipshare?page='+page).then((response) => {
+        getvueVipShare: function(page, per_page){
+            this.$http.get('/api/admin/vipshare?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipShare', $response.data.data);
@@ -293,13 +296,14 @@ new Vue({
             });
         },
 
-        changePageVipShare: function (page) {
-            this.paginationCamXuc.current_page = page;
-            this.getvueVipShare(page);
+        changePageVipShare: function (page, per_page) {
+            this.paginationVipShare.current_page = page;
+            this.paginationVipShare.per_page = per_page;
+            this.getvueVipShare(page, per_page);
         },
 
-        getvueCamXuc: function(page){
-            this.$http.get('/api/admin/camxuc?page='+page).then((response) => {
+        getvueCamXuc: function(page, per_page){
+            this.$http.get('/api/admin/camxuc?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsCamXuc', $response.data.data);
@@ -308,9 +312,10 @@ new Vue({
             });
         },
 
-        changePageCamXuc: function (page) {
+        changePageCamXuc: function (page, per_page) {
             this.paginationCamXuc.current_page = page;
-            this.getvueCamXuc(page);
+            this.paginationCamXuc.per_page = per_page;
+            this.getvueCamXuc(page, per_page);
         },
 
         getvueLogCard: function(page){
@@ -326,6 +331,41 @@ new Vue({
         changePageLogCard: function (page) {
             this.paginationLogCard.current_page = page;
             this.getvueLogCard(page);
-        }
+        },
+
+        deleteAccount: function(item){
+            this.$http.delete('/api/admin/account/'+item.id).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+                toastr.success('Xóa Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
+            });
+        },
+
+        deleteVipLike: function(item){
+            this.$http.delete('/api/admin/viplike/'+item.id).then((response) => {
+                this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
+            });
+        },
+
+        deleteVipCmt: function(item){
+            this.$http.delete('/api/admin/vipcmt/'+item.id).then((response) => {
+                this.changePageVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
+            });
+        },
+
+        deleteVipShare: function(item){
+            this.$http.delete('/api/admin/vipshare/'+item.id).then((response) => {
+                this.changePageVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
+            });
+        },
+
+        deleteCamXuc: function(item){
+            this.$http.delete('/api/admin/camxuc/'+item.id).then((response) => {
+                this.changePageCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
+            });
+        },
     }
 });

@@ -1,4 +1,20 @@
 <div class="panel-body">
+    <div class="form-inline" style="padding-bottom: 10px">
+        <div class="form-group">
+            <select v-model="paginationCamXuc.per_page" v-on:change="changePageCamXuc(paginationCamXuc.current_page - 1, paginationCamXuc.per_page)" class="form-control" style="width: 80px">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="form-group pull-right">
+            <label for="search">Tìm kiếm:</label>
+            <input type="search" class="form-control" id="search">
+        </div>
+    </div>
     <div class="table-responsive">
         <table id="vip-cmt" class="table table-bordered table-striped">
             <thead>
@@ -19,7 +35,7 @@
                     </td>
                     <td>@{{ date("d-m-20y", item.time) }}</td>
                     <td>
-                        <a v-bind:href="?xoacx=item.access_token" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa"><i style="font-size:15px;" class="fa fa-trash-o"></i></a>              
+                        <a href="javascript:void(0);" @click.prevent="deleteCamXuc(item)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa"><i style="font-size:15px;" class="fa fa-trash-o"></i></a>
                         <a v-bind:href="chinhsua.php?edit=item.access_token" data-toggle="tooltip" title="Cập Nhật" class="btn btn-success btn-simple btn-xs"><i style="font-size:15px;" class="fa fa-cog"></i></a>
                     </td>
                 </tr>

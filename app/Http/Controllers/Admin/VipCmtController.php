@@ -15,7 +15,8 @@ class VipCmtController extends Controller
      */
     public function index()
     {
-        $vipCmts = VipCmt::paginate(10);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $vipCmts = VipCmt::paginate($perPage);
         
         $response = [
             'pagination' => [
@@ -95,6 +96,7 @@ class VipCmtController extends Controller
      */
     public function destroy($id)
     {
-        //
+        VipCmt::find($id)->delete();
+        return response()->json(['done']);
     }
 }

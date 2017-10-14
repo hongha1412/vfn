@@ -15,7 +15,8 @@ class VipShareController extends Controller
      */
     public function index()
     {
-        $vipShares = VipShare::paginate(10);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $vipShares = VipShare::paginate($perPage);
         
         $response = [
             'pagination' => [
@@ -95,6 +96,7 @@ class VipShareController extends Controller
      */
     public function destroy($id)
     {
-        //
+        VipShare::find($id)->delete();
+        return response()->json(['done']);
     }
 }

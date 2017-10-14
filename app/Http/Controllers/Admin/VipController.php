@@ -15,7 +15,8 @@ class VipController extends Controller
      */
     public function index()
     {
-        $vips = Vip::paginate(10);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $vips = Vip::paginate($perPage);
         
         $response = [
             'pagination' => [
@@ -95,6 +96,7 @@ class VipController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Vip::find($id)->delete();
+        return response()->json(['done']);
     }
 }

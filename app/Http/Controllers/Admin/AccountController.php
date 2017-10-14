@@ -15,7 +15,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::paginate(10);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $accounts = Account::paginate($perPage);
 
         $response = [
             'pagination' => [
@@ -96,5 +97,7 @@ class AccountController extends Controller
     public function destroy($id)
     {
         //
+        Account::find($id)->delete();
+        return response()->json(['done']);
     }
 }
