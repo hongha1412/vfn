@@ -9,6 +9,7 @@ use App\Models\Vip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,12 @@ class StoreVipLikeController extends Controller
 
     }
 
+    /**
+     * Calculate charge money
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function calculate(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
@@ -42,14 +49,20 @@ class StoreVipLikeController extends Controller
         return response((new Message(true, $result[0]))->toJson(), 200);
     }
 
+    /**
+     * Action buy vip like package
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function buyVipLike(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
-            'likePackage'   => 'required|numeric',
+            'package'   => 'required|numeric',
             'dayPackage'    => 'required|numeric',
             'fbId'          => 'required|string|max:50',
             'fbName'        => 'required|string',
-            'likeSpeed'     => 'required|numeric',
+            'speed'     => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -57,7 +70,7 @@ class StoreVipLikeController extends Controller
         }
 
         // Validate data in database
-        $packageResult = CommonAPIController::checkValidPackage(Input::get('likePackage'), Input::get('dayPackage'));
+        $packageResult = CommonAPIController::checkValidPackage(Input::get('package'), Input::get('dayPackage'));
         if ($packageResult instanceof Message) {
             return response($packageResult->toJson(), 200);
         }
@@ -68,14 +81,23 @@ class StoreVipLikeController extends Controller
             return response($fundsResult->toJson(), 200);
         }
 
+        // Check exists in vip table
+        $vip = Vip::getVipByFbId(Input::get('fbId'));
+        if (count($vip) > 0) {
+            $existsMessage = $vip[0]->account->id === Auth::id() ? 'Facebook này đã được đăng ký' :
+                'Facebook này đã được đăng ký bởi ' . $vip[0]->account->username;
+
+            return response((new Message(false, $existsMessage))->toJson(), 200);
+        }
+
         // Insert vip like table
         $vip = Vip::create([
             'idfb'          => Input::get('fbId'),
             'fbname'        => Input::get('fbName'),
             'userid'        => $fundsResult->id,
-            'package'       => Input::get('likePackage'),
+            'package'       => Input::get('package'),
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
-            'likespeed'     => Input::get('likeSpeed'),
+            'likespeed'     => Input::get('speed'),
             'note'          => Input::get('note') ? Input::get('note') : '',
         ]);
 

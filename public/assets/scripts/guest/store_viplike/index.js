@@ -29,6 +29,7 @@ var com;
                     self.lsDayPackage = ko.observableArray([]);
                     self.lsLikeSpeed = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
+                    self.lsVipLike = ko.observableArray([]);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
                         self.isEnable(false);
@@ -53,12 +54,14 @@ var com;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
-                        self.getPackageInfo().always(function () {
-                            self.getLikeSpeedInfo().always(function () {
-                                self.calculate().done(function (result) {
-                                    self.price(result);
-                                }).always(function () {
-                                    dfd.resolve();
+                        self.getListVipID().always(function () {
+                            self.getPackageInfo().always(function () {
+                                self.getLikeSpeedInfo().always(function () {
+                                    self.calculate().done(function (result) {
+                                        self.price(result);
+                                    }).always(function () {
+                                        dfd.resolve();
+                                    });
                                 });
                             });
                         });
@@ -157,11 +160,11 @@ var com;
                     var self = this;
                     $.blockUI();
                     self.isEnable(false);
-                    var data = new StoreVipLike();
+                    var data = new StoreVip();
                     data.fbId = self.fbId();
                     data.fbName = self.fbName();
-                    data.likePackage = self.likePackage();
-                    data.likeSpeed = self.likeSpeed();
+                    data.package = self.likePackage();
+                    data.speed = self.likeSpeed();
                     data.dayPackage = self.dayPackage();
                     data.note = self.note();
                     vipfbnow.Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
@@ -178,20 +181,48 @@ var com;
                         $.unblockUI();
                     });
                 };
+                StoreVipLikeScreenModel.prototype.getListVipID = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    self.lsVipLike([]);
+                    vipfbnow.Utils.postData($('#listVIPLikeURL').val(), null).done(function (result) {
+                        if (result.success) {
+                            self.totalID(result.message[0].lsVipLike.length);
+                            for (var _i = 0, _a = result.message[0].lsVipLike; _i < _a.length; _i++) {
+                                var vipLike = _a[_i];
+                                var storeVipLike = new StoreVip();
+                                storeVipLike.package = vipLike.like_package.liketotal;
+                                storeVipLike.fbName = vipLike.fbname;
+                                storeVipLike.note = vipLike.note;
+                                storeVipLike.expireDate = vipLike.expiretime;
+                                self.lsVipLike.push(storeVipLike);
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
                 return StoreVipLikeScreenModel;
             }());
             vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
-            var StoreVipLike = (function () {
-                function StoreVipLike() {
+            var StoreVip = (function () {
+                function StoreVip() {
                     var self = this;
                     self.fbId = '';
                     self.fbName = '';
-                    self.likePackage = 1;
-                    self.likeSpeed = 1;
+                    self.package = 1;
+                    self.speed = 1;
                     self.dayPackage = 1;
                     self.note = '';
+                    self.expireDate = '';
                 }
-                return StoreVipLike;
+                return StoreVip;
             }());
             var PackageObject = (function () {
                 function PackageObject(id, value) {

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Common;
 
 use App\Enum\PackageType;
+use App\Http\Controllers\Common\VO\VipOutVO;
 use App\Models\Account;
 use App\Models\DayPackage;
 use App\Models\LikePackage;
 use App\Models\LikePrice;
 use App\Models\LikeSpeed;
+use App\Models\Vip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -124,5 +126,16 @@ class CommonAPIController extends Controller
         }
 
         return $loggedUser;
+    }
+
+    /**
+     * Get list vip of logged in user
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function listVipID() {
+        $vipOutVO = new VipOutVO();
+        $vipOutVO->setLsVipLike(Vip::getVipByUserId(Auth::id()));
+        return response((new Message(true, $vipOutVO))->toJson(), 200);
     }
 }

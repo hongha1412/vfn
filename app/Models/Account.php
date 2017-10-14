@@ -57,6 +57,10 @@ class Account extends User
         return $this->hasMany(GiftLike::class);
     }
 
+    public function vip() {
+        return $this->hasMany(Vip::class);
+    }
+
     /**
      * Get user from username
      *

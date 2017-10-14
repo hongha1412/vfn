@@ -24,6 +24,7 @@ module com.sabrac.vipfbnow {
         lsDayPackage: KnockoutObservableArray<PackageObject>;
         lsLikeSpeed: KnockoutObservableArray<PackageObject>;
         isEnable: KnockoutObservable<boolean>;
+        lsVipLike: KnockoutObservableArray<StoreVip>;
 
         constructor() {
             var self = this;
@@ -41,6 +42,7 @@ module com.sabrac.vipfbnow {
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
             self.lsLikeSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
+            self.lsVipLike = ko.observableArray<StoreVip>([]);
 
             self.fbURL.subscribe(function() {
                 $.blockUI();
@@ -69,12 +71,14 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
-                self.getPackageInfo().always(function() {
-                    self.getLikeSpeedInfo().always(function () {
-                        self.calculate().done(function(result) {
-                            self.price(result);
-                        }).always(function() {
-                            dfd.resolve();
+                self.getListVipID().always(function () {
+                    self.getPackageInfo().always(function() {
+                        self.getLikeSpeedInfo().always(function () {
+                            self.calculate().done(function(result) {
+                                self.price(result);
+                            }).always(function() {
+                                dfd.resolve();
+                            });
                         });
                     });
                 });
@@ -175,11 +179,11 @@ module com.sabrac.vipfbnow {
             var self = this;
             $.blockUI();
             self.isEnable(false);
-            let data = new StoreVipLike();
+            let data = new StoreVip();
             data.fbId = self.fbId();
             data.fbName = self.fbName();
-            data.likePackage = self.likePackage();
-            data.likeSpeed = self.likeSpeed();
+            data.package = self.likePackage();
+            data.speed = self.likeSpeed();
             data.dayPackage = self.dayPackage();
             data.note = self.note();
 
@@ -197,24 +201,54 @@ module com.sabrac.vipfbnow {
                 $.unblockUI();
             });
         }
+
+        getListVipID(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            self.lsVipLike([]);
+
+            Utils.postData($('#listVIPLikeURL').val(), null).done(function(result) {
+                if (result.success) {
+                    self.totalID(result.message[0].lsVipLike.length);
+                    for (let vipLike of result.message[0].lsVipLike) {
+                        let storeVipLike = new StoreVip();
+                        storeVipLike.package = vipLike.like_package.liketotal;
+                        storeVipLike.fbName = vipLike.fbname;
+                        storeVipLike.note = vipLike.note;
+                        storeVipLike.expireDate = vipLike.expiretime;
+
+                        self.lsVipLike.push(storeVipLike);
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
     }
 
-    class StoreVipLike {
+    class StoreVip {
         fbId: string;
         fbName: string;
-        likePackage: number;
-        likeSpeed: number;
+        package: number;
+        speed: number;
         dayPackage: number;
         note: string;
+        expireDate: string;
 
         constructor() {
             var self = this;
             self.fbId = '';
             self.fbName = '';
-            self.likePackage = 1;
-            self.likeSpeed = 1;
+            self.package = 1;
+            self.speed = 1;
             self.dayPackage = 1;
             self.note = '';
+            self.expireDate = '';
         }
     }
 

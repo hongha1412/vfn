@@ -64,24 +64,26 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>ID VIP</th>
-                            <th>Họ Tên</th>
+                            <th>Facebook</th>
                             <th>Gói Like</th>
-                            <th>Chú Thích</th>
                             <th>Hạn Sử Dụng</th>
+                            <th>Chú Thích</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-bind="foreach: lsVipLike">
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                <b>#<span data-bind="text: ($index() + 1)"></span></b>
+                            </td>
+                            <td data-bind="text: fbName"></td>
+                            <td data-bind="text: package"></td>
+                            <td data-bind="text: expireDate"></td>
+                            <td data-bind="text: note"></td>
                             <td></td>
                         </tr>
                         </tbody>
@@ -91,6 +93,7 @@
         </div>
     </div>
     <input type="text" style="display: none;" value="{{ route('guest.calculateVipLike') }}" id="calculateURL" />
+    <input type="text" style="display: none;" value="{{ route('common.listVipLike') }}" id="listVIPLikeURL" />
     <input type="text" style="display: none;" value="{{ route('guest.buyVipLike') }}" id="buyVipLikeURL" />
     <input type="text" style="display: none;" value="{{ route('common.getLikeSpeed') }}" id="likeSpeedURL" />
     <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
