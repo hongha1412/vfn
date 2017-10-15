@@ -49,7 +49,10 @@ module com.sabrac.vipfbnow {
                 Utils.notify(result).done(function() {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
-                        Utils.reloadLayoutData(self.userInfo());
+                        self.rechargeInfo().reset();
+                        self.getRechargeLog().always(function () {
+                            Utils.reloadLayoutData(self.userInfo());
+                        });
                     });
                 });
             }).fail(function(result) {
@@ -113,6 +116,17 @@ module com.sabrac.vipfbnow {
             self.pin = pin;
             self.amount = amount;
             self.time = time;
+        }
+
+        reset() {
+            var self = this;
+            self.username = '';
+            self.receiveUsername = '';
+            self.provider = '';
+            self.seri = '';
+            self.pin = '';
+            self.amount = "-1";
+            self.time = '';
         }
     }
 

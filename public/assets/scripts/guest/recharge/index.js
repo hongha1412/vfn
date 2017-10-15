@@ -45,7 +45,10 @@ var com;
                         vipfbnow.Utils.notify(result).done(function () {
                             vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                                 self.userInfo(result);
-                                vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                self.rechargeInfo().reset();
+                                self.getRechargeLog().always(function () {
+                                    vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                });
                             });
                         });
                     }).fail(function (result) {
@@ -97,6 +100,16 @@ var com;
                     self.pin = pin;
                     self.amount = amount;
                     self.time = time;
+                };
+                RechargeInfo.prototype.reset = function () {
+                    var self = this;
+                    self.username = '';
+                    self.receiveUsername = '';
+                    self.provider = '';
+                    self.seri = '';
+                    self.pin = '';
+                    self.amount = "-1";
+                    self.time = '';
                 };
                 return RechargeInfo;
             }());

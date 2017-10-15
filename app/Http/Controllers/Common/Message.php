@@ -18,7 +18,7 @@ class Message implements \JsonSerializable
      * Message constructor.
      *
      * @param $success boolean
-     * @param $message string[]
+     * @param $message string / string[]
      */
     public function __construct($success, $message)
     {

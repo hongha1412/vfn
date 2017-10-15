@@ -69,7 +69,7 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        public static number_format (number, decimals, decPoint, thousandsSep) {
+        public static number_format (number, decimals = 0, decPoint = '.', thousandsSep = ',') {
             number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
             var n = !isFinite(+number) ? 0 : +number;
             var prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
@@ -134,17 +134,51 @@ module com.sabrac.vipfbnow {
         }
 
         public static reloadLayoutData(userInfo: UserInfo): void {
-            var self = this;
             Utils.headerScreenModel().userInfo(userInfo);
             Utils.sidebarScreenModel().userInfo(userInfo);
             Utils.controlSidebarScreenModel().userInfo(userInfo);
         }
+
+        public static getFacebookInfo(fbURL: string): JQueryPromise<any> {
+            var dfd = $.Deferred();
+            var data = {
+                fbURL: fbURL
+            };
+            Utils.postData('/get-facebook-user-info', data).done(function(result) {
+                if (result.success) {
+                    result.message[0].fbname = Utils.decodeUTF8(result.message[0].fbname);
+                }
+                dfd.resolve(result);
+            }).fail(function(result) {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
+        public static decodeUTF8(string: string) {
+            var r = /\\u([\d\w]{4})/gi;
+            var x = string.replace(r, function (match, grp) {
+                return String.fromCharCode(parseInt(grp, 16));
+            });
+            return x;
+        }
+
+        public static unexpectedError() {
+            swal('ERROR', 'Lỗi không xác định, vui lòng liên hệ quản trị viên', SweetAlertType.ERROR);
+        }
     }
 
     export const enum SweetAlertType {
-        WARNING = "warning",
-        ERROR = "error",
-        SUCCESS = "success",
-        INFO = "info"
+        WARNING     = "warning",
+        ERROR       = "error",
+        SUCCESS     = "success",
+        INFO        = "info"
+    }
+
+    export const enum PackageType {
+        LIKE          = 0,
+        COMMENT       = 1,
+        SHARE         = 2,
+        REACT         = 3
     }
 }
