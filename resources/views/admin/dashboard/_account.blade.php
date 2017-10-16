@@ -39,7 +39,7 @@
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-xs btn-success"><i class="fa fa-money" aria-hidden="true"></i> @{{ item.vnd }} VNĐ</a>
+                        <a class="btn btn-xs btn-success"><i class="fa fa-money" aria-hidden="true"></i> @{{ item.vnd | formatPrice }} VNĐ</a>
                         <span class="label label-warning pull-right">@{{ item.toida }}</span>
                     </td>
                     <td>

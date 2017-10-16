@@ -16,4 +16,8 @@ class RawToken extends Model
     public static function getTokenList() {
         return RawToken::orderBy('id', 'ASC')->get();
     }
+
+    public static function getAccessTokeList() {
+        return RawToken::select("token")->distinct()->get();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CamXuc;
+use App\Models\RawToken;
 
 class CamXucController extends Controller
 {
@@ -16,8 +17,11 @@ class CamXucController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+        $offset = ($page-1) * $perPage;
+
         $camXucs = CamXuc::paginate($perPage);
-        
+
         $response = [
             'pagination' => [
                 'total'        => $camXucs->total(),
@@ -27,10 +31,36 @@ class CamXucController extends Controller
                 'from'         => $camXucs->firstItem(),
                 'to'           => $camXucs->lastItem()
             ],
-            'data' => $camXucs
+            'data' => $this->getFbByToken(CamXuc::limit($perPage)->offset($offset)->get())
         ];
 
         return response()->json($response);
+    }
+
+    private function getFbByToken($items) {
+        $result = [];
+        $tokens = RawToken::getAccessTokeList();
+        foreach  ($items as $item) {
+            if(sizeof($tokens) == 0) {
+                $live = "<button class='btn btn-rounded btn-xs btn-danger'><i class='fa fa-times'></i> <b>Token Die</b></button>";
+            } else {
+                $tokensArray = collect($tokens)->toArray();
+                if (in_array($item->access_token, $tokensArray)) {
+                    $live = "<button class='btn btn-rounded btn-xs btn-danger'><i class='fa fa-times'></i> <b>Token Die</b></button>";
+                } else {
+                    $live = "<button class='btn btn-rounded btn-xs btn-success'><i class='fa fa-check'></i> <b>Hoạt Động</b></button>";
+                }
+            }
+            $item["live"] = $live;
+            array_push($result, $item);
+        }
+
+        return $result;
+    }
+
+    private function getDataFromUrl($url) {
+        $file = file_get_contents($url, true);
+        return json_decode($file);
     }
 
     /**

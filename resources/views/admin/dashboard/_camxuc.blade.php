@@ -30,10 +30,9 @@
                 <tr v-for="item in itemsCamXuc">
                     <td>@{{ item.name }}</td>
                     <td><a class="btn btn-xs btn-primary">@{{ item.camxuc }}</a></td>
-                    <td>
-                        @{{ item.access_token  }}
+                    <td v-html="item.live">
                     </td>
-                    <td>@{{ date("d-m-20y", item.time) }}</td>
+                    <td>@{{ item.time }}</td>
                     <td>
                         <a href="javascript:void(0);" @click.prevent="showConfirmDelete('camxuc', item.id)" data-toggle="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Xóa"><i style="font-size:15px;" class="fa fa-trash-o"></i></a>
                         <a v-bind:href="chinhsua.php?edit=item.access_token" data-toggle="tooltip" title="Cập Nhật" class="btn btn-success btn-simple btn-xs"><i style="font-size:15px;" class="fa fa-cog"></i></a>

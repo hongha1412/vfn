@@ -20,11 +20,11 @@
                     <tr v-for="item in itemsLogCard">
                         <td>@{{ item.id }}</td>
                         <td>@{{ item.receive_userid }}</td>
-                        <td>@{{ item.telco }}</td>
+                        <td>@{{ item.telco | formatTelco }}</td>
                         <td>@{{ item.cardcode }}</td>
                         <td>@{{ item.serial }}</td>
                         <td>@{{ item.time }}</td>
-                        <td>@{{ formatPrice(item.price) }} VNĐ</td>
+                        <td>@{{ item.price | formatPrice }} VNĐ</td>
                     </tr>
                     </tbody>
                 </table>
