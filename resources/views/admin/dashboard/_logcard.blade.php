@@ -23,7 +23,7 @@
                         <td>@{{ item.telco | formatTelco }}</td>
                         <td>@{{ item.cardcode }}</td>
                         <td>@{{ item.serial }}</td>
-                        <td>@{{ item.time }}</td>
+                        <td>@{{ item.created_at | formatDate }}</td>
                         <td>@{{ item.price | formatPrice }} VNĐ</td>
                     </tr>
                     </tbody>

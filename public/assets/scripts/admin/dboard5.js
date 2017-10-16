@@ -511,6 +511,19 @@ new Vue({
             var val = (value/1).toFixed(0).replace('.', ',')
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
         },
+        formatDate: function(value) {
+            if (!value){
+                return "";
+            }
+            var date = new Date(value);
+            var curr_date = date.getDate();
+            var curr_month = date.getMonth() + 1; //Months are zero based
+            var curr_year = date.getFullYear();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            return curr_date + "/" + curr_month + "/" + curr_year + " " + hours + ":" + minutes + ":" + second;
+        },
         formatTelco: function (value) {
             if (!value) {
                 return "";
