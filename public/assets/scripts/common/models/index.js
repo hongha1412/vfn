@@ -38,6 +38,15 @@ var com;
                 return UserInfo;
             }());
             vipfbnow.UserInfo = UserInfo;
+            var PackageObject = (function () {
+                function PackageObject(id, value) {
+                    var self = this;
+                    self.id = id;
+                    self.value = value;
+                }
+                return PackageObject;
+            }());
+            vipfbnow.PackageObject = PackageObject;
         })(vipfbnow = sabrac.vipfbnow || (sabrac.vipfbnow = {}));
     })(sabrac = com.sabrac || (com.sabrac = {}));
 })(com || (com = {}));

@@ -23,8 +23,8 @@ class Vip extends Model
         return $this->belongsTo(Account::class, 'userid', 'id');
     }
 
-    public function likePackage() {
-        return $this->belongsTo(LikePackage::class, 'package', 'id');
+    public function package() {
+        return $this->belongsTo(Package::class, 'package', 'id');
     }
 
     public static function getVipList()
@@ -39,6 +39,6 @@ class Vip extends Model
     }
 
     public static function  getVipByUserId($userId) {
-        return Vip::with('likePackage')->where('userid', '=', $userId)->get();
+        return Vip::with('package')->where('userid', '=', $userId)->get();
     }
 }

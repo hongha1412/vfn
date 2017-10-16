@@ -6,8 +6,8 @@ use App\Enum\PackageType;
 use App\Http\Controllers\Common\VO\VipOutVO;
 use App\Models\Account;
 use App\Models\DayPackage;
-use App\Models\LikePackage;
-use App\Models\LikePrice;
+use App\Models\Package;
+use App\Models\Price;
 use App\Models\LikeSpeed;
 use App\Models\Vip;
 use Illuminate\Http\Request;
@@ -67,16 +67,16 @@ class CommonAPIController extends Controller
 
         switch (Input::get('packageType')) {
             case PackageType::LIKE:
-                $result['likePackage'] = LikePackage::all();
+                $result['likePackage'] = Package::getPackageByType(PackageType::LIKE);
                 break;
             case PackageType::COMMENT:
-                $result['commentPackage'] = null;
+                $result['commentPackage'] = Package::getPackageByType(PackageType::COMMENT);
                 break;
             case PackageType::SHARE:
-                $result['sharePackage'] = null;
+                $result['sharePackage'] = Package::getPackageByType(PackageType::SHARE);
                 break;
             case PackageType::REACT:
-                $result['reactPackage'] = null;
+                $result['reactPackage'] = Package::getPackageByType(PackageType::REACT);
                 break;
         }
         $result['dayPackage'] = DayPackage::all();
@@ -91,20 +91,38 @@ class CommonAPIController extends Controller
     /**
      * Check valid like, day, price package info
      *
+     * @param $packageType
      * @param $selectedLikePackage
      * @param $selectedDayPackage
-     * @return Message: fail | LikePrice: success
+     * @return Message: fail | Price: success
      */
-    public static function checkValidPackage($selectedLikePackage, $selectedDayPackage) {
+    public static function checkValidPackage($packageType, $selectedLikePackage, $selectedDayPackage) {
         // Validate data in database
-        $likePackage = LikePackage::getPackageById($selectedLikePackage);
         $dayPackage = DayPackage::getPackageById($selectedDayPackage);
-        if ($likePackage === null || $dayPackage === null) {
+        // Check package type
+        switch ($packageType) {
+            case PackageType::LIKE:
+                $package = Package::getPackageById($selectedLikePackage, PackageType::LIKE);
+                // Get price from day package and like package
+                $price = Price::getPriceByPackage($package, $dayPackage);
+                break;
+            case PackageType::COMMENT:
+                $package = Package::getPackageById($selectedLikePackage, PackageType::COMMENT);
+                // Get price from day package and like package
+                $price = Price::getPriceByPackage($package, $dayPackage);
+                break;
+            case PackageType::SHARE:
+                break;
+            case PackageType::REACT:
+                break;
+            default:
+                $package = null;
+                $price = null;
+                break;
+        }
+        if ($package === null || $dayPackage === null) {
             return new Message(false, 'Dữ liệu không đúng');
         }
-
-        // Get price from day package and like package
-        $price = LikePrice::getPriceByPackage($likePackage, $dayPackage);
 
         if ($price === null) {
             return new Message(false, 'Không có giá tiền tương ứng với gói hiện tại');

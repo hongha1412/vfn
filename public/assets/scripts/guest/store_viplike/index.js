@@ -109,11 +109,11 @@ var com;
                         if (result.success) {
                             for (var _i = 0, _a = result.message[0].likePackage; _i < _a.length; _i++) {
                                 var likePackage = _a[_i];
-                                self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.liketotal));
+                                self.lsLikePackage.push(new vipfbnow.PackageObject(likePackage.id, likePackage.total));
                             }
                             for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
                                 var dayPackage = _c[_b];
-                                self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
+                                self.lsDayPackage.push(new vipfbnow.PackageObject(dayPackage.id, dayPackage.daytotal));
                             }
                         }
                         else {
@@ -133,7 +133,7 @@ var com;
                         if (result.success) {
                             for (var _i = 0, _a = result.message[0]; _i < _a.length; _i++) {
                                 var likeSpeedObject = _a[_i];
-                                self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
+                                self.lsLikeSpeed.push(new vipfbnow.PackageObject(likeSpeedObject.id, likeSpeedObject.value));
                             }
                         }
                         else {
@@ -210,7 +210,7 @@ var com;
                             for (var _i = 0, _a = result.message[0].lsVipLike; _i < _a.length; _i++) {
                                 var vipLike = _a[_i];
                                 var storeVipLike = new StoreVip();
-                                storeVipLike.package = vipLike.like_package.liketotal;
+                                storeVipLike.package = vipLike.package.total;
                                 storeVipLike.fbName = vipLike.fbname;
                                 storeVipLike.note = vipLike.note;
                                 storeVipLike.expireDate = vipLike.expiretime;
@@ -242,14 +242,6 @@ var com;
                     self.expireDate = '';
                 }
                 return StoreVip;
-            }());
-            var PackageObject = (function () {
-                function PackageObject(id, value) {
-                    var self = this;
-                    self.id = id;
-                    self.value = value;
-                }
-                return PackageObject;
             }());
             $(document).ready(function () {
                 var screenModel = new StoreVipLikeScreenModel();

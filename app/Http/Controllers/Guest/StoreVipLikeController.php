@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Guest;
 
+use App\Enum\PackageType;
 use App\Http\Controllers\Common\CommonAPIController;
 use App\Http\Controllers\Common\Message;
 use App\Models\DayPackage;
+use App\Models\Package;
 use App\Models\Vip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -41,7 +43,7 @@ class StoreVipLikeController extends Controller
         }
 
         // Validate data in database
-        $result = CommonAPIController::checkValidPackage(Input::get('likePackage'), Input::get('dayPackage'));
+        $result = CommonAPIController::checkValidPackage(PackageType::LIKE, Input::get('likePackage'), Input::get('dayPackage'));
         if ($result instanceof Message) {
             return response($result->toJson(), 200);
         }
@@ -70,7 +72,7 @@ class StoreVipLikeController extends Controller
         }
 
         // Validate data in database
-        $packageResult = CommonAPIController::checkValidPackage(Input::get('package'), Input::get('dayPackage'));
+        $packageResult = CommonAPIController::checkValidPackage(PackageType::LIKE, Input::get('package'), Input::get('dayPackage'));
         if ($packageResult instanceof Message) {
             return response($packageResult->toJson(), 200);
         }

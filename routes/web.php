@@ -33,7 +33,7 @@ Route::group(['domain' => $domain], function () {
     Route::get('/register', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
     Route::get('/get-token', 'Guest\GetTokenController@index')->name('guest.getToken');
-    // LikePrice
+    // Price
     Route::get('/price', 'Guest\PriceController@index')->name('guest.price');
     // Home
     Route::get('/', 'Guest\HomeController@index')->name('guest.index');
@@ -58,6 +58,8 @@ Route::group(['domain' => $domain], function () {
         Route::get('/gift', 'Guest\GiftController@index')->name('guest.gift');
         // Store vip like
         Route::get('/store-viplike', 'Guest\StoreVipLikeController@index')->name('guest.storeVipLike');
+        // Store vip comment
+        Route::get('/store-vipcmt', 'Guest\StoreVipCmtController@index')->name('guest.storeVipCmt');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');

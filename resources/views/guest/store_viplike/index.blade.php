@@ -1,5 +1,5 @@
 @extends('guest.layouts.master')
-@section('title', 'Register Page')
+@section('title', 'Store Vip Like Page')
 @section('contents')
     <div class="col-lg-6">
         <div class="panel panel-default">

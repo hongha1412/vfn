@@ -14,8 +14,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RawTokenSeeder::class);
         $this->call(VipSeeder::class);
         $this->call(DayPackageSeeder::class);
-        $this->call(LikePackageSeeder::class);
-        $this->call(LikePriceSeeder::class);
+        $this->call(PackageSeeder::class);
+        $this->call(PriceSeeder::class);
         $this->call(LikeSpeedSeeder::class);
     }
 }

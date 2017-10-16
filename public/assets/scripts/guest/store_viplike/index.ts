@@ -129,7 +129,7 @@ module com.sabrac.vipfbnow {
             Utils.postData($('#packageURL').val(), PackageType.LIKE).done(function(result) {
                 if (result.success) {
                     for (let likePackage of result.message[0].likePackage) {
-                        self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.liketotal));
+                        self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.total));
                     }
                     for (let dayPackage of result.message[0].dayPackage) {
                         self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
@@ -232,7 +232,7 @@ module com.sabrac.vipfbnow {
                     self.totalID(result.message[0].lsVipLike.length);
                     for (let vipLike of result.message[0].lsVipLike) {
                         let storeVipLike = new StoreVip();
-                        storeVipLike.package = vipLike.like_package.liketotal;
+                        storeVipLike.package = vipLike.package.total;
                         storeVipLike.fbName = vipLike.fbname;
                         storeVipLike.note = vipLike.note;
                         storeVipLike.expireDate = vipLike.expiretime;
@@ -269,17 +269,6 @@ module com.sabrac.vipfbnow {
             self.dayPackage = 1;
             self.note = '';
             self.expireDate = '';
-        }
-    }
-
-    class PackageObject {
-        id: number;
-        value: number;
-
-        constructor(id: number, value: number) {
-            var self = this;
-            self.id = id;
-            self.value = value;
         }
     }
 

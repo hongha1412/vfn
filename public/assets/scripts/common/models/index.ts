@@ -42,4 +42,15 @@ module com.sabrac.vipfbnow {
             }
         }
     }
+
+    export class PackageObject {
+        id: number;
+        value: number;
+
+        constructor(id: number, value: number) {
+            var self = this;
+            self.id = id;
+            self.value = value;
+        }
+    }
 }
