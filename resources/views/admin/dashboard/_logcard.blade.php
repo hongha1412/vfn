@@ -24,7 +24,7 @@
                         <td>@{{ item.cardcode }}</td>
                         <td>@{{ item.serial }}</td>
                         <td>@{{ item.time }}</td>
-                        <td>@{{ number_format(item.price, 0, ',', ',') }} VNĐ</td>
+                        <td>@{{ formatPrice(item.price) }} VNĐ</td>
                     </tr>
                     </tbody>
                 </table>
