@@ -20,7 +20,7 @@
                     <tr v-for="item in itemsLogCard">
                         <td>@{{ item.id }}</td>
                         <td>@{{ item.receive_userid }}</td>
-                        <td>@{{ item.loaithe }}</td>
+                        <td>@{{ item.telco }}</td>
                         <td>@{{ item.cardcode }}</td>
                         <td>@{{ item.serial }}</td>
                         <td>@{{ item.time }}</td>
