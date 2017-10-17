@@ -18,19 +18,21 @@
                     <b><i class="fa fa-gears"></i> Cài Đặt Mã Gift Hệ Thống</b>
                 </div>
                 <div class="panel-body">
-                    <form method="POST" v-on:submit.prevent="submitGiftCode()">
+                    <form method="POST" enctype="multipart/form-data" v-on:submit.prevent="postGiftcode">
                         <div class="form-group">
-                            <label for="usr">Số Lượng</label> <input type="text"
-                                class="form-control" name="soluong" v-model="itemGiftCode.soluong">
+                            <label for="quality">Số Lượng</label> <input type="number"
+                                class="form-control" name="quality" v-model="itemGiftCode.quality">
+                                <span v-if="formErrors['quality']" class="error text-danger">@{{ formErrors['quality'] }}</span>
                         </div>
                         <div class="form-group">
-                            <label for="pwd">Mệnh Giá:</label> <input type="text"
-                                class="form-control" name="menhgia" v-model="itemGiftCode.amount">
+                            <label for="amount">Mệnh Giá:</label> <input type="text"
+                                class="form-control" name="amount" v-model="itemGiftCode.amount">
+                            <span v-if="formErrors['amount']" class="error text-danger">@{{ formErrors['amount'] }}</span>
                         </div>
                         <div class="form-group">
                             <label>Thời Hạn:</label> <select class="form-control"
-                                v-model="itemGiftCode.time" name="thoihan">
-                                <option value="1">1 Ngày</option>
+                                v-model="itemGiftCode.time" name="time">
+                                <option value="1" selected>1 Ngày</option>
                                 <option value="3">3 Ngày</option>
                                 <option value="5">5 Ngày</option>
                                 <option value="7">7 Ngày</option>
@@ -42,6 +44,7 @@
                                 <option value="120">4 Tháng</option>
                                 <option value="150">5 Tháng</option>
                             </select>
+                            <span v-if="formErrors['time']" class="error text-danger">@{{ formErrors['time'] }}</span>
                         </div>
                         <button type="submit" class="btn btn-danger">Lấy Thẻ</button>
                     </form>

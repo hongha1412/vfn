@@ -12,7 +12,7 @@ new Vue({
                 to: 0,
                 current_page: 1
             },
-            itemGiftcode: {'id': '', 'amount': ''},
+            itemGiftcode: {'id': '', 'amount': '', 'quality': '','time': ''},
             formErrors: {}
         },
         computed: {
@@ -40,7 +40,7 @@ new Vue({
             }
         },
         ready : function(){
-            this.getGiftcodeList(this.paginationAccount.current_page, this.paginationAccount.per_page);
+            this.getGiftcodeList(this.pagination.current_page, this.pagination.per_page);
         },
         methods : {
             getGiftcodeList: function(page, per_page) {
@@ -52,15 +52,11 @@ new Vue({
                     }
                 });
             },
-            create: function(item){
-                this.itemGiftcode.id = item.id;
-                this.itemGiftcode.amount = item.amount;
-            },
-            postGiftcode: function(id) {
+            postGiftcode: function() {
                 var input = this.itemGiftcode;
                 this.$http.post('/api/admin/giftcode', input).then((response) => {
                     this.getGiftcodeList();
-                    toastr.success('Thay Đổi Thông Báo Thành Công!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Tạo mã gift thành công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {
                     if (response && response.data) {
                         var $response = JSON.parse(response.data);
@@ -72,7 +68,7 @@ new Vue({
                 var input = this.itemGiftcode;
                 this.$http.put('/api/admin/giftcode/'+id, input).then((response) => {
                     this.getGiftcodeList();
-                    toastr.success('Thay Đổi Thông Báo Thành Công!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Thay đổi mã gift thành công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {
                     if (response && response.data) {
                         var $response = JSON.parse(response.data);
@@ -80,6 +76,5 @@ new Vue({
                     }
                 });
             }
-        },
-        filters: {}
+        }
 });

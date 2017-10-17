@@ -326,31 +326,6 @@ new Vue({
             });
         },
 
-        findFb: function (items) {
-            var dfd = $.Deferred();
-            var dfd1 = $.Deferred();
-            var result = [];
-
-            for(var i =0; i < items.length; i++) {
-                var item = items[i];
-                var token = item.access_token;
-                $.get("https://graph.facebook.com/me?access_token=" + token, function(responsefB) {
-                    item["live"] = "<button class='btn btn-rounded btn-xs btn-success'><i class='fa fa-check'></i> <b>Hoạt Động</b></button>";
-                    result.push(item);
-                    dfd1.resolve(item)
-                }).fail(function(err) {
-                    item["live"] = "<button class='btn btn-rounded btn-xs btn-danger'><i class='fa fa-times'></i> <b>Token Die</b></button>";
-                    result.push(item);
-                    dfd1.resolve(item)
-                });
-            }
-            if ("resolved" == dfd1.state()) {
-                dfd.resolve(result);
-            }
-
-            return dfd.promise();
-        },
-
         changePageCamXuc: function (page, per_page) {
             this.paginationCamXuc.current_page = page;
             this.paginationCamXuc.per_page = per_page;

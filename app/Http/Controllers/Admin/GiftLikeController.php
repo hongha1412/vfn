@@ -52,17 +52,21 @@ class GiftLikeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'quality'   => 'required',
             'amount'    => 'required'
         ]);
         
-        $timegift = time() + $request->amount * 24 * 3600;
-        $ends = date('d/m/Y', $timegift);
+        for($i = 0; $i < $request->quality; $i++)
+        {
+            $timegift = time() + $request->time * 24 * 3600;
+            //$ends = date('d/m/Y', $timegift);
 
-        $create = new GiftLike;
-        $create->giftcode = $this->randGiftCode();
-        $create->time = $timegift;
-        $create->amount = $request->amount;
-        $create->save();
+            $create = new GiftLike;
+            $create->giftcode = $this->randGiftCode();
+            $create->time = $timegift;
+            $create->amount = $request->amount;
+            $create->save();
+        }
 
         return response()->json($create);
     }
