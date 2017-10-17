@@ -19,6 +19,6 @@ class GiftCode extends Model
 
     public static function getGiftCodeList()
     {
-        return Notice::all();
+        return GiftCode::orderBy("amount", "desc")->get();
     }
 }

@@ -15,7 +15,22 @@ class GiftCodeController extends Controller
      */
     public function index()
     {
-        return GiftCode::getGiftCodeList();
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
+        $giftcodes = GiftCode::orderBy("amount", "desc")->paginate($perPage);
+
+        $response = [
+            'pagination' => [
+                'total'        => $giftcodes->total(),
+                'per_page'     => $giftcodes->perPage(),
+                'current_page' => $giftcodes->currentPage(),
+                'last_page'    => $giftcodes->lastPage(),
+                'from'         => $giftcodes->firstItem(),
+                'to'           => $giftcodes->lastItem()
+            ],
+            'data' => $giftcodes
+        ];
+
+        return response()->json($response);
     }
 
     /**
@@ -37,14 +52,19 @@ class GiftCodeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'text'    => 'required'
+            'amount'    => 'required'
         ]);
+        
+        $timegift = time() + $request->amount * 24 * 3600;
+        $ends = date('d/m/Y', $timegift);
 
-        $edit = new GiftCode;
-        $edit->giftcode = $request->giftcode;
-        $edit->save();
+        $create = new GiftCode;
+        $create->giftcode = $this->randGiftCode();
+        $create->time = $timegift;
+        $create->amount = $request->amount;
+        $create->save();
 
-        return response()->json($edit);
+        return response()->json($create);
     }
 
     /**
@@ -79,7 +99,19 @@ class GiftCodeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'amount'    => 'required'
+        ]);
+        
+        $timegift = time() + $request->amount * 24 * 3600;
+        $ends = date('d/m/Y', $timegift);
+
+        $edit = GiftCode::find($id);
+        $edit->time = $timegift;
+        $edit->amount = $request->amount;
+        $edit->save();
+
+        return response()->json($edit);
     }
 
     /**
@@ -90,6 +122,17 @@ class GiftCodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        GiftCode::find($id)->delete();
+        return response()->json(['done']);
+    }
+
+    private function randGiftCode($length = 25) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ9876543210';
+        $charactersLength = strlen($characters);
+        $randomString = 'VIPFBNOW';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }
