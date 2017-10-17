@@ -44,4 +44,15 @@ class GiftLike extends Model
                 $query->where('userid', '=', '')->orWhereNull('userid');
             })->where('giftcode', '=', $giftCode)->get();
     }
+
+    /**
+     * Get list of gift code and order by amount
+     *
+     * @param $giftCode
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
+     */
+    public static function getGiftCodeList()
+    {
+        return GiftCode::orderBy("amount", "desc")->get();
+    }
 }

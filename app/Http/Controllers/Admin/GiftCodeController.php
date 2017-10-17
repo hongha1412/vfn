@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\GiftCode;
+use App\Models\GiftLike;
 
 class GiftCodeController extends Controller
 {
@@ -16,7 +16,7 @@ class GiftCodeController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $giftcodes = GiftCode::orderBy("amount", "desc")->paginate($perPage);
+        $giftcodes = GiftLike::orderBy("amount", "desc")->paginate($perPage);
 
         $response = [
             'pagination' => [
@@ -58,7 +58,7 @@ class GiftCodeController extends Controller
         $timegift = time() + $request->amount * 24 * 3600;
         $ends = date('d/m/Y', $timegift);
 
-        $create = new GiftCode;
+        $create = new GiftLike;
         $create->giftcode = $this->randGiftCode();
         $create->time = $timegift;
         $create->amount = $request->amount;
@@ -106,7 +106,7 @@ class GiftCodeController extends Controller
         $timegift = time() + $request->amount * 24 * 3600;
         $ends = date('d/m/Y', $timegift);
 
-        $edit = GiftCode::find($id);
+        $edit = GiftLike::find($id);
         $edit->time = $timegift;
         $edit->amount = $request->amount;
         $edit->save();
