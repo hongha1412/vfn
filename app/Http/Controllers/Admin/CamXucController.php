@@ -19,8 +19,12 @@ class CamXucController extends Controller
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         $offset = ($page-1) * $perPage;
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
 
         $camXucs = CamXuc::paginate($perPage);
+        $camXucsLimit = isset($_GET["q"])
+            ? CamXuc::where("fullname", "LIKE", "%".$q."%")->limit($perPage)->offset($offset)->get()
+            : CamXuc::limit($perPage)->offset($offset)->get();
 
         $response = [
             'pagination' => [
@@ -31,7 +35,7 @@ class CamXucController extends Controller
                 'from'         => $camXucs->firstItem(),
                 'to'           => $camXucs->lastItem()
             ],
-            'data' => $this->getFbByToken(CamXuc::limit($perPage)->offset($offset)->get())
+            'data' => $this->getFbByToken($camXucsLimit)
         ];
 
         return response()->json($response);

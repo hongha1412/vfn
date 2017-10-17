@@ -19,7 +19,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         itemsVipLike: [],
         paginationVipLike: {
@@ -234,7 +235,7 @@ new Vue({
     },
 
     ready : function(){
-    	this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+    	this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page, "");
         this.getvueviplike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
         this.getvueVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
         this.getvueVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
@@ -244,8 +245,11 @@ new Vue({
 
     methods : {
         //////////////////////////////// Danh sach ////////////////////////////////////////
-        getvueAccount: function(page, per_page){
-            this.$http.get('/api/admin/account?page='+page + '&perPage=' + per_page).then((response) => {
+        getvueAccount: function(page, per_page, search_key){
+            var path = search_key
+                ? '/api/admin/account?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/admin/account?page='+page+ '&perPage=' + per_page;
+            this.$http.get(path).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsAccount', $response.data.data);
@@ -257,7 +261,7 @@ new Vue({
         changePageAccount: function (page, per_page) {
             this.paginationAccount.current_page = page;
             this.paginationAccount.per_page = per_page;
-            this.getvueAccount(page, per_page);
+            this.getvueAccount(page, per_page, this.paginationAccount.search_key);
         },
 
         getvueviplike: function(page, per_page){
@@ -308,8 +312,11 @@ new Vue({
             this.getvueVipShare(page, per_page);
         },
 
-        getvueCamXuc: function(page, per_page){
+        getvueCamXuc: function(page, per_page, search_key){
             var self = this;
+            var path = search_key
+                ? '/api/admin/camxuc?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/admin/camxuc?page='+page+ '&perPage=' + per_page;
             this.$http.get('/api/admin/camxuc?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);

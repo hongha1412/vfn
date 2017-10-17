@@ -16,7 +16,10 @@ class AccountController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $accounts = Account::paginate($perPage);
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
+        $accounts = isset($_GET["q"])
+            ? Account::where("fullname", 'like', '%'+$q+'%')->paginate($perPage)
+            : Account::paginate($perPage);
 
         $response = [
             'pagination' => [

@@ -18,7 +18,7 @@
                     <b>Thay Đổi Thống Báo</b>
                 </div>
                 <div class="panel-body">
-                    <form method="POST" v-on:submit.prevent="updateNotice(itemNotice.id)">
+                    <form method="POST" v-on:submit.prevent="submitNotice(itemNotice.id)">
                         <div class="form-group">
                             <textarea type="text" class="form-control" name="text" id="text" v-model="itemNotice.text"></textarea>
                         </div>

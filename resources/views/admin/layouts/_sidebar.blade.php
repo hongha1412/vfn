@@ -16,7 +16,7 @@
 
     </div>
     <ul class="sidebar-menu">
-        <li class="active Home"><a href="http://vipfbnow.com/AdminCP/index.php"><i class="fa fa-home"
+        <li class="active Home"><a href="{{ url('') }}"><i class="fa fa-home"
                                                                                    style="color: #00a65a;"></i>
                 <span>TRANG CHỦ</span></a></li>
 
@@ -54,9 +54,9 @@
         </li>
 
 
-        <li><a href="phatgift.php"><i class="fa fa-gift" aria-hidden="true"></i>
+        <li><a href="{{ url('giftcode') }}"><i class="fa fa-gift" aria-hidden="true"></i>
                 <span>Quản Lý GiftCode</span></a></li>
-        <li><a href="thongbao.php"><i class="fa fa-usd" aria-hidden="true"></i> <span>Thông Báo</span></a></li>
+        <li><a href="{{ url('notice') }}"><i class="fa fa-usd" aria-hidden="true"></i> <span>Thông Báo</span></a></li>
 
         <li><a href="logout.php"><i class="fa fa-share"></i> <span>Đăng Xuất</span></a></li>
     </ul>

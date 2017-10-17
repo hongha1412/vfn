@@ -28,6 +28,8 @@ Route::group(['domain' => $adminDomain], function () {
 
     // Dashboard
     Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
+    Route::get('/giftcode', 'Admin\DashboardController@giftcode')->name('admin.giftcode');
+    Route::get('/notice', 'Admin\DashboardController@notice')->name('admin.notice');
 });
 
 Route::group(['domain' => $domain], function () {

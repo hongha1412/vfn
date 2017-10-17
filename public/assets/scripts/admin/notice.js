@@ -8,14 +8,25 @@ new Vue({
             formErrors: {}
         },
         computed: {},
+        ready : function(){
+            this.getNotice();
+        },
         methods : {
             getNotice: function() {
                 this.$http.get('/api/admin/notice').then((response) => {
-                    if (response) {
+                    if (response && response.data) {
                         var $response = JSON.parse(response.data);
-                        this.$set('itemNotice', $response.data.data);
+                        this.itemNotice.text = $response.text;
+                        this.itemNotice.id = $response.id;
                     }
                 });
+            },
+            submitNotice: function(id) {
+                if (id) {
+                    this.updateNotice(id);
+                } else {
+                    this.postNotice();
+                }
             },
             updateNotice: function(id) {
                 var input = this.itemNotice;
@@ -28,6 +39,18 @@ new Vue({
                         this.formErrors = $response;
                     }
                 });
+            },
+            postNotice: function() {
+                var input = this.itemNotice;
+                this.$http.post('/api/admin/notice', input).then((response) => {
+                    this.getNotice();
+                    toastr.success('Thêm Thông Báo Thành Công!', 'Success Alert', {timeOut: 5000});
+                }, (response) => {
+                    if (response && response.data) {
+                        var $response = JSON.parse(response.data);
+                        this.formErrors = $response;
+                    }
+                }); 
             }
         },
         filters: {}

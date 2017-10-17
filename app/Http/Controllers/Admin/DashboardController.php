@@ -10,4 +10,12 @@ class DashboardController extends Controller
     public function index() {
         return view("admin.dashboard.index");
     }
+
+    public function giftcode() {
+        return view("admin.giftcode.index");
+    }
+
+    public function notice() {
+        return view("admin.notice.index");
+    }
 }

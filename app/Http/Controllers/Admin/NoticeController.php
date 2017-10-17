@@ -40,11 +40,12 @@ class NoticeController extends Controller
             'text'    => 'required'
         ]);
 
-        $edit = new Notice;
-        $edit->text = $request->text;
-        $edit->save();
+        $create = new Notice;
+        $create->text = $request->text;
+        $create->time = time();
+        $create->save();
 
-        return response()->json($edit);
+        return response()->json($create);
     }
 
     /**
@@ -84,6 +85,7 @@ class NoticeController extends Controller
 
         $edit = Notice::find($id);
         $edit->text = $request->text;
+        $edit->time = time();
         $edit->save();
 
         return response()->json($edit);
