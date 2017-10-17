@@ -24,6 +24,7 @@ var com;
                     self.cmtSpeed = ko.observable(1);
                     self.dayPackage = ko.observable(1);
                     self.price = ko.observable(0);
+                    self.commentContent = ko.observable('');
                     self.lsCmtPackage = ko.observableArray([]);
                     self.lsDayPackage = ko.observableArray([]);
                     self.lsCmtSpeed = ko.observableArray([]);
@@ -57,7 +58,9 @@ var com;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
-                        dfd.resolve();
+                        self.getPackageInfo().always(function () {
+                            dfd.resolve();
+                        });
                     }).fail(function (result) {
                         dfd.resolve();
                     });
@@ -75,6 +78,37 @@ var com;
                             vipfbnow.Utils.notify(result);
                         }
                     }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
+                StoreVipCmtScreenModel.prototype.getPackageInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    var data = {
+                        packageType: 1 /* COMMENT */
+                    };
+                    vipfbnow.Utils.postData($('#packageURL').val(), data).done(function (result) {
+                        if (result.success) {
+                            if (result.message[0].hasOwnProperty('commentPackage')) {
+                                for (var _i = 0, _a = result.message[0].commentPackage; _i < _a.length; _i++) {
+                                    var cmtPackage = _a[_i];
+                                    self.lsCmtPackage.push(new vipfbnow.PackageObject(cmtPackage.id, cmtPackage.total));
+                                }
+                            }
+                            for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
+                                var dayPackage = _c[_b];
+                                if (dayPackage.daytotal == 30 || dayPackage.daytotal == 60 || dayPackage.daytotal == 90) {
+                                    self.lsDayPackage.push(new vipfbnow.PackageObject(dayPackage.id, dayPackage.daytotal));
+                                }
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function (result) {
                         dfd.resolve();
                     });
                     return dfd.promise();

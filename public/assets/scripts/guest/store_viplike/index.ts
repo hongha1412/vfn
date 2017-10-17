@@ -126,10 +126,15 @@ module com.sabrac.vipfbnow {
         getPackageInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            Utils.postData($('#packageURL').val(), PackageType.LIKE).done(function(result) {
+            let data = {
+                packageType: PackageType.LIKE
+            };
+            Utils.postData($('#packageURL').val(), data).done(function(result) {
                 if (result.success) {
-                    for (let likePackage of result.message[0].likePackage) {
-                        self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.total));
+                    if (result.message[0].hasOwnProperty('likePackage')) {
+                        for (let likePackage of result.message[0].likePackage) {
+                            self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.total));
+                        }
                     }
                     for (let dayPackage of result.message[0].dayPackage) {
                         self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));

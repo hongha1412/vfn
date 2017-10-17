@@ -26,32 +26,6 @@ class StoreVipLikeController extends Controller
     }
 
     /**
-     * Calculate charge money
-     *
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    public function calculate(Request $request) {
-        // Check valid data
-        $validator = Validator::make($request->all(), [
-            'likePackage' => 'required|numeric',
-            'dayPackage' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response((new Message(false, $validator->messages()->all()))->toJson(), 200);
-        }
-
-        // Validate data in database
-        $result = CommonAPIController::checkValidPackage(PackageType::LIKE, Input::get('likePackage'), Input::get('dayPackage'));
-        if ($result instanceof Message) {
-            return response($result->toJson(), 200);
-        }
-
-        return response((new Message(true, $result[0]))->toJson(), 200);
-    }
-
-    /**
      * Action buy vip like package
      *
      * @param Request $request

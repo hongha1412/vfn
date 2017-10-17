@@ -65,19 +65,21 @@ class CommonAPIController extends Controller
     public function getPackage(Request $request) {
         $result = array();
 
-        switch (Input::get('packageType')) {
-            case PackageType::LIKE:
-                $result['likePackage'] = Package::getPackageByType(PackageType::LIKE);
-                break;
-            case PackageType::COMMENT:
-                $result['commentPackage'] = Package::getPackageByType(PackageType::COMMENT);
-                break;
-            case PackageType::SHARE:
-                $result['sharePackage'] = Package::getPackageByType(PackageType::SHARE);
-                break;
-            case PackageType::REACT:
-                $result['reactPackage'] = Package::getPackageByType(PackageType::REACT);
-                break;
+        if (!is_null(Input::get('packageType'))) {
+            switch (intval(Input::get('packageType'))) {
+                case PackageType::LIKE:
+                    $result['likePackage'] = Package::getPackageByType(PackageType::LIKE);
+                    break;
+                case PackageType::COMMENT:
+                    $result['commentPackage'] = Package::getPackageByType(PackageType::COMMENT);
+                    break;
+                case PackageType::SHARE:
+                    $result['sharePackage'] = Package::getPackageByType(PackageType::SHARE);
+                    break;
+                case PackageType::REACT:
+                    $result['reactPackage'] = Package::getPackageByType(PackageType::REACT);
+                    break;
+            }
         }
         $result['dayPackage'] = DayPackage::all();
 
@@ -144,6 +146,52 @@ class CommonAPIController extends Controller
         }
 
         return $loggedUser;
+    }
+
+    /**
+     * Calculate charge money
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function calculate(Request $request) {
+        $rule = array();
+        $packageValue = -1;
+        $packageType = -1;
+
+        $rule['dayPackage'] = 'required|numeric';
+        if (!is_null(Input::get('likePackage'))) {
+            $rule['likePackage'] = 'required|numeric';
+            $packageType = PackageType::LIKE;
+            $packageValue = Input::get('likePackage');
+        } else if (!is_null(Input::get('cmtPackage'))) {
+            $rule['cmtPackage'] = 'required|numeric';
+            $packageType = PackageType::COMMENT;
+            $packageValue = Input::get('cmtPackage');
+        } else if (!is_null(Input::get('sharePackage'))) {
+            $rule['sharePackage'] = 'required|numeric';
+            $packageType = PackageType::SHARE;
+            $packageValue = Input::get('sharePackage');
+        } else if (!is_null(Input::get('reactPackage'))) {
+            $rule['reactPackage'] = 'required|numeric';
+            $packageType = PackageType::REACT;
+            $packageValue = Input::get('reactPackage');
+        }
+
+        // Check valid data
+        $validator = Validator::make($request->all(), $rule);
+
+        if ($validator->fails()) {
+            return response((new Message(false, $validator->messages()->all()))->toJson(), 200);
+        }
+
+        // Validate data in database
+        $result = CommonAPIController::checkValidPackage($packageType, $packageValue, Input::get('dayPackage'));
+        if ($result instanceof Message) {
+            return response($result->toJson(), 200);
+        }
+
+        return response((new Message(true, $result[0]))->toJson(), 200);
     }
 
     /**

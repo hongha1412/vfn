@@ -105,11 +105,16 @@ var com;
                 StoreVipLikeScreenModel.prototype.getPackageInfo = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    vipfbnow.Utils.postData($('#packageURL').val(), 0 /* LIKE */).done(function (result) {
+                    var data = {
+                        packageType: 0 /* LIKE */
+                    };
+                    vipfbnow.Utils.postData($('#packageURL').val(), data).done(function (result) {
                         if (result.success) {
-                            for (var _i = 0, _a = result.message[0].likePackage; _i < _a.length; _i++) {
-                                var likePackage = _a[_i];
-                                self.lsLikePackage.push(new vipfbnow.PackageObject(likePackage.id, likePackage.total));
+                            if (result.message[0].hasOwnProperty('likePackage')) {
+                                for (var _i = 0, _a = result.message[0].likePackage; _i < _a.length; _i++) {
+                                    var likePackage = _a[_i];
+                                    self.lsLikePackage.push(new vipfbnow.PackageObject(likePackage.id, likePackage.total));
+                                }
                             }
                             for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
                                 var dayPackage = _c[_b];

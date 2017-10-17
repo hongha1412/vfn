@@ -49,5 +49,27 @@ class PriceSeeder extends Seeder
         Price::create(['vnd' => 650000, 'type' => 0, 'package' => 5, 'daypackage' => 5]);
         Price::create(['vnd' => 1250000, 'type' => 0, 'package' => 6, 'daypackage' => 5]);
         Price::create(['vnd' => 1660000, 'type' => 0, 'package' => 7, 'daypackage' => 5]);
+
+        Price::create(['vnd' => 30000, 'type' => 1, 'package' => 8, 'daypackage' => 1]);
+        Price::create(['vnd' => 60000, 'type' => 1, 'package' => 9, 'daypackage' => 1]);
+        Price::create(['vnd' => 100000, 'type' => 1, 'package' => 10, 'daypackage' => 1]);
+        Price::create(['vnd' => 140000, 'type' => 1, 'package' => 11, 'daypackage' => 1]);
+        Price::create(['vnd' => 170000, 'type' => 1, 'package' => 12, 'daypackage' => 1]);
+        Price::create(['vnd' => 200000, 'type' => 1, 'package' => 13, 'daypackage' => 1]);
+        Price::create(['vnd' => 250000, 'type' => 1, 'package' => 14, 'daypackage' => 1]);
+        Price::create(['vnd' => 90000, 'type' => 1, 'package' => 8, 'daypackage' => 2]);
+        Price::create(['vnd' => 120000, 'type' => 1, 'package' => 9, 'daypackage' => 2]);
+        Price::create(['vnd' => 200000, 'type' => 1, 'package' => 10, 'daypackage' => 2]);
+        Price::create(['vnd' => 240000, 'type' => 1, 'package' => 11, 'daypackage' => 2]);
+        Price::create(['vnd' => 340000, 'type' => 1, 'package' => 12, 'daypackage' => 2]);
+        Price::create(['vnd' => 400000, 'type' => 1, 'package' => 13, 'daypackage' => 2]);
+        Price::create(['vnd' => 500000, 'type' => 1, 'package' => 14, 'daypackage' => 2]);
+        Price::create(['vnd' => 180000, 'type' => 1, 'package' => 8, 'daypackage' => 3]);
+        Price::create(['vnd' => 290000, 'type' => 1, 'package' => 9, 'daypackage' => 3]);
+        Price::create(['vnd' => 400000, 'type' => 1, 'package' => 10, 'daypackage' => 3]);
+        Price::create(['vnd' => 480000, 'type' => 1, 'package' => 11, 'daypackage' => 3]);
+        Price::create(['vnd' => 510000, 'type' => 1, 'package' => 12, 'daypackage' => 3]);
+        Price::create(['vnd' => 600000, 'type' => 1, 'package' => 13, 'daypackage' => 3]);
+        Price::create(['vnd' => 750000, 'type' => 1, 'package' => 14, 'daypackage' => 3]);
     }
 }

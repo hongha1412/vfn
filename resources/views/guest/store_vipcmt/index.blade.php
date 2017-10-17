@@ -20,52 +20,30 @@
                     </div>
                     <div class="form-group"><label>Số Status/1 Ngày:</label> <label>Unlimited</label></div>
                     <div class="form-group">
-                        <label>Số CMT Mua</label>
-                        <select name="goi" id="goi" class="form-control">
-                            <option value="1">15 Bình Luận</option>
-                            <option value="2">20 Bình Luận</option>
-                            <option value="3">25 Bình Luận</option>
-                            <option value="4">30 Bình Luận</option>
-                            <option value="5">35 Bình Luận</option>
-                            <option value="6">40 Bình Luận</option>
-                            <option value="7">45 Bình Luận</option>
-                        </select>
+                        <label>Số Lượng Comment</label>
+                        <select class="form-control"
+                                data-bind="enable: isEnable, options: lsCmtPackage, value: cmtPackage, optionsText: 'value', optionsValue: 'id'"></select>
                     </div>
                     <div class="form-group">
-                        <label>Số CMT/1 Phút</label>
-                        <select name="socmt" class="form-control">
-                            <option value="1">1 CMT</option>
-                            <option value="2">2 CMT</option>
-                            <option value="3">3 CMT</option>
-                            <option value="4">4 CMT</option>
-                            <option value="5">5 CMT</option>
-                            <option value="10">10 CMT</option>
-                            <option value="20">20 CMT</option>
-                        </select>
+                        <label>Tốc độ comment/1 Phút</label>
+                        <select class="form-control"
+                                data-bind="enable: isEnable, options: lsCmtSpeed, value: cmtSpeed, optionsText: 'value', optionsValue: 'id'"></select>
                     </div>
                     <div class="form-group">
                         <label>Thời Hạn</label>
-                        <select name="time" id="time" class="form-control">
-                            <option value="30">1 Tháng</option>
-                            <option value="60">2 Tháng</option>
-                            <option value="90">3 Tháng</option>
-                        </select>
+                        <select class="form-control"
+                                data-bind="enable: isEnable, options: lsDayPackage, value: dayPackage, optionsText: 'value', optionsValue: 'id'"></select>
                     </div>
                     <div class="form-group">
                         <label>Nội Dung CMT</label>
-                        <textarea class="form-control" id="noidung" name="noidung" rows="5" placeholder="Nhập nội dung comment" required="" autofocus=""></textarea>
+                        <textarea class="form-control" data-bind="value: commentContent" id="noidung" name="noidung" rows="5" placeholder="Nhập nội dung comment" required="" autofocus=""></textarea>
                     </div>
-                    <b>Thành Tiền</b></td>
-                    <td>
-                        <div class="form-control">
-                            <label id="dola" for="dola">Giá tiền: 270,000 VNĐ</label>
-                        </div>
-                        </br>
-                        <button type="submit" name="submit" class="btn btn-danger">Cài VIP CMT</button>
-                    </td>
-                    </tr>
-                    </tbody>
-                    </table>
+                    Thành Tiền:
+                    <div class="form-control">
+                        <label id="dola" for="dola">Số Tiền Cần Thanh Toán Là: <span data-bind="text: price"></span></label>
+                    </div>
+                    </br>
+                    <button type="submit" name="submit" class="btn btn-danger">Cài VIP CMT</button>
                 </form>
             </div>
         </div>
@@ -107,7 +85,8 @@
             </div>
         </div>
     </div>
-    <input type="text" style="display: none;" value="{{ route('guest.calculateVipLike') }}" id="calculateURL" />
+    <input type="text" style="display: none;" value="{{ route('common.calculate') }}" id="calculateURL" />
+    <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
 @endsection
 
 @section('page_js')

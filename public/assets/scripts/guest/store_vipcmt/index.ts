@@ -19,6 +19,7 @@ module com.sabrac.vipfbnow {
         cmtSpeed: KnockoutObservable<number>;
         dayPackage: KnockoutObservable<number>;
         price: KnockoutObservable<number>;
+        commentContent: KnockoutObservable<string>;
         lsCmtPackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
         lsCmtSpeed: KnockoutObservableArray<PackageObject>;
@@ -35,6 +36,7 @@ module com.sabrac.vipfbnow {
             self.cmtSpeed = ko.observable<number>(1);
             self.dayPackage = ko.observable<number>(1);
             self.price = ko.observable<number>(0);
+            self.commentContent = ko.observable<string>('');
             self.lsCmtPackage = ko.observableArray<PackageObject>([]);
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
             self.lsCmtSpeed = ko.observableArray<PackageObject>([]);
@@ -72,7 +74,9 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
-                dfd.resolve();
+                self.getPackageInfo().always(function() {
+                    dfd.resolve();
+                });
             }).fail(function (result) {
                 dfd.resolve();
             });
@@ -94,6 +98,35 @@ module com.sabrac.vipfbnow {
                 dfd.resolve();
             });
 
+            return dfd.promise();
+        }
+
+        getPackageInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            let data = {
+                packageType: PackageType.COMMENT
+            };
+            Utils.postData($('#packageURL').val(), data).done(function(result) {
+                if (result.success) {
+                    if (result.message[0].hasOwnProperty('commentPackage')) {
+                        for (let cmtPackage of result.message[0].commentPackage) {
+                            self.lsCmtPackage.push(new PackageObject(cmtPackage.id, cmtPackage.total));
+                        }
+                    }
+                    for (let dayPackage of result.message[0].dayPackage) {
+                        if (dayPackage.daytotal == 30 || dayPackage.daytotal == 60 || dayPackage.daytotal == 90) {
+                            self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
+                        }
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function(result) {
+                Utils.unexpectedError();
+            }).always(function (result) {
+                dfd.resolve();
+            });
             return dfd.promise();
         }
 

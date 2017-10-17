@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <input type="text" style="display: none;" value="{{ route('guest.calculateVipLike') }}" id="calculateURL" />
+    <input type="text" style="display: none;" value="{{ route('common.calculate') }}" id="calculateURL" />
     <input type="text" style="display: none;" value="{{ route('common.listVipLike') }}" id="listVIPLikeURL" />
     <input type="text" style="display: none;" value="{{ route('guest.buyVipLike') }}" id="buyVipLikeURL" />
     <input type="text" style="display: none;" value="{{ route('common.getLikeSpeed') }}" id="likeSpeedURL" />

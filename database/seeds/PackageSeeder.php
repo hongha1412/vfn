@@ -21,5 +21,13 @@ class PackageSeeder extends Seeder
         Package::create(['type' => 0, 'total' => 1000]);
         Package::create(['type' => 0, 'total' => 1500]);
         Package::create(['type' => 0, 'total' => 2000]);
+
+        Package::create(['type' => 1, 'total' => 15]);
+        Package::create(['type' => 1, 'total' => 20]);
+        Package::create(['type' => 1, 'total' => 25]);
+        Package::create(['type' => 1, 'total' => 30]);
+        Package::create(['type' => 1, 'total' => 35]);
+        Package::create(['type' => 1, 'total' => 40]);
+        Package::create(['type' => 1, 'total' => 45]);
     }
 }
