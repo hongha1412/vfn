@@ -39,3 +39,11 @@ Route::get('admin/camxuc', 'Admin\CamXucController@index');
 Route::delete('admin/camxuc/{id}', 'Admin\CamXucController@destroy');
 // log card
 Route::get('admin/logcard', 'Admin\LogCardController@index');
+// gift code
+Route::get('admin/giftcode', 'Admin\GiftCodeController@index');
+Route::post('admin/giftcode', 'Admin\GiftCodeController@store');
+Route::put('admin/giftcode/{id}', 'Admin\GiftCodeController@update');
+Route::delete('admin/giftcode/{id}', 'Admin\GiftCodeController@destroy');
+// notice
+Route::get('admin/giftcode', 'Admin\GiftCodeController@index');
+Route::put('admin/giftcode/{id}', 'Admin\GiftCodeController@update');
