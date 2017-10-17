@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\GiftLike;
 
-class GiftCodeController extends Controller
+class GiftLikeController extends Controller
 {
     /**
      * Display a listing of the resource.
