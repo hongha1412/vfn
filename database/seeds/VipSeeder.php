@@ -20,6 +20,7 @@ class VipSeeder extends Seeder
             'fbname'        => 'Jake Braun',
             'userid'        => 1,
             'package'       => 1,
+            'type'          => 0,
             'expiretime'    => Carbon::now()->addYears(500),
             'likespeed'     => 100,
             'limitpost'     => 0,

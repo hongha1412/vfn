@@ -87,6 +87,8 @@
     </div>
     <input type="text" style="display: none;" value="{{ route('common.calculate') }}" id="calculateURL" />
     <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
+    <input type="text" style="display: none;" value="{{ route('common.getSpeed') }}" id="speedURL" />
+    <input type="text" style="display: none;" value="{{ route('common.listVip') }}" id="listVIPURL" />
 @endsection
 
 @section('page_js')

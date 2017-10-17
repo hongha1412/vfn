@@ -153,7 +153,10 @@ module com.sabrac.vipfbnow {
         getLikeSpeedInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            Utils.postData($('#likeSpeedURL').val(), null).done(function(result) {
+            let data = {
+                type: PackageType.LIKE
+            };
+            Utils.postData($('#speedURL').val(), data).done(function(result) {
                 if (result.success) {
                     for (let likeSpeedObject of result.message[0]) {
                         self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
@@ -231,8 +234,11 @@ module com.sabrac.vipfbnow {
             var self = this;
             var dfd = $.Deferred();
             self.lsVipLike([]);
+            let data = {
+                packageType: PackageType.LIKE
+            };
 
-            Utils.postData($('#listVIPLikeURL').val(), null).done(function(result) {
+            Utils.postData($('#listVIPURL').val(), data).done(function(result) {
                 if (result.success) {
                     self.totalID(result.message[0].lsVipLike.length);
                     for (let vipLike of result.message[0].lsVipLike) {
@@ -253,27 +259,6 @@ module com.sabrac.vipfbnow {
                 dfd.resolve();
             });
             return dfd.promise();
-        }
-    }
-
-    class StoreVip {
-        fbId: string;
-        fbName: string;
-        package: number;
-        speed: number;
-        dayPackage: number;
-        note: string;
-        expireDate: string;
-
-        constructor() {
-            var self = this;
-            self.fbId = '';
-            self.fbName = '';
-            self.package = 1;
-            self.speed = 1;
-            self.dayPackage = 1;
-            self.note = '';
-            self.expireDate = '';
         }
     }
 

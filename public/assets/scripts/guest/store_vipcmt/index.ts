@@ -23,6 +23,7 @@ module com.sabrac.vipfbnow {
         lsCmtPackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
         lsCmtSpeed: KnockoutObservableArray<PackageObject>;
+        lsVipComment: KnockoutObservableArray<StoreVip>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
@@ -41,6 +42,7 @@ module com.sabrac.vipfbnow {
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
             self.lsCmtSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
+            self.lsVipComment = ko.observableArray<StoreVip>([]);
 
             self.fbURL.subscribe(function() {
                 $.blockUI();
@@ -74,8 +76,16 @@ module com.sabrac.vipfbnow {
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
-                self.getPackageInfo().always(function() {
-                    dfd.resolve();
+                self.getListVipID().always(function () {
+                    self.getPackageInfo().always(function () {
+                        self.getCommentSpeedInfo().always(function () {
+                            self.calculate().done(function (result) {
+                                self.price(result);
+                            }).always(function () {
+                                dfd.resolve();
+                            });
+                        });
+                    });
                 });
             }).fail(function (result) {
                 dfd.resolve();
@@ -98,6 +108,28 @@ module com.sabrac.vipfbnow {
                 dfd.resolve();
             });
 
+            return dfd.promise();
+        }
+
+        getCommentSpeedInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            let data = {
+                type: PackageType.COMMENT
+            };
+            Utils.postData($('#speedURL').val(), data).done(function(result) {
+                if (result.success) {
+                    for (let cmtSpeedObject of result.message[0]) {
+                        self.lsCmtSpeed.push(new PackageObject(cmtSpeedObject.id, cmtSpeedObject.value));
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                dfd.resolve();
+            });
             return dfd.promise();
         }
 
@@ -161,7 +193,40 @@ module com.sabrac.vipfbnow {
         buyVipCmt() {
             var self = this;
         }
+
+        getListVipID(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            self.lsVipComment([]);
+            let data = {
+                packageType: PackageType.COMMENT
+            };
+
+            Utils.postData($('#listVIPURL').val(), data).done(function(result) {
+                if (result.success) {
+                    self.totalID(result.message[0].lsVipComment.length);
+                    for (let vipComment of result.message[0].lsVipComment) {
+                        let storeVipComment = new StoreVip();
+                        storeVipComment.package = vipComment.package.total;
+                        storeVipComment.fbName = vipComment.fbname;
+                        storeVipComment.note = vipComment.note;
+                        storeVipComment.expireDate = vipComment.expiretime;
+
+                        self.lsVipComment.push(storeVipComment);
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
     }
+
+
 
     $(document).ready(function() {
         var screenModel = new StoreVipCmtScreenModel();

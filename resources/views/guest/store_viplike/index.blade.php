@@ -93,9 +93,9 @@
         </div>
     </div>
     <input type="text" style="display: none;" value="{{ route('common.calculate') }}" id="calculateURL" />
-    <input type="text" style="display: none;" value="{{ route('common.listVipLike') }}" id="listVIPLikeURL" />
+    <input type="text" style="display: none;" value="{{ route('common.listVip') }}" id="listVIPURL" />
     <input type="text" style="display: none;" value="{{ route('guest.buyVipLike') }}" id="buyVipLikeURL" />
-    <input type="text" style="display: none;" value="{{ route('common.getLikeSpeed') }}" id="likeSpeedURL" />
+    <input type="text" style="display: none;" value="{{ route('common.getSpeed') }}" id="speedURL" />
     <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
 @endsection
 

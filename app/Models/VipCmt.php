@@ -19,8 +19,26 @@ class VipCmt extends Model
         'limitpost',
     ];
 
+    public function account() {
+        return $this->belongsTo(Account::class, 'userid', 'id');
+    }
+
+    public function package() {
+        return $this->belongsTo(Package::class, 'package', 'id');
+    }
+
     public static function getVipCmtList()
     {
-        return Vip::where('goi', '>', '0')->inRandomOrder()->get();
+        return VipCmt::where('goi', '>', '0')->inRandomOrder()->get();
+    }
+
+    public static function getVipByFbId($fbId) {
+        return VipCmt::with(['account' => function($query) {
+            $query->select(['id', 'username']);
+        }])->where('idfb', '=', $fbId)->get();
+    }
+
+    public static function  getVipByUserId($userId) {
+        return VipCmt::with('package')->where('userid', '=', $userId)->get();
     }
 }

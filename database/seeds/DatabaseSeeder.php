@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DayPackageSeeder::class);
         $this->call(PackageSeeder::class);
         $this->call(PriceSeeder::class);
-        $this->call(LikeSpeedSeeder::class);
+        $this->call(SpeedSeeder::class);
         $this->call(AccountSeeder::class);
     }
 }

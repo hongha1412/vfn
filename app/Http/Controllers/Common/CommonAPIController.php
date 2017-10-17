@@ -8,7 +8,7 @@ use App\Models\Account;
 use App\Models\DayPackage;
 use App\Models\Package;
 use App\Models\Price;
-use App\Models\LikeSpeed;
+use App\Models\Speed;
 use App\Models\Vip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -86,46 +86,29 @@ class CommonAPIController extends Controller
         return response((new Message(true, $result))->toJson(), 200);
     }
 
-    public function getLikeSpeed() {
-        return response((new Message(true, LikeSpeed::all()))->toJson(), 200);
+    public function getSpeed(Request $request) {
+        return response((new Message(true, Speed::getSpeedByType(Input::get('type'))))->toJson(), 200);
     }
 
     /**
      * Check valid like, day, price package info
      *
-     * @param $packageType
      * @param $selectedLikePackage
      * @param $selectedDayPackage
      * @return Message: fail | Price: success
      */
-    public static function checkValidPackage($packageType, $selectedLikePackage, $selectedDayPackage) {
+    public static function checkValidPackage($selectedLikePackage, $selectedDayPackage) {
         // Validate data in database
         $dayPackage = DayPackage::getPackageById($selectedDayPackage);
+
         // Check package type
-        switch ($packageType) {
-            case PackageType::LIKE:
-                $package = Package::getPackageById($selectedLikePackage, PackageType::LIKE);
-                // Get price from day package and like package
-                $price = Price::getPriceByPackage($package, $dayPackage);
-                break;
-            case PackageType::COMMENT:
-                $package = Package::getPackageById($selectedLikePackage, PackageType::COMMENT);
-                // Get price from day package and like package
-                $price = Price::getPriceByPackage($package, $dayPackage);
-                break;
-            case PackageType::SHARE:
-                break;
-            case PackageType::REACT:
-                break;
-            default:
-                $package = null;
-                $price = null;
-                break;
-        }
+        $package = Package::getPackageById($selectedLikePackage);
         if ($package === null || $dayPackage === null) {
             return new Message(false, 'Dữ liệu không đúng');
         }
 
+        // Get price from day package and like package
+        $price = Price::getPriceByPackage($package, $dayPackage);
         if ($price === null) {
             return new Message(false, 'Không có giá tiền tương ứng với gói hiện tại');
         }
@@ -157,24 +140,19 @@ class CommonAPIController extends Controller
     public function calculate(Request $request) {
         $rule = array();
         $packageValue = -1;
-        $packageType = -1;
 
         $rule['dayPackage'] = 'required|numeric';
         if (!is_null(Input::get('likePackage'))) {
             $rule['likePackage'] = 'required|numeric';
-            $packageType = PackageType::LIKE;
             $packageValue = Input::get('likePackage');
         } else if (!is_null(Input::get('cmtPackage'))) {
             $rule['cmtPackage'] = 'required|numeric';
-            $packageType = PackageType::COMMENT;
             $packageValue = Input::get('cmtPackage');
         } else if (!is_null(Input::get('sharePackage'))) {
             $rule['sharePackage'] = 'required|numeric';
-            $packageType = PackageType::SHARE;
             $packageValue = Input::get('sharePackage');
         } else if (!is_null(Input::get('reactPackage'))) {
             $rule['reactPackage'] = 'required|numeric';
-            $packageType = PackageType::REACT;
             $packageValue = Input::get('reactPackage');
         }
 
@@ -186,7 +164,7 @@ class CommonAPIController extends Controller
         }
 
         // Validate data in database
-        $result = CommonAPIController::checkValidPackage($packageType, $packageValue, Input::get('dayPackage'));
+        $result = CommonAPIController::checkValidPackage($packageValue, Input::get('dayPackage'));
         if ($result instanceof Message) {
             return response($result->toJson(), 200);
         }
@@ -197,11 +175,29 @@ class CommonAPIController extends Controller
     /**
      * Get list vip of logged in user
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function listVipID() {
+    public function listVipID(Request $request) {
         $vipOutVO = new VipOutVO();
-        $vipOutVO->setLsVipLike(Vip::getVipByUserId(Auth::id()));
+
+        if (!is_null(Input::get('packageType'))) {
+            switch (Input::get('packageType')) {
+                case PackageType::LIKE:
+                    $vipOutVO->setLsVipLike(Vip::getVipLikeByUserId(Auth::id()));
+                    break;
+                case PackageType::COMMENT:
+                    $vipOutVO->setLsVipComment(Vip::getVipCommentByUserId(Auth::id()));
+                    break;
+                case PackageType::SHARE:
+                    $vipOutVO->setLsVipShare(Vip::getVipShareByUserId(Auth::id()));
+                    break;
+                case PackageType::REACT:
+                    $vipOutVO->setLsVipReact(Vip::getVipReactByUserId(Auth::id()));
+                    break;
+            }
+        }
+
         return response((new Message(true, $vipOutVO))->toJson(), 200);
     }
 }

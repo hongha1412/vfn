@@ -134,7 +134,10 @@ var com;
                 StoreVipLikeScreenModel.prototype.getLikeSpeedInfo = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    vipfbnow.Utils.postData($('#likeSpeedURL').val(), null).done(function (result) {
+                    var data = {
+                        type: 0 /* LIKE */
+                    };
+                    vipfbnow.Utils.postData($('#speedURL').val(), data).done(function (result) {
                         if (result.success) {
                             for (var _i = 0, _a = result.message[0]; _i < _a.length; _i++) {
                                 var likeSpeedObject = _a[_i];
@@ -181,7 +184,7 @@ var com;
                     var self = this;
                     $.blockUI();
                     self.isEnable(false);
-                    var data = new StoreVip();
+                    var data = new vipfbnow.StoreVip();
                     data.fbId = self.fbId();
                     data.fbName = self.fbName();
                     data.package = self.likePackage();
@@ -209,12 +212,15 @@ var com;
                     var self = this;
                     var dfd = $.Deferred();
                     self.lsVipLike([]);
-                    vipfbnow.Utils.postData($('#listVIPLikeURL').val(), null).done(function (result) {
+                    var data = {
+                        packageType: 0 /* LIKE */
+                    };
+                    vipfbnow.Utils.postData($('#listVIPURL').val(), data).done(function (result) {
                         if (result.success) {
                             self.totalID(result.message[0].lsVipLike.length);
                             for (var _i = 0, _a = result.message[0].lsVipLike; _i < _a.length; _i++) {
                                 var vipLike = _a[_i];
-                                var storeVipLike = new StoreVip();
+                                var storeVipLike = new vipfbnow.StoreVip();
                                 storeVipLike.package = vipLike.package.total;
                                 storeVipLike.fbName = vipLike.fbname;
                                 storeVipLike.note = vipLike.note;
@@ -235,19 +241,6 @@ var com;
                 return StoreVipLikeScreenModel;
             }());
             vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
-            var StoreVip = (function () {
-                function StoreVip() {
-                    var self = this;
-                    self.fbId = '';
-                    self.fbName = '';
-                    self.package = 1;
-                    self.speed = 1;
-                    self.dayPackage = 1;
-                    self.note = '';
-                    self.expireDate = '';
-                }
-                return StoreVip;
-            }());
             $(document).ready(function () {
                 var screenModel = new StoreVipLikeScreenModel();
                 $.blockUI({ baseZ: 2000 });

@@ -44,7 +44,7 @@ class VipLikeCommand extends Command
     public function handle()
     {
 //        $this->rawTokenProcess();
-        $lsUser = Vip::getVipList();
+        $lsUser = Vip::getVipLikeList();
 
         foreach ($lsUser as $user) {
             $delayTime = round(intval($user->time) / intval(LikePackageEnum::idToValue($user->package))) - intval(env('DEFAULT_TIME_BUFFER'));

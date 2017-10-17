@@ -53,4 +53,25 @@ module com.sabrac.vipfbnow {
             self.value = value;
         }
     }
+
+    export class StoreVip {
+        fbId: string;
+        fbName: string;
+        package: number;
+        speed: number;
+        dayPackage: number;
+        note: string;
+        expireDate: string;
+
+        constructor() {
+            var self = this;
+            self.fbId = '';
+            self.fbName = '';
+            self.package = 1;
+            self.speed = 1;
+            self.dayPackage = 1;
+            self.note = '';
+            self.expireDate = '';
+        }
+    }
 }

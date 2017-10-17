@@ -10,5 +10,5 @@
 <script type="text/javascript" src="{{ asset('assets/scripts/app.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/scripts/jquery.dataTables.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/scripts/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/scripts/sweetalert.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/scripts/sweetalert.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/scripts/table.js') }}"></script>

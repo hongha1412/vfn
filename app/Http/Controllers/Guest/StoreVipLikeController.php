@@ -6,7 +6,6 @@ use App\Enum\PackageType;
 use App\Http\Controllers\Common\CommonAPIController;
 use App\Http\Controllers\Common\Message;
 use App\Models\DayPackage;
-use App\Models\Package;
 use App\Models\Vip;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,7 +57,7 @@ class StoreVipLikeController extends Controller
         }
 
         // Check exists in vip table
-        $vip = Vip::getVipByFbId(Input::get('fbId'));
+        $vip = Vip::getVipLikeByFbId(Input::get('fbId'));
         if (count($vip) > 0) {
             $existsMessage = $vip[0]->account->id === Auth::id() ? 'Facebook này đã được đăng ký' :
                 'Facebook này đã được đăng ký bởi ' . $vip[0]->account->username;
@@ -72,6 +71,7 @@ class StoreVipLikeController extends Controller
             'fbname'        => Input::get('fbName'),
             'userid'        => $fundsResult->id,
             'package'       => Input::get('package'),
+            'type'          => PackageType::LIKE,
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
             'likespeed'     => Input::get('speed'),
             'note'          => Input::get('note') ? Input::get('note') : '',

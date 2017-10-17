@@ -29,6 +29,7 @@ var com;
                     self.lsDayPackage = ko.observableArray([]);
                     self.lsCmtSpeed = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
+                    self.lsVipComment = ko.observableArray([]);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
                         self.isEnable(false);
@@ -58,8 +59,16 @@ var com;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
-                        self.getPackageInfo().always(function () {
-                            dfd.resolve();
+                        self.getListVipID().always(function () {
+                            self.getPackageInfo().always(function () {
+                                self.getCommentSpeedInfo().always(function () {
+                                    self.calculate().done(function (result) {
+                                        self.price(result);
+                                    }).always(function () {
+                                        dfd.resolve();
+                                    });
+                                });
+                            });
                         });
                     }).fail(function (result) {
                         dfd.resolve();
@@ -77,6 +86,29 @@ var com;
                         else {
                             vipfbnow.Utils.notify(result);
                         }
+                    }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
+                StoreVipCmtScreenModel.prototype.getCommentSpeedInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    var data = {
+                        type: 1 /* COMMENT */
+                    };
+                    vipfbnow.Utils.postData($('#speedURL').val(), data).done(function (result) {
+                        if (result.success) {
+                            for (var _i = 0, _a = result.message[0]; _i < _a.length; _i++) {
+                                var cmtSpeedObject = _a[_i];
+                                self.lsCmtSpeed.push(new vipfbnow.PackageObject(cmtSpeedObject.id, cmtSpeedObject.value));
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
                     }).always(function () {
                         dfd.resolve();
                     });
@@ -141,6 +173,36 @@ var com;
                 };
                 StoreVipCmtScreenModel.prototype.buyVipCmt = function () {
                     var self = this;
+                };
+                StoreVipCmtScreenModel.prototype.getListVipID = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    self.lsVipComment([]);
+                    var data = {
+                        packageType: 1 /* COMMENT */
+                    };
+                    vipfbnow.Utils.postData($('#listVIPURL').val(), data).done(function (result) {
+                        if (result.success) {
+                            self.totalID(result.message[0].lsVipComment.length);
+                            for (var _i = 0, _a = result.message[0].lsVipComment; _i < _a.length; _i++) {
+                                var vipComment = _a[_i];
+                                var storeVipComment = new vipfbnow.StoreVip();
+                                storeVipComment.package = vipComment.package.total;
+                                storeVipComment.fbName = vipComment.fbname;
+                                storeVipComment.note = vipComment.note;
+                                storeVipComment.expireDate = vipComment.expiretime;
+                                self.lsVipComment.push(storeVipComment);
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function () {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
                 };
                 return StoreVipCmtScreenModel;
             }());

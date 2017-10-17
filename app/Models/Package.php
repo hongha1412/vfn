@@ -13,8 +13,8 @@ class Package extends Model
         'total',
     ];
 
-    public static function getPackageById($id, $type) {
-        return Package::where('id', '=', $id)->where('type', '=', $type)->first();
+    public static function getPackageById($id) {
+        return Package::where('id', '=', $id)->first();
     }
 
     public static function getPackageByType($type) {

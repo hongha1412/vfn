@@ -76,14 +76,14 @@ Route::group(['domain' => $domain], function () {
         // Get facebook user info
         Route::post('/get-facebook-user-info', 'Common\CommonAPIController@getFacebookUserInfo')->name('common.getFacebookUserInfo');
         // Calculate like price
-        Route::post('/calculate-like-price', 'Common\CommonAPIController@calculate')->name('common.calculate');
+        Route::post('/calculate-price', 'Common\CommonAPIController@calculate')->name('common.calculate');
         // Get package info
         Route::post('/get-package', 'Common\CommonAPIController@getPackage')->name('common.getPackage');
         // Get like speed info
-        Route::post('/like-speed', 'Common\CommonAPIController@getLikeSpeed')->name('common.getLikeSpeed');
+        Route::post('/speed', 'Common\CommonAPIController@getSpeed')->name('common.getSpeed');
         // Buy vip like package
         Route::post('/buy-vip-like', 'Guest\StoreVipLikeController@buyVipLike')->name('guest.buyVipLike');
         // Get list id vip
-        Route::post('/list-vip-like', 'Common\CommonAPIController@listVipID')->name('common.listVipLike');
+        Route::post('/list-vip', 'Common\CommonAPIController@listVipID')->name('common.listVip');
     });
 });

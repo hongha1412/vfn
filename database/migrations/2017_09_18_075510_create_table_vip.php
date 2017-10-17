@@ -19,6 +19,7 @@ class CreateTableVip extends Migration
             $table->string('fbname', 32);
             $table->integer('userid');
             $table->string('package', 2);
+            $table->integer('type');
             $table->dateTimeTz('expiretime');
             $table->integer('likespeed');
             $table->integer('limitpost')->nullable();

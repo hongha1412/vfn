@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableLikeSpeed extends Migration
+class CreateTableSpeed extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateTableLikeSpeed extends Migration
      */
     public function up()
     {
-        Schema::create('likespeed', function (Blueprint $table) {
+        Schema::create('speed', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('type');
             $table->integer('value');
         });
     }
@@ -26,6 +27,6 @@ class CreateTableLikeSpeed extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likespeed');
+        Schema::dropIfExists('speed');
     }
 }
