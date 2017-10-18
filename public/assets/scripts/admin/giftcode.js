@@ -12,7 +12,7 @@ new Vue({
                 to: 0,
                 current_page: 1
             },
-            itemGiftcode: {'id': '', 'amount': '', 'quality': '','time': ''},
+            itemGiftcode: {'amount': '', 'quality': '','time': '', 'id': ''},
             formErrors: {}
         },
         computed: {
@@ -52,8 +52,8 @@ new Vue({
                     }
                 });
             },
-            postGiftcode: function() {
-                var input = this.itemGiftcode;
+            postGiftcode: function(itemGiftcode) {
+                var input = itemGiftcode;
                 this.$http.post('/api/admin/giftcode', input).then((response) => {
                     this.getGiftcodeList();
                     toastr.success('Tạo mã gift thành công!', 'Success Alert', {timeOut: 5000});

@@ -18,14 +18,14 @@
                     <b><i class="fa fa-gears"></i> Cài Đặt Mã Gift Hệ Thống</b>
                 </div>
                 <div class="panel-body">
-                    <form method="POST" enctype="multipart/form-data" v-on:submit.prevent="postGiftcode">
+                    <form v-on:submit.prevent="postGiftcode(itemGiftcode)">
                         <div class="form-group">
                             <label for="quality">Số Lượng</label> <input type="number"
-                                class="form-control" name="quality" v-model="itemGiftCode.quality">
+                                class="form-control" name="quality" v-model="itemGiftcode.quality">
                                 <span v-if="formErrors['quality']" class="error text-danger">@{{ formErrors['quality'] }}</span>
                         </div>
                         <div class="form-group">
-                            <label for="amount">Mệnh Giá:</label> <input type="text"
+                            <label for="amount1">Mệnh Giá:</label> <input type="text"
                                 class="form-control" name="amount" v-model="itemGiftCode.amount">
                             <span v-if="formErrors['amount']" class="error text-danger">@{{ formErrors['amount'] }}</span>
                         </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Mã Gift</th>
