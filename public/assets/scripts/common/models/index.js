@@ -57,6 +57,7 @@ var com;
                     self.dayPackage = 1;
                     self.note = '';
                     self.expireDate = '';
+                    self.cmtContent = '';
                 }
                 return StoreVip;
             }());

@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Guest;
 use App\Enum\PackageType;
 use App\Http\Controllers\Common\CommonAPIController;
 use App\Http\Controllers\Common\Message;
+use App\Models\DayPackage;
+use App\Models\Vip;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,11 +55,12 @@ class StoreVipCmtController extends Controller
     public function buyVipComment(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
-            'package'   => 'required|numeric',
+            'package'       => 'required|numeric',
             'dayPackage'    => 'required|numeric',
             'fbId'          => 'required|string|max:50',
             'fbName'        => 'required|string',
-            'speed'     => 'required|numeric',
+            'speed'         => 'required|numeric',
+            'cmtContent'    => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -63,7 +68,7 @@ class StoreVipCmtController extends Controller
         }
 
         // Validate data in database
-        $packageResult = CommonAPIController::checkValidPackage(PackageType::COMMENT, Input::get('package'), Input::get('dayPackage'));
+        $packageResult = CommonAPIController::checkValidPackage(Input::get('package'), Input::get('dayPackage'));
         if ($packageResult instanceof Message) {
             return response($packageResult->toJson(), 200);
         }
@@ -75,7 +80,7 @@ class StoreVipCmtController extends Controller
         }
 
         // Check exists in vip table
-        $vip = Vip::getVipByFbId(Input::get('fbId'));
+        $vip = Vip::getVipCommentByFbId(Input::get('fbId'));
         if (count($vip) > 0) {
             $existsMessage = $vip[0]->account->id === Auth::id() ? 'Facebook này đã được đăng ký' :
                 'Facebook này đã được đăng ký bởi ' . $vip[0]->account->username;
@@ -89,9 +94,10 @@ class StoreVipCmtController extends Controller
             'fbname'        => Input::get('fbName'),
             'userid'        => $fundsResult->id,
             'package'       => Input::get('package'),
+            'type'          => PackageType::COMMENT,
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
-            'likespeed'     => Input::get('speed'),
-            'note'          => Input::get('note') ? Input::get('note') : '',
+            'speed'         => Input::get('speed'),
+            'cmtcontent'    => Input::get('cmtContent') ? Input::get('cmtContent') : '',
         ]);
 
         // Update account

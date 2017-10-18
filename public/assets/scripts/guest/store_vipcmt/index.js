@@ -75,6 +75,17 @@ var com;
                     });
                     return dfd.promise();
                 };
+                StoreVipCmtScreenModel.prototype.reset = function () {
+                    var self = this;
+                    self.fbURL('');
+                    self.fbId('');
+                    self.fbName('');
+                    self.cmtPackage(1);
+                    self.cmtSpeed(1);
+                    self.dayPackage(1);
+                    self.commentContent('');
+                    self.isEnable(true);
+                };
                 StoreVipCmtScreenModel.prototype.getFbUserInfo = function () {
                     var self = this;
                     var dfd = $.Deferred();
@@ -173,6 +184,31 @@ var com;
                 };
                 StoreVipCmtScreenModel.prototype.buyVipCmt = function () {
                     var self = this;
+                    $.blockUI();
+                    self.isEnable(false);
+                    var data = new vipfbnow.StoreVip();
+                    data.fbId = self.fbId();
+                    data.fbName = self.fbName();
+                    data.package = self.cmtPackage();
+                    data.speed = self.cmtSpeed();
+                    data.dayPackage = self.dayPackage();
+                    data.cmtContent = self.commentContent();
+                    vipfbnow.Utils.postData($('#buyVipCommentURL').val(), data).done(function (result) {
+                        vipfbnow.Utils.notify(result).done(function () {
+                            vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
+                                self.userInfo(result);
+                                self.reset();
+                                self.getListVipID().always(function () {
+                                    vipfbnow.Utils.reloadLayoutData(self.userInfo());
+                                });
+                            });
+                        });
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function () {
+                        self.isEnable(true);
+                        $.unblockUI();
+                    });
                 };
                 StoreVipCmtScreenModel.prototype.getListVipID = function () {
                     var self = this;
@@ -189,7 +225,7 @@ var com;
                                 var storeVipComment = new vipfbnow.StoreVip();
                                 storeVipComment.package = vipComment.package.total;
                                 storeVipComment.fbName = vipComment.fbname;
-                                storeVipComment.note = vipComment.note;
+                                storeVipComment.cmtContent = vipComment.cmtcontent;
                                 storeVipComment.expireDate = vipComment.expiretime;
                                 self.lsVipComment.push(storeVipComment);
                             }

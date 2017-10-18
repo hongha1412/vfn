@@ -16,9 +16,10 @@ class Vip extends Model
         'package',
         'type',
         'expiretime',
-        'likespeed',
+        'speed',
         'limitpost',
         'note',
+        'cmtcontent',
     ];
 
     public function account() {

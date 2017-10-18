@@ -73,7 +73,7 @@ class StoreVipLikeController extends Controller
             'package'       => Input::get('package'),
             'type'          => PackageType::LIKE,
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
-            'likespeed'     => Input::get('speed'),
+            'speed'         => Input::get('speed'),
             'note'          => Input::get('note') ? Input::get('note') : '',
         ]);
 

@@ -93,6 +93,18 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
+        reset() {
+            var self = this;
+            self.fbURL('');
+            self.fbId('');
+            self.fbName('');
+            self.cmtPackage(1);
+            self.cmtSpeed(1);
+            self.dayPackage(1);
+            self.commentContent('');
+            self.isEnable(true);
+        }
+
         getFbUserInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
@@ -192,6 +204,32 @@ module com.sabrac.vipfbnow {
 
         buyVipCmt() {
             var self = this;
+            $.blockUI();
+            self.isEnable(false);
+            let data = new StoreVip();
+            data.fbId = self.fbId();
+            data.fbName = self.fbName();
+            data.package = self.cmtPackage();
+            data.speed = self.cmtSpeed();
+            data.dayPackage = self.dayPackage();
+            data.cmtContent = self.commentContent();
+
+            Utils.postData($('#buyVipCommentURL').val(), data).done(function (result) {
+                Utils.notify(result).done(function () {
+                    Utils.getLoggedInUserInfo().done(function(result) {
+                        self.userInfo(result);
+                        self.reset();
+                        self.getListVipID().always(function () {
+                            Utils.reloadLayoutData(self.userInfo());
+                        });
+                    });
+                });
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                self.isEnable(true);
+                $.unblockUI();
+            });
         }
 
         getListVipID(): JQueryPromise<any> {
@@ -209,7 +247,7 @@ module com.sabrac.vipfbnow {
                         let storeVipComment = new StoreVip();
                         storeVipComment.package = vipComment.package.total;
                         storeVipComment.fbName = vipComment.fbname;
-                        storeVipComment.note = vipComment.note;
+                        storeVipComment.cmtContent = vipComment.cmtcontent;
                         storeVipComment.expireDate = vipComment.expiretime;
 
                         self.lsVipComment.push(storeVipComment);

@@ -62,6 +62,7 @@ module com.sabrac.vipfbnow {
         dayPackage: number;
         note: string;
         expireDate: string;
+        cmtContent: string;
 
         constructor() {
             var self = this;
@@ -72,6 +73,7 @@ module com.sabrac.vipfbnow {
             self.dayPackage = 1;
             self.note = '';
             self.expireDate = '';
+            self.cmtContent = '';
         }
     }
 }

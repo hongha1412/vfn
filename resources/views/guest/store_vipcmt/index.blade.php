@@ -43,7 +43,7 @@
                         <label id="dola" for="dola">Số Tiền Cần Thanh Toán Là: <span data-bind="text: price"></span></label>
                     </div>
                     </br>
-                    <button type="submit" name="submit" class="btn btn-danger">Cài VIP CMT</button>
+                    <button type="submit" name="submit" data-bind="enable: isEnable" class="btn btn-danger">Cài VIP CMT</button>
                 </form>
             </div>
         </div>
@@ -59,26 +59,28 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table id="example1" class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>ID VIP</th>
-                            <th>Họ Tên</th>
+                            <th>Facebook</th>
                             <th>Gói CMT</th>
-                            <th>Số Stt/Ngày</th>
                             <th>Hạn Sử Dụng</th>
+                            <th>Comment</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <tbody data-bind="foreach: lsVipComment">
+                            <tr>
+                                <td>
+                                    <b>#<span data-bind="text: ($index() + 1)"></span></b>
+                                </td>
+                                <td data-bind="text: fbName"></td>
+                                <td data-bind="text: package"></td>
+                                <td data-bind="text: expireDate"></td>
+                                <td data-bind="text: cmtContent"></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -89,6 +91,7 @@
     <input type="text" style="display: none;" value="{{ route('common.getPackage') }}" id="packageURL" />
     <input type="text" style="display: none;" value="{{ route('common.getSpeed') }}" id="speedURL" />
     <input type="text" style="display: none;" value="{{ route('common.listVip') }}" id="listVIPURL" />
+    <input type="text" style="display: none;" value="{{ route('guest.buyVipComment') }}" id="buyVipCommentURL" />
 @endsection
 
 @section('page_js')

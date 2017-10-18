@@ -83,6 +83,8 @@ Route::group(['domain' => $domain], function () {
         Route::post('/speed', 'Common\CommonAPIController@getSpeed')->name('common.getSpeed');
         // Buy vip like package
         Route::post('/buy-vip-like', 'Guest\StoreVipLikeController@buyVipLike')->name('guest.buyVipLike');
+        // Buy vip comment package
+        Route::post('/buy-vip-comment', 'Guest\StoreVipCmtController@buyVipComment')->name('guest.buyVipComment');
         // Get list id vip
         Route::post('/list-vip', 'Common\CommonAPIController@listVipID')->name('common.listVip');
     });

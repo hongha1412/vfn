@@ -21,9 +21,10 @@ class CreateTableVip extends Migration
             $table->string('package', 2);
             $table->integer('type');
             $table->dateTimeTz('expiretime');
-            $table->integer('likespeed');
+            $table->integer('speed');
             $table->integer('limitpost')->nullable();
-            $table->text('note');
+            $table->text('note')->nullable();
+            $table->text('cmtcontent')->nullable();
         });
     }
 
