@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label>Loại Cảm Xúc:</label>
-                        <select name="camxuc" class="form-control" data-bind="value: reactType">
+                        <select name="camxuc" class="form-control" data-bind="enable: isEnable, value: reactType">
                             <option value="LIKE">LIKE</option>
                             <option value="LOVE"> LOVE - Yêu Thích</option>
                             <option value="WOW">  WOW - Ấn Tượng</option>
