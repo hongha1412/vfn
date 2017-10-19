@@ -67,7 +67,7 @@
                     <li><a href="{{ route('guest.storeVipLike') }}"><i class="fa fa-plus-square"></i> VIP LIKE</a></li>
                     <li><a href="{{ route('guest.storeVipCmt') }}"><i class="fa fa-plus-square"></i> VIP COMMENT</a></li>
                     <li><a href="{{ route('guest.storeVipShare') }}"><i class="fa fa-plus-square"></i> VIP SHARE</a></li>
-                    <li><a href="/camxuc.php"><i class="fa fa-plus-square"></i> BOT CẢM XÚC</a></li>
+                    <li><a href="{{ route('guest.storeVipReact') }}"><i class="fa fa-plus-square"></i> VIP REACT</a></li>
                 </ul>
             </li>
             <li><a href="{{ route('guest.getToken') }}"><i class="fa fa-support" aria-hidden="true"></i> <span>Get Token</span></a></li>

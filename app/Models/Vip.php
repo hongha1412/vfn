@@ -17,6 +17,7 @@ class Vip extends Model
         'type',
         'expiretime',
         'speed',
+        'reacttype',
         'limitpost',
         'note',
         'cmtcontent',

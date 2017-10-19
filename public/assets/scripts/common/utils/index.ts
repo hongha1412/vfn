@@ -181,4 +181,14 @@ module com.sabrac.vipfbnow {
         SHARE         = 2,
         REACT         = 3
     }
+
+    export const enum ReactType {
+        LIKE      = 'LIKE',
+        LOVE      = 'LOVE',
+        WOW       = 'WOW',
+        HAHA      = 'HAHA',
+        SAD       = 'SAD',
+        ANGRY     = 'ANGRY',
+        THANKFUL  = 'THANKFUL'
+    }
 }

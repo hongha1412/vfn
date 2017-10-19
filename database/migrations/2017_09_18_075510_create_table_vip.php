@@ -20,6 +20,7 @@ class CreateTableVip extends Migration
             $table->integer('userid');
             $table->string('package', 2);
             $table->integer('type');
+            $table->string('reacttype')->nullable();
             $table->dateTimeTz('expiretime');
             $table->integer('speed');
             $table->integer('limitpost')->nullable();

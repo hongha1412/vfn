@@ -37,5 +37,13 @@ class SpeedSeeder extends Seeder
         Speed::create(['type' => 2, 'value' => 40]);
         Speed::create(['type' => 2, 'value' => 50]);
         Speed::create(['type' => 2, 'value' => 100]);
+
+        Speed::create(['type' => 3, 'value' => 5]);
+        Speed::create(['type' => 3, 'value' => 10]);
+        Speed::create(['type' => 3, 'value' => 20]);
+        Speed::create(['type' => 3, 'value' => 30]);
+        Speed::create(['type' => 3, 'value' => 40]);
+        Speed::create(['type' => 3, 'value' => 50]);
+        Speed::create(['type' => 3, 'value' => 100]);
     }
 }

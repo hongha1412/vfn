@@ -58,6 +58,7 @@ var com;
                     self.note = '';
                     self.expireDate = '';
                     self.cmtContent = '';
+                    self.reactType = '';
                 }
                 return StoreVip;
             }());

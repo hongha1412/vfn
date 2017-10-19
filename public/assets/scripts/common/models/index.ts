@@ -63,6 +63,7 @@ module com.sabrac.vipfbnow {
         note: string;
         expireDate: string;
         cmtContent: string;
+        reactType: string;
 
         constructor() {
             var self = this;
@@ -74,6 +75,7 @@ module com.sabrac.vipfbnow {
             self.note = '';
             self.expireDate = '';
             self.cmtContent = '';
+            self.reactType = '';
         }
     }
 }
