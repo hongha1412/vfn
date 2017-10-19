@@ -60,6 +60,8 @@ Route::group(['domain' => $domain], function () {
         Route::get('/store-viplike', 'Guest\StoreVipLikeController@index')->name('guest.storeVipLike');
         // Store vip comment
         Route::get('/store-vipcmt', 'Guest\StoreVipCmtController@index')->name('guest.storeVipCmt');
+        // Store vip share
+        Route::get('/store-vipshare', 'Guest\StoreVipShareController@index')->name('guest.storeVipShare');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
@@ -85,6 +87,8 @@ Route::group(['domain' => $domain], function () {
         Route::post('/buy-vip-like', 'Guest\StoreVipLikeController@buyVipLike')->name('guest.buyVipLike');
         // Buy vip comment package
         Route::post('/buy-vip-comment', 'Guest\StoreVipCmtController@buyVipComment')->name('guest.buyVipComment');
+        // Buy vip share package
+        Route::post('/buy-vip-share', 'Guest\StoreVipShareController@buyVipShare')->name('guest.buyVipShare');
         // Get list id vip
         Route::post('/list-vip', 'Common\CommonAPIController@listVipID')->name('common.listVip');
     });

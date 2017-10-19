@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
-class StoreVipCmtController extends Controller
+class StoreVipShareController extends Controller
 {
     public function index() {
-        return view('guest.store_vipcmt.index');
+        return view('guest.store_vipshare.index');
     }
 
     /**
@@ -29,7 +29,7 @@ class StoreVipCmtController extends Controller
     public function calculate(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
-            'cmtPackage' => 'required|numeric',
+            'sharePackage' => 'required|numeric',
             'dayPackage' => 'required|numeric',
         ]);
 
@@ -38,7 +38,7 @@ class StoreVipCmtController extends Controller
         }
 
         // Validate data in database
-        $result = CommonAPIController::checkValidPackage(PackageType::COMMENT, Input::get('cmtPackage'), Input::get('dayPackage'));
+        $result = CommonAPIController::checkValidPackage(PackageType::SHARE, Input::get('sharePackage'), Input::get('dayPackage'));
         if ($result instanceof Message) {
             return response($result->toJson(), 200);
         }
@@ -47,12 +47,12 @@ class StoreVipCmtController extends Controller
     }
 
     /**
-     * Action buy vip comment package
+     * Action buy vip share package
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function buyVipComment(Request $request) {
+    public function buyVipShare(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
             'package'       => 'required|numeric',
@@ -60,7 +60,7 @@ class StoreVipCmtController extends Controller
             'fbId'          => 'required|string|max:50',
             'fbName'        => 'required|string',
             'speed'         => 'required|numeric',
-            'cmtContent'    => 'required|string',
+            'note'          => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -80,7 +80,7 @@ class StoreVipCmtController extends Controller
         }
 
         // Check exists in vip table
-        $vip = Vip::getVipCommentByFbId(Input::get('fbId'));
+        $vip = Vip::getVipShareByFbId(Input::get('fbId'));
         if (count($vip) > 0) {
             $existsMessage = $vip[0]->account->id === Auth::id() ? 'Facebook này đã được đăng ký' :
                 'Facebook này đã được đăng ký bởi ' . $vip[0]->account->username;
@@ -94,10 +94,10 @@ class StoreVipCmtController extends Controller
             'fbname'        => Input::get('fbName'),
             'userid'        => $fundsResult->id,
             'package'       => Input::get('package'),
-            'type'          => PackageType::COMMENT,
+            'type'          => PackageType::SHARE,
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
             'speed'         => Input::get('speed'),
-            'cmtcontent'    => Input::get('cmtContent') ? Input::get('cmtContent') : '',
+            'note'          => Input::get('note') ? Input::get('note') : '',
         ]);
 
         // Update account
@@ -105,9 +105,9 @@ class StoreVipCmtController extends Controller
             $fundsResult->vnd -= $packageResult[0]->vnd;
             $fundsResult->save();
         } else {
-            return response((new Message(false, 'Không thể đăng ký gói vip comment, vui lòng thử lại sau'))->toJson(), 200);
+            return response((new Message(false, 'Không thể đăng ký gói vip share, vui lòng thử lại sau'))->toJson(), 200);
         }
 
-        return response((new Message(true, 'Đăng ký gói vip comment thành công'))->toJson(), 200);
+        return response((new Message(true, 'Đăng ký gói vip share thành công'))->toJson(), 200);
     }
 }

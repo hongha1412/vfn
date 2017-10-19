@@ -9,21 +9,21 @@
 
 module com.sabrac.vipfbnow {
 
-    export class StoreVipCmtScreenModel {
+    export class StoreVipShareScreenModel {
         userInfo: KnockoutObservable<UserInfo>;
         totalID: KnockoutObservable<number>;
         fbURL: KnockoutObservable<string>;
         fbId: KnockoutObservable<string>;
         fbName: KnockoutObservable<string>;
-        cmtPackage: KnockoutObservable<number>;
-        cmtSpeed: KnockoutObservable<number>;
+        sharePackage: KnockoutObservable<number>;
+        shareSpeed: KnockoutObservable<number>;
         dayPackage: KnockoutObservable<number>;
         price: KnockoutObservable<number>;
-        commentContent: KnockoutObservable<string>;
-        lsCmtPackage: KnockoutObservableArray<PackageObject>;
+        note: KnockoutObservable<string>;
+        lsSharePackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
-        lsCmtSpeed: KnockoutObservableArray<PackageObject>;
-        lsVipComment: KnockoutObservableArray<StoreVip>;
+        lsShareSpeed: KnockoutObservableArray<PackageObject>;
+        lsVipShare: KnockoutObservableArray<StoreVip>;
         isEnable: KnockoutObservable<boolean>;
 
         constructor() {
@@ -33,16 +33,16 @@ module com.sabrac.vipfbnow {
             self.fbURL = ko.observable<string>('');
             self.fbId = ko.observable<string>('');
             self.fbName = ko.observable<string>('');
-            self.cmtPackage = ko.observable<number>(1);
-            self.cmtSpeed = ko.observable<number>(1);
+            self.sharePackage = ko.observable<number>(1);
+            self.shareSpeed = ko.observable<number>(1);
             self.dayPackage = ko.observable<number>(1);
             self.price = ko.observable<number>(0);
-            self.commentContent = ko.observable<string>('');
-            self.lsCmtPackage = ko.observableArray<PackageObject>([]);
+            self.note = ko.observable<string>('');
+            self.lsSharePackage = ko.observableArray<PackageObject>([]);
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
-            self.lsCmtSpeed = ko.observableArray<PackageObject>([]);
+            self.lsShareSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
-            self.lsVipComment = ko.observableArray<StoreVip>([]);
+            self.lsVipShare = ko.observableArray<StoreVip>([]);
 
             self.fbURL.subscribe(function() {
                 $.blockUI();
@@ -59,7 +59,7 @@ module com.sabrac.vipfbnow {
                 });
             });
 
-            self.cmtPackage.subscribe(function() {
+            self.sharePackage.subscribe(function() {
                 self.calculate().done(function(result) {
                     self.price(result);
                 });
@@ -78,7 +78,7 @@ module com.sabrac.vipfbnow {
                 self.userInfo(result);
                 self.getListVipID().always(function () {
                     self.getPackageInfo().always(function () {
-                        self.getCommentSpeedInfo().always(function () {
+                        self.getShareSpeedInfo().always(function () {
                             self.calculate().done(function (result) {
                                 self.price(result);
                             }).always(function () {
@@ -98,10 +98,10 @@ module com.sabrac.vipfbnow {
             self.fbURL('');
             self.fbId('');
             self.fbName('');
-            self.cmtPackage(8);
-            self.cmtSpeed(8);
+            self.sharePackage(15);
+            self.shareSpeed(15);
             self.dayPackage(1);
-            self.commentContent('');
+            self.note('');
             self.isEnable(true);
         }
 
@@ -123,16 +123,16 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        getCommentSpeedInfo(): JQueryPromise<any> {
+        getShareSpeedInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
             let data = {
-                type: PackageType.COMMENT
+                type: PackageType.SHARE
             };
             Utils.postData($('#speedURL').val(), data).done(function(result) {
                 if (result.success) {
-                    for (let cmtSpeedObject of result.message[0]) {
-                        self.lsCmtSpeed.push(new PackageObject(cmtSpeedObject.id, cmtSpeedObject.value));
+                    for (let shareSpeedObject of result.message[0]) {
+                        self.lsShareSpeed.push(new PackageObject(shareSpeedObject.id, shareSpeedObject.value));
                     }
                 } else {
                     Utils.notify(result);
@@ -149,19 +149,17 @@ module com.sabrac.vipfbnow {
             var self = this;
             var dfd = $.Deferred();
             let data = {
-                packageType: PackageType.COMMENT
+                packageType: PackageType.SHARE
             };
             Utils.postData($('#packageURL').val(), data).done(function(result) {
                 if (result.success) {
-                    if (result.message[0].hasOwnProperty('commentPackage')) {
-                        for (let cmtPackage of result.message[0].commentPackage) {
-                            self.lsCmtPackage.push(new PackageObject(cmtPackage.id, cmtPackage.total));
+                    if (result.message[0].hasOwnProperty('sharePackage')) {
+                        for (let sharePackage of result.message[0].sharePackage) {
+                            self.lsSharePackage.push(new PackageObject(sharePackage.id, sharePackage.total));
                         }
                     }
                     for (let dayPackage of result.message[0].dayPackage) {
-                        if (dayPackage.daytotal == 30 || dayPackage.daytotal == 60 || dayPackage.daytotal == 90) {
-                            self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
-                        }
+                        self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
                     }
                 } else {
                     Utils.notify(result);
@@ -181,7 +179,7 @@ module com.sabrac.vipfbnow {
             $.blockUI();
             self.isEnable(false);
             let data = {
-                cmtPackage: self.cmtPackage(),
+                sharePackage: self.sharePackage(),
                 dayPackage: self.dayPackage()
             };
 
@@ -202,19 +200,19 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        buyVipCmt() {
+        buyVipShare() {
             var self = this;
             $.blockUI();
             self.isEnable(false);
             let data = new StoreVip();
             data.fbId = self.fbId();
             data.fbName = self.fbName();
-            data.package = self.cmtPackage();
-            data.speed = self.cmtSpeed();
+            data.package = self.sharePackage();
+            data.speed = self.shareSpeed();
             data.dayPackage = self.dayPackage();
-            data.cmtContent = self.commentContent();
+            data.note = self.note();
 
-            Utils.postData($('#buyVipCommentURL').val(), data).done(function (result) {
+            Utils.postData($('#buyVipShareURL').val(), data).done(function (result) {
                 Utils.notify(result).done(function () {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
@@ -235,22 +233,22 @@ module com.sabrac.vipfbnow {
         getListVipID(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            self.lsVipComment([]);
+            self.lsVipShare([]);
             let data = {
-                packageType: PackageType.COMMENT
+                packageType: PackageType.SHARE
             };
 
             Utils.postData($('#listVIPURL').val(), data).done(function(result) {
                 if (result.success) {
-                    self.totalID(result.message[0].lsVipComment.length);
-                    for (let vipComment of result.message[0].lsVipComment) {
-                        let storeVipComment = new StoreVip();
-                        storeVipComment.package = vipComment.package.total;
-                        storeVipComment.fbName = vipComment.fbname;
-                        storeVipComment.cmtContent = vipComment.cmtcontent;
-                        storeVipComment.expireDate = vipComment.expiretime;
+                    self.totalID(result.message[0].lsVipShare.length);
+                    for (let vipShare of result.message[0].lsVipShare) {
+                        let storeVipShare = new StoreVip();
+                        storeVipShare.package = vipShare.package.total;
+                        storeVipShare.fbName = vipShare.fbname;
+                        storeVipShare.note = vipShare.note;
+                        storeVipShare.expireDate = vipShare.expiretime;
 
-                        self.lsVipComment.push(storeVipComment);
+                        self.lsVipShare.push(storeVipShare);
                     }
                 } else {
                     Utils.notify(result);
@@ -267,7 +265,7 @@ module com.sabrac.vipfbnow {
 
 
     $(document).ready(function() {
-        var screenModel = new StoreVipCmtScreenModel();
+        var screenModel = new StoreVipShareScreenModel();
         $.blockUI({ baseZ: 2000 });
 
         screenModel.startPage().done(function() {
