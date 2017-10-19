@@ -38,6 +38,31 @@ var com;
                 return UserInfo;
             }());
             vipfbnow.UserInfo = UserInfo;
+            var PackageObject = (function () {
+                function PackageObject(id, value) {
+                    var self = this;
+                    self.id = id;
+                    self.value = value;
+                }
+                return PackageObject;
+            }());
+            vipfbnow.PackageObject = PackageObject;
+            var StoreVip = (function () {
+                function StoreVip() {
+                    var self = this;
+                    self.fbId = '';
+                    self.fbName = '';
+                    self.package = 1;
+                    self.speed = 1;
+                    self.dayPackage = 1;
+                    self.note = '';
+                    self.expireDate = '';
+                    self.cmtContent = '';
+                    self.reactType = '';
+                }
+                return StoreVip;
+            }());
+            vipfbnow.StoreVip = StoreVip;
         })(vipfbnow = sabrac.vipfbnow || (sabrac.vipfbnow = {}));
     })(sabrac = com.sabrac || (com.sabrac = {}));
 })(com || (com = {}));

@@ -14,30 +14,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
-class StoreVipLikeController extends Controller
+class StoreVipShareController extends Controller
 {
     public function index() {
-        return view('guest.store_viplike.index');
-    }
-
-    public function init(Request $request) {
-
+        return view('guest.store_vipshare.index');
     }
 
     /**
-     * Action buy vip like package
+     * Calculate charge money
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function buyVipLike(Request $request) {
+    public function calculate(Request $request) {
         // Check valid data
         $validator = Validator::make($request->all(), [
-            'package'   => 'required|numeric',
-            'dayPackage'    => 'required|numeric',
-            'fbId'          => 'required|string|max:50',
-            'fbName'        => 'required|string',
-            'speed'     => 'required|numeric',
+            'sharePackage' => 'required|numeric',
+            'dayPackage' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +38,37 @@ class StoreVipLikeController extends Controller
         }
 
         // Validate data in database
-        $packageResult = CommonAPIController::checkValidPackage(PackageType::LIKE, Input::get('package'), Input::get('dayPackage'));
+        $result = CommonAPIController::checkValidPackage(PackageType::SHARE, Input::get('sharePackage'), Input::get('dayPackage'));
+        if ($result instanceof Message) {
+            return response($result->toJson(), 200);
+        }
+
+        return response((new Message(true, $result[0]))->toJson(), 200);
+    }
+
+    /**
+     * Action buy vip share package
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function buyVipShare(Request $request) {
+        // Check valid data
+        $validator = Validator::make($request->all(), [
+            'package'       => 'required|numeric',
+            'dayPackage'    => 'required|numeric',
+            'fbId'          => 'required|string|max:50',
+            'fbName'        => 'required|string',
+            'speed'         => 'required|numeric',
+            'note'          => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response((new Message(false, $validator->messages()->all()))->toJson(), 200);
+        }
+
+        // Validate data in database
+        $packageResult = CommonAPIController::checkValidPackage(Input::get('package'), Input::get('dayPackage'));
         if ($packageResult instanceof Message) {
             return response($packageResult->toJson(), 200);
         }
@@ -57,7 +80,7 @@ class StoreVipLikeController extends Controller
         }
 
         // Check exists in vip table
-        $vip = Vip::getVipLikeByFbId(Input::get('fbId'));
+        $vip = Vip::getVipShareByFbId(Input::get('fbId'));
         if (count($vip) > 0) {
             $existsMessage = $vip[0]->account->id === Auth::id() ? 'Facebook này đã được đăng ký' :
                 'Facebook này đã được đăng ký bởi ' . $vip[0]->account->username;
@@ -71,7 +94,7 @@ class StoreVipLikeController extends Controller
             'fbname'        => Input::get('fbName'),
             'userid'        => $fundsResult->id,
             'package'       => Input::get('package'),
-            'type'          => PackageType::LIKE,
+            'type'          => PackageType::SHARE,
             'expiretime'    => Carbon::now()->addDays(DayPackage::getPackageById(Input::get('dayPackage'))->daytotal),
             'speed'         => Input::get('speed'),
             'note'          => Input::get('note') ? Input::get('note') : '',
@@ -82,9 +105,9 @@ class StoreVipLikeController extends Controller
             $fundsResult->vnd -= $packageResult[0]->vnd;
             $fundsResult->save();
         } else {
-            return response((new Message(false, 'Không thể đăng ký gói vip like, vui lòng thử lại sau'))->toJson(), 200);
+            return response((new Message(false, 'Không thể đăng ký gói vip share, vui lòng thử lại sau'))->toJson(), 200);
         }
 
-        return response((new Message(true, 'Đăng ký gói vip like thành công'))->toJson(), 200);
+        return response((new Message(true, 'Đăng ký gói vip share thành công'))->toJson(), 200);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableLikePackage extends Migration
+class CreateTablePackage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTableLikePackage extends Migration
      */
     public function up()
     {
-        Schema::create('likepackage', function (Blueprint $table) {
+        Schema::create('package', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('liketotal');
+            $table->integer('type');
+            $table->bigInteger('total');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateTableLikePackage extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likepackage');
+        Schema::dropIfExists('package');
     }
 }

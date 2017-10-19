@@ -20,10 +20,12 @@ class VipSeeder extends Seeder
             'fbname'        => 'Jake Braun',
             'userid'        => 1,
             'package'       => 1,
+            'type'          => 0,
             'expiretime'    => Carbon::now()->addYears(500),
-            'likespeed'     => 100,
+            'speed'         => 1,
             'limitpost'     => 0,
             'note'          => '',
+            'cmtcontent'    => '',
         ]);
     }
 }

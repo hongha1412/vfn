@@ -40,4 +40,25 @@ class ReactionsEnum extends BaseEnum
                 return ReactionsEnum::THANKFUL;
         }
     }
+
+    /**
+     * Function check reaction type exists
+     *
+     * @param $reactType
+     * @return bool true: exists / false: not exists
+     */
+    public static function checkExists($reactType) {
+        switch ($reactType) {
+            case ReactionsEnum::LIKE:
+            case ReactionsEnum::LOVE:
+            case ReactionsEnum::WOW:
+            case ReactionsEnum::HAHA:
+            case ReactionsEnum::SAD:
+            case ReactionsEnum::ANGRY:
+            case ReactionsEnum::THANKFUL:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

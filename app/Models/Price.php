@@ -4,26 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LikePrice extends Model
+class Price extends Model
 {
     protected $table = 'price';
     public $timestamps = false;
     protected $fillable = [
         'vnd',
-        'likepackage',
+        'type',
+        'package',
         'daypackage',
     ];
 
     public function likePackage() {
-        return $this->hasOne(LikePackage::class, 'id', 'likepackage');
+        return $this->hasOne(Package::class, 'id', 'likepackage');
     }
 
     public function dayPackage() {
         return $this->hasOne(DayPackage::class, 'id', 'daypackage');
     }
 
-    public static function getPriceByPackage(LikePackage $likePackage, DayPackage $dayPackage) {
-        return LikePrice::where('likepackage', '=', $likePackage->id)
+    public static function getPriceByPackage(Package $package, DayPackage $dayPackage) {
+        return Price::where('package', '=', $package->id)
             ->where('daypackage', '=', $dayPackage->id)->get();
     }
 }

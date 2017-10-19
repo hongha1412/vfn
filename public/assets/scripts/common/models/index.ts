@@ -42,4 +42,40 @@ module com.sabrac.vipfbnow {
             }
         }
     }
+
+    export class PackageObject {
+        id: number;
+        value: number;
+
+        constructor(id: number, value: number) {
+            var self = this;
+            self.id = id;
+            self.value = value;
+        }
+    }
+
+    export class StoreVip {
+        fbId: string;
+        fbName: string;
+        package: number;
+        speed: number;
+        dayPackage: number;
+        note: string;
+        expireDate: string;
+        cmtContent: string;
+        reactType: string;
+
+        constructor() {
+            var self = this;
+            self.fbId = '';
+            self.fbName = '';
+            self.package = 1;
+            self.speed = 1;
+            self.dayPackage = 1;
+            self.note = '';
+            self.expireDate = '';
+            self.cmtContent = '';
+            self.reactType = '';
+        }
+    }
 }

@@ -6,9 +6,9 @@ use App\Enum\PackageType;
 use App\Http\Controllers\Common\VO\VipOutVO;
 use App\Models\Account;
 use App\Models\DayPackage;
-use App\Models\LikePackage;
-use App\Models\LikePrice;
-use App\Models\LikeSpeed;
+use App\Models\Package;
+use App\Models\Price;
+use App\Models\Speed;
 use App\Models\Vip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -65,27 +65,29 @@ class CommonAPIController extends Controller
     public function getPackage(Request $request) {
         $result = array();
 
-        switch (Input::get('packageType')) {
-            case PackageType::LIKE:
-                $result['likePackage'] = LikePackage::all();
-                break;
-            case PackageType::COMMENT:
-                $result['commentPackage'] = null;
-                break;
-            case PackageType::SHARE:
-                $result['sharePackage'] = null;
-                break;
-            case PackageType::REACT:
-                $result['reactPackage'] = null;
-                break;
+        if (!is_null(Input::get('packageType'))) {
+            switch (intval(Input::get('packageType'))) {
+                case PackageType::LIKE:
+                    $result['likePackage'] = Package::getPackageByType(PackageType::LIKE);
+                    break;
+                case PackageType::COMMENT:
+                    $result['commentPackage'] = Package::getPackageByType(PackageType::COMMENT);
+                    break;
+                case PackageType::SHARE:
+                    $result['sharePackage'] = Package::getPackageByType(PackageType::SHARE);
+                    break;
+                case PackageType::REACT:
+                    $result['reactPackage'] = Package::getPackageByType(PackageType::REACT);
+                    break;
+            }
         }
         $result['dayPackage'] = DayPackage::all();
 
         return response((new Message(true, $result))->toJson(), 200);
     }
 
-    public function getLikeSpeed() {
-        return response((new Message(true, LikeSpeed::all()))->toJson(), 200);
+    public function getSpeed(Request $request) {
+        return response((new Message(true, Speed::getSpeedByType(Input::get('type'))))->toJson(), 200);
     }
 
     /**
@@ -93,19 +95,20 @@ class CommonAPIController extends Controller
      *
      * @param $selectedLikePackage
      * @param $selectedDayPackage
-     * @return Message: fail | LikePrice: success
+     * @return Message: fail | Price: success
      */
     public static function checkValidPackage($selectedLikePackage, $selectedDayPackage) {
         // Validate data in database
-        $likePackage = LikePackage::getPackageById($selectedLikePackage);
         $dayPackage = DayPackage::getPackageById($selectedDayPackage);
-        if ($likePackage === null || $dayPackage === null) {
+
+        // Check package type
+        $package = Package::getPackageById($selectedLikePackage);
+        if ($package === null || $dayPackage === null) {
             return new Message(false, 'Dữ liệu không đúng');
         }
 
         // Get price from day package and like package
-        $price = LikePrice::getPriceByPackage($likePackage, $dayPackage);
-
+        $price = Price::getPriceByPackage($package, $dayPackage);
         if ($price === null) {
             return new Message(false, 'Không có giá tiền tương ứng với gói hiện tại');
         }
@@ -129,13 +132,72 @@ class CommonAPIController extends Controller
     }
 
     /**
-     * Get list vip of logged in user
+     * Calculate charge money
      *
+     * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function listVipID() {
+    public function calculate(Request $request) {
+        $rule = array();
+        $packageValue = -1;
+
+        $rule['dayPackage'] = 'required|numeric';
+        if (!is_null(Input::get('likePackage'))) {
+            $rule['likePackage'] = 'required|numeric';
+            $packageValue = Input::get('likePackage');
+        } else if (!is_null(Input::get('cmtPackage'))) {
+            $rule['cmtPackage'] = 'required|numeric';
+            $packageValue = Input::get('cmtPackage');
+        } else if (!is_null(Input::get('sharePackage'))) {
+            $rule['sharePackage'] = 'required|numeric';
+            $packageValue = Input::get('sharePackage');
+        } else if (!is_null(Input::get('reactPackage'))) {
+            $rule['reactPackage'] = 'required|numeric';
+            $packageValue = Input::get('reactPackage');
+        }
+
+        // Check valid data
+        $validator = Validator::make($request->all(), $rule);
+
+        if ($validator->fails()) {
+            return response((new Message(false, $validator->messages()->all()))->toJson(), 200);
+        }
+
+        // Validate data in database
+        $result = CommonAPIController::checkValidPackage($packageValue, Input::get('dayPackage'));
+        if ($result instanceof Message) {
+            return response($result->toJson(), 200);
+        }
+
+        return response((new Message(true, $result[0]))->toJson(), 200);
+    }
+
+    /**
+     * Get list vip of logged in user
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function listVipID(Request $request) {
         $vipOutVO = new VipOutVO();
-        $vipOutVO->setLsVipLike(Vip::getVipByUserId(Auth::id()));
+
+        if (!is_null(Input::get('packageType'))) {
+            switch (Input::get('packageType')) {
+                case PackageType::LIKE:
+                    $vipOutVO->setLsVipLike(Vip::getVipLikeByUserId(Auth::id()));
+                    break;
+                case PackageType::COMMENT:
+                    $vipOutVO->setLsVipComment(Vip::getVipCommentByUserId(Auth::id()));
+                    break;
+                case PackageType::SHARE:
+                    $vipOutVO->setLsVipShare(Vip::getVipShareByUserId(Auth::id()));
+                    break;
+                case PackageType::REACT:
+                    $vipOutVO->setLsVipReact(Vip::getVipReactByUserId(Auth::id()));
+                    break;
+            }
+        }
+
         return response((new Message(true, $vipOutVO))->toJson(), 200);
     }
 }

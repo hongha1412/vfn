@@ -38,7 +38,7 @@ Route::group(['domain' => $domain], function () {
     Route::get('/register', 'Auth\RegisterController@index')->name('guest.register.index');
     // Get token tool => Not recommend to develope
     Route::get('/get-token', 'Guest\GetTokenController@index')->name('guest.getToken');
-    // LikePrice
+    // Price
     Route::get('/price', 'Guest\PriceController@index')->name('guest.price');
     // Home
     Route::get('/', 'Guest\HomeController@index')->name('guest.index');
@@ -63,6 +63,12 @@ Route::group(['domain' => $domain], function () {
         Route::get('/gift', 'Guest\GiftController@index')->name('guest.gift');
         // Store vip like
         Route::get('/store-viplike', 'Guest\StoreVipLikeController@index')->name('guest.storeVipLike');
+        // Store vip comment
+        Route::get('/store-vipcmt', 'Guest\StoreVipCmtController@index')->name('guest.storeVipCmt');
+        // Store vip share
+        Route::get('/store-vipshare', 'Guest\StoreVipShareController@index')->name('guest.storeVipShare');
+        // Store vip react
+        Route::get('/store-vipreact', 'Guest\StoreVipReactController@index')->name('guest.storeVipReact');
         // API
         // Logout
         Route::get('/logout', 'Auth\LoginController@logout')->name('guest.logout');
@@ -79,14 +85,20 @@ Route::group(['domain' => $domain], function () {
         // Get facebook user info
         Route::post('/get-facebook-user-info', 'Common\CommonAPIController@getFacebookUserInfo')->name('common.getFacebookUserInfo');
         // Calculate like price
-        Route::post('/calculate-like-price', 'Guest\StoreVipLikeController@calculate')->name('guest.calculateVipLike');
+        Route::post('/calculate-price', 'Common\CommonAPIController@calculate')->name('common.calculate');
         // Get package info
         Route::post('/get-package', 'Common\CommonAPIController@getPackage')->name('common.getPackage');
         // Get like speed info
-        Route::post('/like-speed', 'Common\CommonAPIController@getLikeSpeed')->name('common.getLikeSpeed');
+        Route::post('/speed', 'Common\CommonAPIController@getSpeed')->name('common.getSpeed');
         // Buy vip like package
         Route::post('/buy-vip-like', 'Guest\StoreVipLikeController@buyVipLike')->name('guest.buyVipLike');
+        // Buy vip comment package
+        Route::post('/buy-vip-comment', 'Guest\StoreVipCmtController@buyVipComment')->name('guest.buyVipComment');
+        // Buy vip share package
+        Route::post('/buy-vip-share', 'Guest\StoreVipShareController@buyVipShare')->name('guest.buyVipShare');
+        // Buy vip react package
+        Route::post('/buy-vip-react', 'Guest\StoreVipReactController@buyVipReact')->name('guest.buyVipReact');
         // Get list id vip
-        Route::post('/list-vip-like', 'Common\CommonAPIController@listVipID')->name('common.listVipLike');
+        Route::post('/list-vip', 'Common\CommonAPIController@listVipID')->name('common.listVip');
     });
 });

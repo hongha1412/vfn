@@ -12,24 +12,24 @@ var com;
     (function (sabrac) {
         var vipfbnow;
         (function (vipfbnow) {
-            var StoreVipLikeScreenModel = (function () {
-                function StoreVipLikeScreenModel() {
+            var StoreVipCmtScreenModel = (function () {
+                function StoreVipCmtScreenModel() {
                     var self = this;
                     self.userInfo = ko.observable(new vipfbnow.UserInfo());
+                    self.totalID = ko.observable(0);
                     self.fbURL = ko.observable('');
                     self.fbId = ko.observable('');
                     self.fbName = ko.observable('');
-                    self.likePackage = ko.observable(1);
-                    self.likeSpeed = ko.observable(1);
+                    self.cmtPackage = ko.observable(1);
+                    self.cmtSpeed = ko.observable(1);
                     self.dayPackage = ko.observable(1);
-                    self.note = ko.observable('');
-                    self.totalID = ko.observable(0);
                     self.price = ko.observable(0);
-                    self.lsLikePackage = ko.observableArray([]);
+                    self.commentContent = ko.observable('');
+                    self.lsCmtPackage = ko.observableArray([]);
                     self.lsDayPackage = ko.observableArray([]);
-                    self.lsLikeSpeed = ko.observableArray([]);
+                    self.lsCmtSpeed = ko.observableArray([]);
                     self.isEnable = ko.observable(true);
-                    self.lsVipLike = ko.observableArray([]);
+                    self.lsVipComment = ko.observableArray([]);
                     self.fbURL.subscribe(function () {
                         $.blockUI();
                         self.isEnable(false);
@@ -43,7 +43,7 @@ var com;
                             $.unblockUI();
                         });
                     });
-                    self.likePackage.subscribe(function () {
+                    self.cmtPackage.subscribe(function () {
                         self.calculate().done(function (result) {
                             self.price(result);
                         });
@@ -54,25 +54,14 @@ var com;
                         });
                     });
                 }
-                StoreVipLikeScreenModel.prototype.reset = function () {
-                    var self = this;
-                    self.fbURL('');
-                    self.fbId('');
-                    self.fbName('');
-                    self.likePackage(1);
-                    self.likeSpeed(1);
-                    self.dayPackage(1);
-                    self.note('');
-                    self.isEnable(true);
-                };
-                StoreVipLikeScreenModel.prototype.startPage = function () {
+                StoreVipCmtScreenModel.prototype.startPage = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                         self.userInfo(result);
                         self.getListVipID().always(function () {
                             self.getPackageInfo().always(function () {
-                                self.getLikeSpeedInfo().always(function () {
+                                self.getCommentSpeedInfo().always(function () {
                                     self.calculate().done(function (result) {
                                         self.price(result);
                                     }).always(function () {
@@ -81,12 +70,23 @@ var com;
                                 });
                             });
                         });
-                    }).fail(function () {
+                    }).fail(function (result) {
                         dfd.resolve();
                     });
                     return dfd.promise();
                 };
-                StoreVipLikeScreenModel.prototype.getFbUserInfo = function () {
+                StoreVipCmtScreenModel.prototype.reset = function () {
+                    var self = this;
+                    self.fbURL('');
+                    self.fbId('');
+                    self.fbName('');
+                    self.cmtPackage(8);
+                    self.cmtSpeed(8);
+                    self.dayPackage(1);
+                    self.commentContent('');
+                    self.isEnable(true);
+                };
+                StoreVipCmtScreenModel.prototype.getFbUserInfo = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     vipfbnow.Utils.getFacebookInfo(self.fbURL()).done(function (result) {
@@ -102,46 +102,17 @@ var com;
                     });
                     return dfd.promise();
                 };
-                StoreVipLikeScreenModel.prototype.getPackageInfo = function () {
+                StoreVipCmtScreenModel.prototype.getCommentSpeedInfo = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     var data = {
-                        packageType: 0 /* LIKE */
-                    };
-                    vipfbnow.Utils.postData($('#packageURL').val(), data).done(function (result) {
-                        if (result.success) {
-                            if (result.message[0].hasOwnProperty('likePackage')) {
-                                for (var _i = 0, _a = result.message[0].likePackage; _i < _a.length; _i++) {
-                                    var likePackage = _a[_i];
-                                    self.lsLikePackage.push(new vipfbnow.PackageObject(likePackage.id, likePackage.total));
-                                }
-                            }
-                            for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
-                                var dayPackage = _c[_b];
-                                self.lsDayPackage.push(new vipfbnow.PackageObject(dayPackage.id, dayPackage.daytotal));
-                            }
-                        }
-                        else {
-                            vipfbnow.Utils.notify(result);
-                        }
-                    }).fail(function (result) {
-                        vipfbnow.Utils.unexpectedError();
-                    }).always(function (result) {
-                        dfd.resolve();
-                    });
-                    return dfd.promise();
-                };
-                StoreVipLikeScreenModel.prototype.getLikeSpeedInfo = function () {
-                    var self = this;
-                    var dfd = $.Deferred();
-                    var data = {
-                        type: 0 /* LIKE */
+                        type: 1 /* COMMENT */
                     };
                     vipfbnow.Utils.postData($('#speedURL').val(), data).done(function (result) {
                         if (result.success) {
                             for (var _i = 0, _a = result.message[0]; _i < _a.length; _i++) {
-                                var likeSpeedObject = _a[_i];
-                                self.lsLikeSpeed.push(new vipfbnow.PackageObject(likeSpeedObject.id, likeSpeedObject.value));
+                                var cmtSpeedObject = _a[_i];
+                                self.lsCmtSpeed.push(new vipfbnow.PackageObject(cmtSpeedObject.id, cmtSpeedObject.value));
                             }
                         }
                         else {
@@ -154,14 +125,45 @@ var com;
                     });
                     return dfd.promise();
                 };
-                StoreVipLikeScreenModel.prototype.calculate = function () {
+                StoreVipCmtScreenModel.prototype.getPackageInfo = function () {
+                    var self = this;
+                    var dfd = $.Deferred();
+                    var data = {
+                        packageType: 1 /* COMMENT */
+                    };
+                    vipfbnow.Utils.postData($('#packageURL').val(), data).done(function (result) {
+                        if (result.success) {
+                            if (result.message[0].hasOwnProperty('commentPackage')) {
+                                for (var _i = 0, _a = result.message[0].commentPackage; _i < _a.length; _i++) {
+                                    var cmtPackage = _a[_i];
+                                    self.lsCmtPackage.push(new vipfbnow.PackageObject(cmtPackage.id, cmtPackage.total));
+                                }
+                            }
+                            for (var _b = 0, _c = result.message[0].dayPackage; _b < _c.length; _b++) {
+                                var dayPackage = _c[_b];
+                                if (dayPackage.daytotal == 30 || dayPackage.daytotal == 60 || dayPackage.daytotal == 90) {
+                                    self.lsDayPackage.push(new vipfbnow.PackageObject(dayPackage.id, dayPackage.daytotal));
+                                }
+                            }
+                        }
+                        else {
+                            vipfbnow.Utils.notify(result);
+                        }
+                    }).fail(function (result) {
+                        vipfbnow.Utils.unexpectedError();
+                    }).always(function (result) {
+                        dfd.resolve();
+                    });
+                    return dfd.promise();
+                };
+                StoreVipCmtScreenModel.prototype.calculate = function () {
                     var self = this;
                     var dfd = $.Deferred();
                     var price = 0;
                     $.blockUI();
                     self.isEnable(false);
                     var data = {
-                        likePackage: self.likePackage(),
+                        cmtPackage: self.cmtPackage(),
                         dayPackage: self.dayPackage()
                     };
                     vipfbnow.Utils.postData($('#calculateURL').val(), data).done(function (result) {
@@ -180,18 +182,18 @@ var com;
                     });
                     return dfd.promise();
                 };
-                StoreVipLikeScreenModel.prototype.buyVipLike = function () {
+                StoreVipCmtScreenModel.prototype.buyVipCmt = function () {
                     var self = this;
                     $.blockUI();
                     self.isEnable(false);
                     var data = new vipfbnow.StoreVip();
                     data.fbId = self.fbId();
                     data.fbName = self.fbName();
-                    data.package = self.likePackage();
-                    data.speed = self.likeSpeed();
+                    data.package = self.cmtPackage();
+                    data.speed = self.cmtSpeed();
                     data.dayPackage = self.dayPackage();
-                    data.note = self.note();
-                    vipfbnow.Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
+                    data.cmtContent = self.commentContent();
+                    vipfbnow.Utils.postData($('#buyVipCommentURL').val(), data).done(function (result) {
                         vipfbnow.Utils.notify(result).done(function () {
                             vipfbnow.Utils.getLoggedInUserInfo().done(function (result) {
                                 self.userInfo(result);
@@ -208,24 +210,24 @@ var com;
                         $.unblockUI();
                     });
                 };
-                StoreVipLikeScreenModel.prototype.getListVipID = function () {
+                StoreVipCmtScreenModel.prototype.getListVipID = function () {
                     var self = this;
                     var dfd = $.Deferred();
-                    self.lsVipLike([]);
+                    self.lsVipComment([]);
                     var data = {
-                        packageType: 0 /* LIKE */
+                        packageType: 1 /* COMMENT */
                     };
                     vipfbnow.Utils.postData($('#listVIPURL').val(), data).done(function (result) {
                         if (result.success) {
-                            self.totalID(result.message[0].lsVipLike.length);
-                            for (var _i = 0, _a = result.message[0].lsVipLike; _i < _a.length; _i++) {
-                                var vipLike = _a[_i];
-                                var storeVipLike = new vipfbnow.StoreVip();
-                                storeVipLike.package = vipLike.package.total;
-                                storeVipLike.fbName = vipLike.fbname;
-                                storeVipLike.note = vipLike.note;
-                                storeVipLike.expireDate = vipLike.expiretime;
-                                self.lsVipLike.push(storeVipLike);
+                            self.totalID(result.message[0].lsVipComment.length);
+                            for (var _i = 0, _a = result.message[0].lsVipComment; _i < _a.length; _i++) {
+                                var vipComment = _a[_i];
+                                var storeVipComment = new vipfbnow.StoreVip();
+                                storeVipComment.package = vipComment.package.total;
+                                storeVipComment.fbName = vipComment.fbname;
+                                storeVipComment.cmtContent = vipComment.cmtcontent;
+                                storeVipComment.expireDate = vipComment.expiretime;
+                                self.lsVipComment.push(storeVipComment);
                             }
                         }
                         else {
@@ -238,11 +240,11 @@ var com;
                     });
                     return dfd.promise();
                 };
-                return StoreVipLikeScreenModel;
+                return StoreVipCmtScreenModel;
             }());
-            vipfbnow.StoreVipLikeScreenModel = StoreVipLikeScreenModel;
+            vipfbnow.StoreVipCmtScreenModel = StoreVipCmtScreenModel;
             $(document).ready(function () {
-                var screenModel = new StoreVipLikeScreenModel();
+                var screenModel = new StoreVipCmtScreenModel();
                 $.blockUI({ baseZ: 2000 });
                 screenModel.startPage().done(function () {
                     vipfbnow.Utils.loadLayoutScreenModel(screenModel.userInfo()).done(function () {

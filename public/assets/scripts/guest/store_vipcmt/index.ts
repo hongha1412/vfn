@@ -9,40 +9,40 @@
 
 module com.sabrac.vipfbnow {
 
-    export class StoreVipLikeScreenModel {
+    export class StoreVipCmtScreenModel {
         userInfo: KnockoutObservable<UserInfo>;
+        totalID: KnockoutObservable<number>;
         fbURL: KnockoutObservable<string>;
         fbId: KnockoutObservable<string>;
         fbName: KnockoutObservable<string>;
-        likePackage: KnockoutObservable<number>;
-        likeSpeed: KnockoutObservable<number>;
+        cmtPackage: KnockoutObservable<number>;
+        cmtSpeed: KnockoutObservable<number>;
         dayPackage: KnockoutObservable<number>;
-        note: KnockoutObservable<string>;
-        totalID: KnockoutObservable<number>;
         price: KnockoutObservable<number>;
-        lsLikePackage: KnockoutObservableArray<PackageObject>;
+        commentContent: KnockoutObservable<string>;
+        lsCmtPackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
-        lsLikeSpeed: KnockoutObservableArray<PackageObject>;
+        lsCmtSpeed: KnockoutObservableArray<PackageObject>;
+        lsVipComment: KnockoutObservableArray<StoreVip>;
         isEnable: KnockoutObservable<boolean>;
-        lsVipLike: KnockoutObservableArray<StoreVip>;
 
         constructor() {
             var self = this;
             self.userInfo = ko.observable<UserInfo>(new UserInfo());
+            self.totalID = ko.observable<number>(0);
             self.fbURL = ko.observable<string>('');
             self.fbId = ko.observable<string>('');
             self.fbName = ko.observable<string>('');
-            self.likePackage = ko.observable<number>(1);
-            self.likeSpeed = ko.observable<number>(1);
+            self.cmtPackage = ko.observable<number>(1);
+            self.cmtSpeed = ko.observable<number>(1);
             self.dayPackage = ko.observable<number>(1);
-            self.note = ko.observable<string>('');
-            self.totalID = ko.observable<number>(0);
             self.price = ko.observable<number>(0);
-            self.lsLikePackage = ko.observableArray<PackageObject>([]);
+            self.commentContent = ko.observable<string>('');
+            self.lsCmtPackage = ko.observableArray<PackageObject>([]);
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
-            self.lsLikeSpeed = ko.observableArray<PackageObject>([]);
+            self.lsCmtSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
-            self.lsVipLike = ko.observableArray<StoreVip>([]);
+            self.lsVipComment = ko.observableArray<StoreVip>([]);
 
             self.fbURL.subscribe(function() {
                 $.blockUI();
@@ -59,7 +59,7 @@ module com.sabrac.vipfbnow {
                 });
             });
 
-            self.likePackage.subscribe(function() {
+            self.cmtPackage.subscribe(function() {
                 self.calculate().done(function(result) {
                     self.price(result);
                 });
@@ -71,38 +71,38 @@ module com.sabrac.vipfbnow {
             });
         }
 
-        reset() {
-            var self = this;
-            self.fbURL('');
-            self.fbId('');
-            self.fbName('');
-            self.likePackage(1);
-            self.likeSpeed(1);
-            self.dayPackage(1);
-            self.note('');
-            self.isEnable(true);
-        }
-
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
                 self.getListVipID().always(function () {
-                    self.getPackageInfo().always(function() {
-                        self.getLikeSpeedInfo().always(function () {
-                            self.calculate().done(function(result) {
+                    self.getPackageInfo().always(function () {
+                        self.getCommentSpeedInfo().always(function () {
+                            self.calculate().done(function (result) {
                                 self.price(result);
-                            }).always(function() {
+                            }).always(function () {
                                 dfd.resolve();
                             });
                         });
                     });
                 });
-            }).fail(function () {
+            }).fail(function (result) {
                 dfd.resolve();
             });
             return dfd.promise();
+        }
+
+        reset() {
+            var self = this;
+            self.fbURL('');
+            self.fbId('');
+            self.fbName('');
+            self.cmtPackage(8);
+            self.cmtSpeed(8);
+            self.dayPackage(1);
+            self.commentContent('');
+            self.isEnable(true);
         }
 
         getFbUserInfo(): JQueryPromise<any> {
@@ -123,43 +123,16 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        getPackageInfo(): JQueryPromise<any> {
+        getCommentSpeedInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
             let data = {
-                packageType: PackageType.LIKE
-            };
-            Utils.postData($('#packageURL').val(), data).done(function(result) {
-                if (result.success) {
-                    if (result.message[0].hasOwnProperty('likePackage')) {
-                        for (let likePackage of result.message[0].likePackage) {
-                            self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.total));
-                        }
-                    }
-                    for (let dayPackage of result.message[0].dayPackage) {
-                        self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
-                    }
-                } else {
-                    Utils.notify(result);
-                }
-            }).fail(function(result) {
-                Utils.unexpectedError();
-            }).always(function (result) {
-                dfd.resolve();
-            });
-            return dfd.promise();
-        }
-
-        getLikeSpeedInfo(): JQueryPromise<any> {
-            var self = this;
-            var dfd = $.Deferred();
-            let data = {
-                type: PackageType.LIKE
+                type: PackageType.COMMENT
             };
             Utils.postData($('#speedURL').val(), data).done(function(result) {
                 if (result.success) {
-                    for (let likeSpeedObject of result.message[0]) {
-                        self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
+                    for (let cmtSpeedObject of result.message[0]) {
+                        self.lsCmtSpeed.push(new PackageObject(cmtSpeedObject.id, cmtSpeedObject.value));
                     }
                 } else {
                     Utils.notify(result);
@@ -172,6 +145,35 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
+        getPackageInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            let data = {
+                packageType: PackageType.COMMENT
+            };
+            Utils.postData($('#packageURL').val(), data).done(function(result) {
+                if (result.success) {
+                    if (result.message[0].hasOwnProperty('commentPackage')) {
+                        for (let cmtPackage of result.message[0].commentPackage) {
+                            self.lsCmtPackage.push(new PackageObject(cmtPackage.id, cmtPackage.total));
+                        }
+                    }
+                    for (let dayPackage of result.message[0].dayPackage) {
+                        if (dayPackage.daytotal == 30 || dayPackage.daytotal == 60 || dayPackage.daytotal == 90) {
+                            self.lsDayPackage.push(new PackageObject(dayPackage.id, dayPackage.daytotal));
+                        }
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function(result) {
+                Utils.unexpectedError();
+            }).always(function (result) {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
         calculate(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
@@ -179,7 +181,7 @@ module com.sabrac.vipfbnow {
             $.blockUI();
             self.isEnable(false);
             let data = {
-                likePackage: self.likePackage(),
+                cmtPackage: self.cmtPackage(),
                 dayPackage: self.dayPackage()
             };
 
@@ -200,19 +202,19 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        buyVipLike() {
+        buyVipCmt() {
             var self = this;
             $.blockUI();
             self.isEnable(false);
             let data = new StoreVip();
             data.fbId = self.fbId();
             data.fbName = self.fbName();
-            data.package = self.likePackage();
-            data.speed = self.likeSpeed();
+            data.package = self.cmtPackage();
+            data.speed = self.cmtSpeed();
             data.dayPackage = self.dayPackage();
-            data.note = self.note();
+            data.cmtContent = self.commentContent();
 
-            Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
+            Utils.postData($('#buyVipCommentURL').val(), data).done(function (result) {
                 Utils.notify(result).done(function () {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
@@ -233,22 +235,22 @@ module com.sabrac.vipfbnow {
         getListVipID(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            self.lsVipLike([]);
+            self.lsVipComment([]);
             let data = {
-                packageType: PackageType.LIKE
+                packageType: PackageType.COMMENT
             };
 
             Utils.postData($('#listVIPURL').val(), data).done(function(result) {
                 if (result.success) {
-                    self.totalID(result.message[0].lsVipLike.length);
-                    for (let vipLike of result.message[0].lsVipLike) {
-                        let storeVipLike = new StoreVip();
-                        storeVipLike.package = vipLike.package.total;
-                        storeVipLike.fbName = vipLike.fbname;
-                        storeVipLike.note = vipLike.note;
-                        storeVipLike.expireDate = vipLike.expiretime;
+                    self.totalID(result.message[0].lsVipComment.length);
+                    for (let vipComment of result.message[0].lsVipComment) {
+                        let storeVipComment = new StoreVip();
+                        storeVipComment.package = vipComment.package.total;
+                        storeVipComment.fbName = vipComment.fbname;
+                        storeVipComment.cmtContent = vipComment.cmtcontent;
+                        storeVipComment.expireDate = vipComment.expiretime;
 
-                        self.lsVipLike.push(storeVipLike);
+                        self.lsVipComment.push(storeVipComment);
                     }
                 } else {
                     Utils.notify(result);
@@ -262,8 +264,10 @@ module com.sabrac.vipfbnow {
         }
     }
 
+
+
     $(document).ready(function() {
-        var screenModel = new StoreVipLikeScreenModel();
+        var screenModel = new StoreVipCmtScreenModel();
         $.blockUI({ baseZ: 2000 });
 
         screenModel.startPage().done(function() {

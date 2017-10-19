@@ -9,40 +9,42 @@
 
 module com.sabrac.vipfbnow {
 
-    export class StoreVipLikeScreenModel {
+    export class StoreVipReactScreenModel {
         userInfo: KnockoutObservable<UserInfo>;
+        totalID: KnockoutObservable<number>;
         fbURL: KnockoutObservable<string>;
         fbId: KnockoutObservable<string>;
         fbName: KnockoutObservable<string>;
-        likePackage: KnockoutObservable<number>;
-        likeSpeed: KnockoutObservable<number>;
+        reactPackage: KnockoutObservable<number>;
+        reactSpeed: KnockoutObservable<number>;
+        reactType: KnockoutObservable<string>;
         dayPackage: KnockoutObservable<number>;
-        note: KnockoutObservable<string>;
-        totalID: KnockoutObservable<number>;
         price: KnockoutObservable<number>;
-        lsLikePackage: KnockoutObservableArray<PackageObject>;
+        note: KnockoutObservable<string>;
+        lsReactPackage: KnockoutObservableArray<PackageObject>;
         lsDayPackage: KnockoutObservableArray<PackageObject>;
-        lsLikeSpeed: KnockoutObservableArray<PackageObject>;
+        lsReactSpeed: KnockoutObservableArray<PackageObject>;
+        lsVipReact: KnockoutObservableArray<StoreVip>;
         isEnable: KnockoutObservable<boolean>;
-        lsVipLike: KnockoutObservableArray<StoreVip>;
 
         constructor() {
             var self = this;
             self.userInfo = ko.observable<UserInfo>(new UserInfo());
+            self.totalID = ko.observable<number>(0);
             self.fbURL = ko.observable<string>('');
             self.fbId = ko.observable<string>('');
             self.fbName = ko.observable<string>('');
-            self.likePackage = ko.observable<number>(1);
-            self.likeSpeed = ko.observable<number>(1);
+            self.reactPackage = ko.observable<number>(1);
+            self.reactSpeed = ko.observable<number>(1);
+            self.reactType = ko.observable<string>(ReactType.LIKE);
             self.dayPackage = ko.observable<number>(1);
-            self.note = ko.observable<string>('');
-            self.totalID = ko.observable<number>(0);
             self.price = ko.observable<number>(0);
-            self.lsLikePackage = ko.observableArray<PackageObject>([]);
+            self.note = ko.observable<string>('');
+            self.lsReactPackage = ko.observableArray<PackageObject>([]);
             self.lsDayPackage = ko.observableArray<PackageObject>([]);
-            self.lsLikeSpeed = ko.observableArray<PackageObject>([]);
+            self.lsReactSpeed = ko.observableArray<PackageObject>([]);
             self.isEnable = ko.observable<boolean>(true);
-            self.lsVipLike = ko.observableArray<StoreVip>([]);
+            self.lsVipReact = ko.observableArray<StoreVip>([]);
 
             self.fbURL.subscribe(function() {
                 $.blockUI();
@@ -59,7 +61,7 @@ module com.sabrac.vipfbnow {
                 });
             });
 
-            self.likePackage.subscribe(function() {
+            self.reactPackage.subscribe(function() {
                 self.calculate().done(function(result) {
                     self.price(result);
                 });
@@ -71,38 +73,39 @@ module com.sabrac.vipfbnow {
             });
         }
 
-        reset() {
-            var self = this;
-            self.fbURL('');
-            self.fbId('');
-            self.fbName('');
-            self.likePackage(1);
-            self.likeSpeed(1);
-            self.dayPackage(1);
-            self.note('');
-            self.isEnable(true);
-        }
-
         startPage(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
             Utils.getLoggedInUserInfo().done(function(result) {
                 self.userInfo(result);
                 self.getListVipID().always(function () {
-                    self.getPackageInfo().always(function() {
-                        self.getLikeSpeedInfo().always(function () {
-                            self.calculate().done(function(result) {
+                    self.getPackageInfo().always(function () {
+                        self.getReactSpeedInfo().always(function () {
+                            self.calculate().done(function (result) {
                                 self.price(result);
-                            }).always(function() {
+                            }).always(function () {
                                 dfd.resolve();
                             });
                         });
                     });
                 });
-            }).fail(function () {
+            }).fail(function (result) {
                 dfd.resolve();
             });
             return dfd.promise();
+        }
+
+        reset() {
+            var self = this;
+            self.fbURL('');
+            self.fbId('');
+            self.fbName('');
+            self.reactPackage(22);
+            self.reactSpeed(22);
+            self.reactType(ReactType.LIKE);
+            self.dayPackage(1);
+            self.note('');
+            self.isEnable(true);
         }
 
         getFbUserInfo(): JQueryPromise<any> {
@@ -123,17 +126,39 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
+        getReactSpeedInfo(): JQueryPromise<any> {
+            var self = this;
+            var dfd = $.Deferred();
+            let data = {
+                type: PackageType.REACT
+            };
+            Utils.postData($('#speedURL').val(), data).done(function(result) {
+                if (result.success) {
+                    for (let reactSpeedObject of result.message[0]) {
+                        self.lsReactSpeed.push(new PackageObject(reactSpeedObject.id, reactSpeedObject.value));
+                    }
+                } else {
+                    Utils.notify(result);
+                }
+            }).fail(function (result) {
+                Utils.unexpectedError();
+            }).always(function () {
+                dfd.resolve();
+            });
+            return dfd.promise();
+        }
+
         getPackageInfo(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
             let data = {
-                packageType: PackageType.LIKE
+                packageType: PackageType.REACT
             };
             Utils.postData($('#packageURL').val(), data).done(function(result) {
                 if (result.success) {
-                    if (result.message[0].hasOwnProperty('likePackage')) {
-                        for (let likePackage of result.message[0].likePackage) {
-                            self.lsLikePackage.push(new PackageObject(likePackage.id, likePackage.total));
+                    if (result.message[0].hasOwnProperty('reactPackage')) {
+                        for (let reactPackage of result.message[0].reactPackage) {
+                            self.lsReactPackage.push(new PackageObject(reactPackage.id, reactPackage.total));
                         }
                     }
                     for (let dayPackage of result.message[0].dayPackage) {
@@ -150,28 +175,6 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        getLikeSpeedInfo(): JQueryPromise<any> {
-            var self = this;
-            var dfd = $.Deferred();
-            let data = {
-                type: PackageType.LIKE
-            };
-            Utils.postData($('#speedURL').val(), data).done(function(result) {
-                if (result.success) {
-                    for (let likeSpeedObject of result.message[0]) {
-                        self.lsLikeSpeed.push(new PackageObject(likeSpeedObject.id, likeSpeedObject.value));
-                    }
-                } else {
-                    Utils.notify(result);
-                }
-            }).fail(function (result) {
-                Utils.unexpectedError();
-            }).always(function () {
-                dfd.resolve();
-            });
-            return dfd.promise();
-        }
-
         calculate(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
@@ -179,7 +182,7 @@ module com.sabrac.vipfbnow {
             $.blockUI();
             self.isEnable(false);
             let data = {
-                likePackage: self.likePackage(),
+                reactPackage: self.reactPackage(),
                 dayPackage: self.dayPackage()
             };
 
@@ -200,19 +203,20 @@ module com.sabrac.vipfbnow {
             return dfd.promise();
         }
 
-        buyVipLike() {
+        buyVipReact() {
             var self = this;
             $.blockUI();
             self.isEnable(false);
             let data = new StoreVip();
             data.fbId = self.fbId();
             data.fbName = self.fbName();
-            data.package = self.likePackage();
-            data.speed = self.likeSpeed();
+            data.package = self.reactPackage();
+            data.speed = self.reactSpeed();
             data.dayPackage = self.dayPackage();
             data.note = self.note();
+            data.reactType = self.reactType();
 
-            Utils.postData($('#buyVipLikeURL').val(), data).done(function (result) {
+            Utils.postData($('#buyVipReactURL').val(), data).done(function (result) {
                 Utils.notify(result).done(function () {
                     Utils.getLoggedInUserInfo().done(function(result) {
                         self.userInfo(result);
@@ -233,22 +237,23 @@ module com.sabrac.vipfbnow {
         getListVipID(): JQueryPromise<any> {
             var self = this;
             var dfd = $.Deferred();
-            self.lsVipLike([]);
+            self.lsVipReact([]);
             let data = {
-                packageType: PackageType.LIKE
+                packageType: PackageType.REACT
             };
 
             Utils.postData($('#listVIPURL').val(), data).done(function(result) {
                 if (result.success) {
-                    self.totalID(result.message[0].lsVipLike.length);
-                    for (let vipLike of result.message[0].lsVipLike) {
-                        let storeVipLike = new StoreVip();
-                        storeVipLike.package = vipLike.package.total;
-                        storeVipLike.fbName = vipLike.fbname;
-                        storeVipLike.note = vipLike.note;
-                        storeVipLike.expireDate = vipLike.expiretime;
+                    self.totalID(result.message[0].lsVipReact.length);
+                    for (let vipReact of result.message[0].lsVipReact) {
+                        let storeVipReact = new StoreVip();
+                        storeVipReact.package = vipReact.package.total;
+                        storeVipReact.fbName = vipReact.fbname;
+                        storeVipReact.note = vipReact.note;
+                        storeVipReact.expireDate = vipReact.expiretime;
+                        storeVipReact.reactType = vipReact.reacttype;
 
-                        self.lsVipLike.push(storeVipLike);
+                        self.lsVipReact.push(storeVipReact);
                     }
                 } else {
                     Utils.notify(result);
@@ -262,8 +267,10 @@ module com.sabrac.vipfbnow {
         }
     }
 
+
+
     $(document).ready(function() {
-        var screenModel = new StoreVipLikeScreenModel();
+        var screenModel = new StoreVipReactScreenModel();
         $.blockUI({ baseZ: 2000 });
 
         screenModel.startPage().done(function() {

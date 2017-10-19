@@ -16,7 +16,8 @@ class CreateTablePrice extends Migration
         Schema::create('price', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('vnd');
-            $table->integer('likepackage');
+            $table->integer('type');
+            $table->integer('package');
             $table->integer('daypackage');
         });
     }
