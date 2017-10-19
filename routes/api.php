@@ -48,3 +48,7 @@ Route::delete('admin/giftcode/{id}', 'Admin\GiftLikeController@destroy');
 Route::get('admin/notice', 'Admin\NoticeController@index');
 Route::put('admin/notice/{id}', 'Admin\NoticeController@update');
 Route::post('admin/notice', 'Admin\NoticeController@store');
+// package
+Route::get('admin/package', 'Admin\PackageController@index');
+Route::put('admin/package/{id}', 'Admin\PackageController@update');
+Route::post('admin/package', 'Admin\PackageController@store');

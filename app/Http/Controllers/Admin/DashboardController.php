@@ -18,4 +18,8 @@ class DashboardController extends Controller
     public function notice() {
         return view("admin.notice.index");
     }
+
+    public function package() {
+        return view("admin.package.index");
+    }
 }
