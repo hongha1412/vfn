@@ -7,11 +7,12 @@ new Vue({
             items: [],
             pagination: {
                 total: 0, 
-                per_page: 2,
+                per_page: 10,
                 from: 1, 
                 to: 0,
                 current_page: 1
             },
+            offset: 4,
             itemGiftcode: {'amount': '', 'quality': '','time': '', 'id': ''},
             formErrors: {}
         },
@@ -52,6 +53,11 @@ new Vue({
                     }
                 });
             },
+            changePage: function (page, per_page) {
+                this.pagination.current_page = page;
+                this.pagination.per_page = per_page;
+                this.getGiftcodeList(page, per_page);
+            },
             postGiftcode: function(itemGiftcode) {
                 var input = itemGiftcode;
                 this.$http.post('/api/admin/giftcode', input).then((response) => {
@@ -75,6 +81,15 @@ new Vue({
                         this.formErrors = $response;
                     }
                 });
+            }
+        },
+        filters: {
+            formatPrice: function (value) {
+                if (!value) {
+                    return "0";
+                }
+                var val = (value/1).toFixed(0).replace('.', ',')
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
             }
         }
 });
