@@ -18,20 +18,20 @@
                     <b><i class="fa fa-gears"></i> Cài Đặt Mã Gift Hệ Thống</b>
                 </div>
                 <div class="panel-body">
-                    <form v-on:submit.prevent="postGiftcode(itemGiftcode)">
+                    <form v-on:submit.prevent="postGiftcode">
                         <div class="form-group">
                             <label for="quality">Số Lượng</label> <input type="number"
-                                class="form-control" name="quality" v-model="itemGiftcode.quality">
+                                class="form-control" name="quality" v-model="fillItem.quality">
                                 <span v-if="formErrors['quality']" class="error text-danger">@{{ formErrors['quality'] }}</span>
                         </div>
                         <div class="form-group">
                             <label for="amount1">Mệnh Giá:</label> <input type="text"
-                                class="form-control" name="amount" v-model="itemGiftCode.amount">
+                                class="form-control" name="amount" v-model="fillItem.amount">
                             <span v-if="formErrors['amount']" class="error text-danger">@{{ formErrors['amount'] }}</span>
                         </div>
                         <div class="form-group">
                             <label>Thời Hạn:</label> <select class="form-control"
-                                v-model="itemGiftCode.time" name="time">
+                                v-model="fillItem.time" name="time">
                                 <option value="1" selected>1 Ngày</option>
                                 <option value="3">3 Ngày</option>
                                 <option value="5">5 Ngày</option>
@@ -68,10 +68,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in itemsGiftCode">
+                                <tr v-for="item in itemsGiftcode">
                                     <td>@{{ item.giftcode }}</td>
-                                    <td>@{{ item.amount }}</td>
-                                    <td>@{{ item.expiretime }}</td>
+                                    <td>@{{ item.amount | formatPrice }}</td>
+                                    <td>@{{ item.expiretime | formatDate }}</td>
                                 </tr>
                             </tbody>
                         </table>

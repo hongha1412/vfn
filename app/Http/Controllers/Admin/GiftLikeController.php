@@ -58,12 +58,14 @@ class GiftLikeController extends Controller
         
         for($i = 0; $i < $request->quality; $i++)
         {
-            $timegift = time() + $request->time * 24 * 3600;
-            //$ends = date('d/m/Y', $timegift);
+            $expiretime = time() + $request->time * 24 * 3600;
+            $ends = date('Y-m-d H:i:s', $expiretime);
 
             $create = new GiftLike;
+            $create->userid = 1;
             $create->giftcode = $this->randGiftCode();
-            $create->time = $timegift;
+            $create->expiretime = $ends;
+            $create->usedtime = null;
             $create->amount = $request->amount;
             $create->save();
         }

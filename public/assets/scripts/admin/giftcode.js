@@ -13,7 +13,7 @@ new Vue({
                 current_page: 1
             },
             offset: 4,
-            itemGiftcode: {'amount': '', 'quality': '','time': '', 'id': ''},
+            fillItem: {'amount': '', 'quality': '','time': '', 'id': ''},
             formErrors: {}
         },
         computed: {
@@ -49,7 +49,7 @@ new Vue({
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('itemsGiftcode', $response.data.data);
-                        this.$set('paginationGiftcode', $response.pagination);
+                        this.$set('pagination', $response.pagination);
                     }
                 });
             },
@@ -58,23 +58,12 @@ new Vue({
                 this.pagination.per_page = per_page;
                 this.getGiftcodeList(page, per_page);
             },
-            postGiftcode: function(itemGiftcode) {
-                var input = itemGiftcode;
+            postGiftcode: function() {
+                var input = this.fillItem;
                 this.$http.post('/api/admin/giftcode', input).then((response) => {
-                    this.getGiftcodeList();
+                    this.getGiftcodeList(this.pagination.current_page, this.pagination.per_page);
+                    this.fillItem = {'amount': '', 'quality': '','time': '', 'id': ''};
                     toastr.success('Tạo mã gift thành công!', 'Success Alert', {timeOut: 5000});
-                }, (response) => {
-                    if (response && response.data) {
-                        var $response = JSON.parse(response.data);
-                        this.formErrors = $response;
-                    }
-                });
-            },
-            updateGiftcode: function(id) {
-                var input = this.itemGiftcode;
-                this.$http.put('/api/admin/giftcode/'+id, input).then((response) => {
-                    this.getGiftcodeList();
-                    toastr.success('Thay đổi mã gift thành công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {
                     if (response && response.data) {
                         var $response = JSON.parse(response.data);
@@ -90,6 +79,19 @@ new Vue({
                 }
                 var val = (value/1).toFixed(0).replace('.', ',')
                 return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            },
+            formatDate: function(value) {
+                if (!value){
+                    return "";
+                }
+                var date = new Date(value);
+                var curr_date = date.getDate();
+                var curr_month = date.getMonth() + 1; //Months are zero based
+                var curr_year = date.getFullYear();
+                var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+                var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+                var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+                return curr_date + "/" + curr_month + "/" + curr_year + " " + hours + ":" + minutes + ":" + second;
             }
         }
 });
