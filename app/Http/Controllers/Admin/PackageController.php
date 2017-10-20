@@ -118,6 +118,13 @@ class PackageController extends Controller
      */
     public function destroy($id)
     {
+        $vipList = Vip::getVipByPackage($id);
+        if (sizeof($vipList) > 0) {
+            return response()->json(array('error' => true, 'message' => 'Package đang được sử dụng'));
+        } 
+
+        Package::find($id)->delete();
         
+        return response()->json(array('error' => false, 'message' => 'Xóa package thành công'));
     }
 }

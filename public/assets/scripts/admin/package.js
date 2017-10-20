@@ -14,7 +14,8 @@ new Vue({
             },
             offset: 4,
             fillItem: {'type': '', 'total': '','id': ''},
-            formErrors: {}
+            formErrors: {},
+            formDelete: {'action':'', 'id': ''}
         },
         computed: {
             isActived: function () {
@@ -96,6 +97,29 @@ new Vue({
                         }
                     });
             },
+            showConfirmDelete: function(id) {
+                this.formDelete.id = id;
+                $("#confirmDeleteModal").modal('show');
+            },
+            submitDelete: function(){
+                this.remove(this.formDelete.id);
+                $("#confirmDeleteModal").modal('hide');
+            },
+            remove: function($id) {
+                this.$http.delete('/api/admin/package/'+id).then((response) => {
+                    this.getPackageList(this.pagination.current_page, this.pagination.per_page);
+                    this.fillItem = {'total': '', 'type': '', 'id': ''};
+                    
+                    if (response) {
+                        if (response.error) {
+                            toastr.error(response.message, 'Faild Alert', {timeOut: 5000});
+                        } else {
+                            toastr.success(response.message, 'Success Alert', {timeOut: 5000});
+                        }
+                        
+                    }
+                });
+            }
         },
         filters: {
             formatType: function (value) {

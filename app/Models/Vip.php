@@ -94,4 +94,8 @@ class Vip extends Model
         return Vip::with('package')->where('userid', '=', $userId)
             ->where('type', '=', PackageType::REACT)->get();
     }
+
+    public static function getVipByPackage($packageId) {
+        return Vip::where('package', '=', $packageId)->get();
+    }
 }

@@ -59,7 +59,10 @@
                                 <tr v-for="item in items">
                                     <td>@{{ item.total }}</td>
                                     <td>@{{ item.type | formatType }}</td>
-                                    <td><a href="javascript:void(0);" @click.prevent="edit(item)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a></td>
+                                    <td>
+                                        <a href="javascript:void(0);" @click.prevent="edit(item)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a>
+                                        <a href="javascript:void(0);" @click.prevent="showConfirmDelete(item.id)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xóa</a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -89,7 +92,8 @@
                 </div>
             </div>
         </div>
-
+        @component("admin.layouts._confirm")
+        @endcomponent
     </div>
 @stop
 
