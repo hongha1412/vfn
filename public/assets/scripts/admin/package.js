@@ -106,15 +106,16 @@ new Vue({
                 $("#confirmDeleteModal").modal('hide');
             },
             remove: function($id) {
-                this.$http.delete('/api/admin/package/'+id).then((response) => {
+                this.$http.delete('/api/admin/package/'+$id).then((response) => {
                     this.getPackageList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'total': '', 'type': '', 'id': ''};
                     
-                    if (response) {
-                        if (response.error) {
-                            toastr.error(response.message, 'Faild Alert', {timeOut: 5000});
+                    if (response && response.data) {
+                        var $response = JSON.parse(response.data);
+                        if ($response.error) {
+                            toastr.error($response.message, 'Faild Alert', {timeOut: 5000});
                         } else {
-                            toastr.success(response.message, 'Success Alert', {timeOut: 5000});
+                            toastr.success($response.message, 'Success Alert', {timeOut: 5000});
                         }
                         
                     }

@@ -18,7 +18,7 @@ class PackageController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $accounts = Package::paginate($perPage);
+        $accounts = Package::orderBy("type", "desc")->orderBy("total", "desc")->paginate($perPage);
 
         $response = [
             'pagination' => [
