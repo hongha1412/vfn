@@ -22,4 +22,8 @@ class DashboardController extends Controller
     public function package() {
         return view("admin.package.index");
     }
+
+    public function daypackage() {
+        return view("admin.daypackage.index");
+    }
 }

@@ -16,7 +16,7 @@ class DayPackageController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $accounts = DayPackage::paginate($perPage);
+        $accounts = DayPackage::orderBy("daytotal", "desc")->paginate($perPage);
 
         $response = [
             'pagination' => [
@@ -56,7 +56,7 @@ class DayPackageController extends Controller
         ]);
         
         $create = new DayPackage;
-        $edit->daytotal = $request->daytotal;
+        $create->daytotal = $request->daytotal;
         $create->save();
 
         return response()->json($create);
@@ -112,11 +112,6 @@ class DayPackageController extends Controller
      */
     public function destroy($id)
     {
-        $vipList = Vip::getVipByPackage($id);
-        if (sizeof($vipList) > 0) {
-            return response()->json(array('error' => true, 'message' => 'Day package đang được sử dụng'));
-        } 
-
         DayPackage::find($id)->delete();
         
         return response()->json(array('error' => false, 'message' => 'Xóa day package thành công'));

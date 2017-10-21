@@ -52,3 +52,9 @@ Route::post('admin/notice', 'Admin\NoticeController@store');
 Route::get('admin/package', 'Admin\PackageController@index');
 Route::put('admin/package/{id}', 'Admin\PackageController@update');
 Route::post('admin/package', 'Admin\PackageController@store');
+Route::delete('admin/package/{id}', 'Admin\PackageController@destroy');
+// day package
+Route::get('admin/daypackage', 'Admin\DayPackageController@index');
+Route::put('admin/daypackage/{id}', 'Admin\DayPackageController@update');
+Route::post('admin/daypackage', 'Admin\DayPackageController@store');
+Route::delete('admin/daypackage/{id}', 'Admin\DayPackageController@destroy');

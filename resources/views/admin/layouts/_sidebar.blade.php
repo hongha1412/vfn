@@ -58,6 +58,8 @@
                 <span>Quản Lý GiftCode</span></a></li>
         <li><a href="{{ url('package') }}"><i class="fa fa-gift" aria-hidden="true"></i>
                 <span>Quản Lý Package</span></a></li>
+        <li><a href="{{ url('daypackage') }}"><i class="fa fa-gift" aria-hidden="true"></i>
+                <span>Quản Lý Day Package</span></a></li>
         <li><a href="{{ url('notice') }}"><i class="fa fa-usd" aria-hidden="true"></i> <span>Thông Báo</span></a></li>
 
         <li><a href="logout.php"><i class="fa fa-share"></i> <span>Đăng Xuất</span></a></li>
