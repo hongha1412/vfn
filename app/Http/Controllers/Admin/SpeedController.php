@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Speed;
+use App\Models\Vip;
 
 class SpeedController extends Controller
 {

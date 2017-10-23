@@ -12,7 +12,7 @@
 @endsection
 @section('content')
     <div class="row" id="price">
-        <div class="col-lg-6">pricce
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <b><i class="fa fa-gears"></i> Cài Đặt Price</b>
@@ -25,7 +25,7 @@
                                 <span v-if="formErrors['vnd']" class="error text-danger">@{{ formErrors['vnd'] }}</span>
                         </div>
                         <div class="form-group">
-                            <label>Kiểu package:</label> <select class="form-control"
+                            <label>Kiểu:</label> <select class="form-control"
                                 v-model="fillItem.type" name="type">
                                 <option value="0" selected>LIKE</option>
                                 <option value="1">COMMENT</option>
@@ -35,16 +35,17 @@
                             <span v-if="formErrors['type']" class="error text-danger">@{{ formErrors['type'] }}</span>
                         </div>
                         <div class="form-group">
-                            <label>Package:</label> <select class="form-control"
+                            <label>Package:</label> 
+                            <select class="form-control"
                                 v-model="fillItem.package" name="package">
-                                <option v-for="option in itemsPackage" v-bind:value="option.id">{{ option.type }}</option>
+                                <option v-for="option in itemsPackage" v-bind:value="option.id">@{{ option.type }}</option>
                             </select>
                             <span v-if="formErrors['package']" class="error text-danger">@{{ formErrors['package'] }}</span>
                         </div>
                         <div class="form-group">
                             <label>Day package:</label> <select class="form-control"
                                 v-model="fillItem.daypackage" name="daypackage">
-                                <option v-for="option in itemsDayPackage" v-bind:value="option.id">{{ option.daytotal }}</option>
+                                <option v-for="option in itemsDayPackage" v-bind:value="option.id">@{{ option.daytotal }}</option>
                             </select>
                             <span v-if="formErrors['daypackage']" class="error text-danger">@{{ formErrors['daypackage'] }}</span>
                         </div>
@@ -57,7 +58,7 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b><i class="fa fa-gears"></i> Quản Lý Package</b>
+                    <b><i class="fa fa-gears"></i> Quản Lý Price</b>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">

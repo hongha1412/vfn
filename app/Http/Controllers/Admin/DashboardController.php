@@ -26,4 +26,12 @@ class DashboardController extends Controller
     public function daypackage() {
         return view("admin.daypackage.index");
     }
+
+    public function speed() {
+        return view("admin.speed.index");
+    }
+
+    public function price() {
+        return view("admin.price.index");
+    }
 }

@@ -20,7 +20,7 @@
                 <div class="panel-body">
                     <form v-on:submit.prevent="submit(fillItem.id)">
                         <div class="form-group">
-                            <label for="value">Tổng số</label> <input type="number"
+                            <label for="value">Giá trị</label> <input type="number"
                                 class="form-control" name="value" v-model="fillItem.value">
                                 <span v-if="formErrors['value']" class="error text-danger">@{{ formErrors['value'] }}</span>
                         </div>
@@ -43,7 +43,7 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b><i class="fa fa-gears"></i> Quản Lý Package</b>
+                    <b><i class="fa fa-gears"></i> Quản Lý Speed</b>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">

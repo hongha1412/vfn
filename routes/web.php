@@ -31,7 +31,9 @@ Route::group(['domain' => $adminDomain], function () {
     Route::get('/giftcode', 'Admin\DashboardController@giftcode')->name('admin.giftcode');
     Route::get('/notice', 'Admin\DashboardController@notice')->name('admin.notice');
     Route::get('/package', 'Admin\DashboardController@package')->name('admin.package');
-    Route::get('/daypackage', 'Admin\DashboardController@daypackage')->name('admin.package');
+    Route::get('/daypackage', 'Admin\DashboardController@daypackage')->name('admin.daypackage');
+    Route::get('/speed', 'Admin\DashboardController@speed')->name('admin.speed');
+    Route::get('/price', 'Admin\DashboardController@price')->name('admin.price');
 });
 
 Route::group(['domain' => $domain], function () {

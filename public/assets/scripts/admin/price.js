@@ -51,7 +51,7 @@ new Vue({
                 this.$http.get('/api/admin/allpackage').then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
-                        this.$set('itemsPackage', $response.data.data);
+                        this.$set('itemsPackage', $response);
                     }
                 });
             },
@@ -59,7 +59,7 @@ new Vue({
                 this.$http.get('/api/admin/alldaypackage').then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
-                        this.$set('itemsDayPackage', $response.data.data);
+                        this.$set('itemsDayPackage', $response);
                     }
                 });
             },
@@ -99,8 +99,10 @@ new Vue({
             },
             edit: function(item) {
                 this.fillItem.id = item.id;
-                this.fillItem.value = item.value;
+                this.fillItem.vnd = item.vnd;
                 this.fillItem.type = item.type;
+                this.fillItem.package = item.package;
+                this.fillItem.daypackage = item.daypackage;
             },
             update: function (id) {
                 var input = this.fillItem;
