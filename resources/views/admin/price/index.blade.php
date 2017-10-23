@@ -20,9 +20,9 @@
                 <div class="panel-body">
                     <form v-on:submit.prevent="submit(fillItem.id)">
                         <div class="form-group">
-                            <label for="value">Tổng số</label> <input type="number"
-                                class="form-control" name="value" v-model="fillItem.value">
-                                <span v-if="formErrors['value']" class="error text-danger">@{{ formErrors['value'] }}</span>
+                            <label for="vnd">Tổng số</label> <input type="number"
+                                class="form-control" name="vnd" v-model="fillItem.vnd">
+                                <span v-if="formErrors['vnd']" class="error text-danger">@{{ formErrors['vnd'] }}</span>
                         </div>
                         <div class="form-group">
                             <label>Kiểu package:</label> <select class="form-control"
@@ -33,6 +33,20 @@
                                 <option value="3">REACT</option>
                             </select>
                             <span v-if="formErrors['type']" class="error text-danger">@{{ formErrors['type'] }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Package:</label> <select class="form-control"
+                                v-model="fillItem.package" name="package">
+                                <option selected v-for="option in itemsPackage" v-bind:value="option.id">{{ option.type }}</option>
+                            </select>
+                            <span v-if="formErrors['package']" class="error text-danger">@{{ formErrors['package'] }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Day package:</label> <select class="form-control"
+                                v-model="fillItem.daypackage" name="daypackage">
+                                <option selected v-for="option in itemsDayPackage" v-bind:value="option.id">{{ option.daytotal }}</option>
+                            </select>
+                            <span v-if="formErrors['daypackage']" class="error text-danger">@{{ formErrors['daypackage'] }}</span>
                         </div>
                         <button type="submit" class="btn btn-danger">Lưu</button>
                     </form>
@@ -50,15 +64,19 @@
                         <table id="" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Value</th>
+                                    <th>vnd</th>
                                     <th>Type</th>
+                                    <th>package</th>
+                                    <th>daypackage</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in items">
-                                    <td>@{{ item.value }}</td>
+                                    <td>@{{ item.vnd }}</td>
                                     <td>@{{ item.type | formatType }}</td>
+                                    <td>@{{ item.package }}</td>
+                                    <td>@{{ item.daypackage }}</td>
                                     <td>
                                         <a href="javascript:void(0);" @click.prevent="edit(item)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chỉnh Sửa</a>
                                         <a href="javascript:void(0);" @click.prevent="showConfirmDelete(item.id)" class="btn btn-xs btn-danger"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Xóa</a>

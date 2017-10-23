@@ -43,8 +43,26 @@ new Vue({
         },
         ready : function(){
             this.getPriceList(this.pagination.current_page, this.pagination.per_page);
+            this.getPackageList();
+            this.getDayPackageList();
         },
         methods : {
+            getPackageList: function() {
+                this.$http.get('/api/admin/allpackage').then((response) => {
+                    if (response) {
+                        var $response = JSON.parse(response.data);
+                        this.$set('itemsPackage', $response.data.data);
+                    }
+                });
+            },
+            getDayPackageList: function() {
+                this.$http.get('/api/admin/alldaypackage').then((response) => {
+                    if (response) {
+                        var $response = JSON.parse(response.data);
+                        this.$set('itemsDayPackage', $response.data.data);
+                    }
+                });
+            },
             getPriceList: function(page, per_page) {
                 this.$http.get('/api/admin/price?page='+page + '&perPage=' + per_page).then((response) => {
                     if (response) {
