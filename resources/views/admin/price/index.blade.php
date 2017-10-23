@@ -37,14 +37,14 @@
                         <div class="form-group">
                             <label>Package:</label> <select class="form-control"
                                 v-model="fillItem.package" name="package">
-                                <option selected v-for="option in itemsPackage" v-bind:value="option.id">{{ option.type }}</option>
+                                <option v-for="option in itemsPackage" v-bind:value="option.id">{{ option.type }}</option>
                             </select>
                             <span v-if="formErrors['package']" class="error text-danger">@{{ formErrors['package'] }}</span>
                         </div>
                         <div class="form-group">
                             <label>Day package:</label> <select class="form-control"
                                 v-model="fillItem.daypackage" name="daypackage">
-                                <option selected v-for="option in itemsDayPackage" v-bind:value="option.id">{{ option.daytotal }}</option>
+                                <option v-for="option in itemsDayPackage" v-bind:value="option.id">{{ option.daytotal }}</option>
                             </select>
                             <span v-if="formErrors['daypackage']" class="error text-danger">@{{ formErrors['daypackage'] }}</span>
                         </div>
