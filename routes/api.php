@@ -63,3 +63,8 @@ Route::get('admin/speed', 'Admin\SpeedController@index');
 Route::put('admin/speed/{id}', 'Admin\SpeedController@update');
 Route::post('admin/speed', 'Admin\SpeedController@store');
 Route::delete('admin/speed/{id}', 'Admin\SpeedController@destroy');
+// price
+Route::get('admin/price', 'Admin\PriceController@index');
+Route::put('admin/price/{id}', 'Admin\PriceController@update');
+Route::post('admin/price', 'Admin\PriceController@store');
+Route::delete('admin/price/{id}', 'Admin\PriceController@destroy');
