@@ -58,3 +58,8 @@ Route::get('admin/daypackage', 'Admin\DayPackageController@index');
 Route::put('admin/daypackage/{id}', 'Admin\DayPackageController@update');
 Route::post('admin/daypackage', 'Admin\DayPackageController@store');
 Route::delete('admin/daypackage/{id}', 'Admin\DayPackageController@destroy');
+// speed
+Route::get('admin/speed', 'Admin\SpeedController@index');
+Route::put('admin/speed/{id}', 'Admin\SpeedController@update');
+Route::post('admin/speed', 'Admin\SpeedController@store');
+Route::delete('admin/speed/{id}', 'Admin\SpeedController@destroy');

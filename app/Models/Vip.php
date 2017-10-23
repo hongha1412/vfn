@@ -98,4 +98,8 @@ class Vip extends Model
     public static function getVipByPackage($packageId) {
         return Vip::where('package', '=', $packageId)->get();
     }
+
+    public static function getVipBySpeed($speedId) {
+        return Vip::where('speed', '=', $speedId)->get();
+    }
 }
