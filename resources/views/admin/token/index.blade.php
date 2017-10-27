@@ -23,6 +23,7 @@
                             <button class="btn btn-danger" @click.prevent="showConfirmDeleteAll()"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
                         </div>
                         <div class="form-group">
+                            <label> Hiển thị:</label>
                             <select v-model="pagination.per_page" v-on:change="changePage(pagination.current_page - 1, pagination.per_page)" class="form-control" style="width: 80px">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -31,6 +32,7 @@
                                 <option value="40">40</option>
                                 <option value="50">50</option>
                             </select>
+                            <small> token</small>
                         </div>
                         <div class="form-group pull-right">
                             <label for="search">Tìm kiếm:</label>
