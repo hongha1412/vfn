@@ -247,8 +247,8 @@ new Vue({
         //////////////////////////////// Danh sach ////////////////////////////////////////
         getvueAccount: function(page, per_page, search_key){
             var path = search_key
-                ? '/api/admin/account?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
-                : '/api/admin/account?page='+page+ '&perPage=' + per_page;
+                ? '/api/account?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/account?page='+page+ '&perPage=' + per_page;
             this.$http.get(path).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
@@ -265,7 +265,7 @@ new Vue({
         },
 
         getvueviplike: function(page, per_page){
-            this.$http.get('/api/admin/viplike?page='+page+ '&perPage=' + per_page).then((response) => {
+            this.$http.get('/api/viplike?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipLike', $response.data.data);
@@ -281,7 +281,7 @@ new Vue({
         },
 
         getvueVipCmt: function(page, per_page){
-            this.$http.get('/api/admin/vipcmt?page='+page+ '&perPage=' + per_page).then((response) => {
+            this.$http.get('/api/vipcmt?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipCmt', $response.data.data);
@@ -297,7 +297,7 @@ new Vue({
         },
 
         getvueVipShare: function(page, per_page){
-            this.$http.get('/api/admin/vipshare?page='+page+ '&perPage=' + per_page).then((response) => {
+            this.$http.get('/api/vipshare?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsVipShare', $response.data.data);
@@ -315,9 +315,9 @@ new Vue({
         getvueCamXuc: function(page, per_page, search_key){
             var self = this;
             var path = search_key
-                ? '/api/admin/camxuc?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
-                : '/api/admin/camxuc?page='+page+ '&perPage=' + per_page;
-            this.$http.get('/api/admin/camxuc?page='+page+ '&perPage=' + per_page).then((response) => {
+                ? '/api/camxuc?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/camxuc?page='+page+ '&perPage=' + per_page;
+            this.$http.get('/api/camxuc?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     self.$set('itemsCamXuc', $response.data);
@@ -333,7 +333,7 @@ new Vue({
         },
 
         getvueLogCard: function(page){
-            this.$http.get('/api/admin/logcard?page='+page).then((response) => {
+            this.$http.get('/api/logcard?page='+page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     this.$set('itemsLogCard', $response.data.data);
@@ -377,35 +377,35 @@ new Vue({
         },
 
         deleteAccount: function(id){
-            this.$http.delete('/api/admin/account/'+ id).then((response) => {
+            this.$http.delete('/api/account/'+ id).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
                 toastr.success('Xóa Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
         deleteVipLike: function(id){
-            this.$http.delete('/api/admin/viplike/'+ id).then((response) => {
+            this.$http.delete('/api/viplike/'+ id).then((response) => {
                 this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
         deleteVipCmt: function(id){
-            this.$http.delete('/api/admin/vipcmt/'+ id).then((response) => {
+            this.$http.delete('/api/vipcmt/'+ id).then((response) => {
                 this.changePageVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
         deleteVipShare: function(id){
-            this.$http.delete('/api/admin/vipshare/'+ id).then((response) => {
+            this.$http.delete('/api/vipshare/'+ id).then((response) => {
                 this.changePageVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
         deleteCamXuc: function(id){
-            this.$http.delete('/api/admin/camxuc/'+ id).then((response) => {
+            this.$http.delete('/api/camxuc/'+ id).then((response) => {
                 this.changePageCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
                 toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
@@ -420,7 +420,7 @@ new Vue({
 
         updateCongTien: function(id){
             var input = this.fillItemAccount;
-            this.$http.put('/api/admin/account/congtien/'+id, input).then((response) => {
+            this.$http.put('/api/account/congtien/'+id, input).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
             this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
             $("#congtienModal").modal('hide');
@@ -440,7 +440,7 @@ new Vue({
 
         updateToiDa: function(id){
             var input = this.fillItemAccount;
-            this.$http.put('/api/admin/account/themid/'+id, input).then((response) => {
+            this.$http.put('/api/account/themid/'+id, input).then((response) => {
                 this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
             this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
             $("#themIdModal").modal('hide');
@@ -464,7 +464,7 @@ new Vue({
         },
         updateVipLike: function (id) {
             var input = this.fillItemVipLike;
-            this.$http.put('/api/admin/viplike/'+id, input).then((response) => {
+            this.$http.put('/api/viplike/'+id, input).then((response) => {
                 this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
             this.fillItemVipLike = {'idfb':'', 'fbname': '', 'package': '', 'time': '', 'id':''};
             $("#editVipLikeModal").modal('hide');

@@ -45,7 +45,7 @@ new Vue({
         },
         methods : {
             getGiftcodeList: function(page, per_page) {
-                this.$http.get('/api/admin/giftcode?page='+page + '&perPage=' + per_page).then((response) => {
+                this.$http.get('/api/giftcode?page='+page + '&perPage=' + per_page).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('itemsGiftcode', $response.data.data);
@@ -60,7 +60,7 @@ new Vue({
             },
             postGiftcode: function() {
                 var input = this.fillItem;
-                this.$http.post('/api/admin/giftcode', input).then((response) => {
+                this.$http.post('/api/giftcode', input).then((response) => {
                     this.getGiftcodeList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'amount': '', 'quality': '','time': '', 'id': ''};
                     toastr.success('Tạo mã gift thành công!', 'Success Alert', {timeOut: 5000});

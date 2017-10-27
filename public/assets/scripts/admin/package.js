@@ -46,7 +46,7 @@ new Vue({
         },
         methods : {
             getPackageList: function(page, per_page) {
-                this.$http.get('/api/admin/package?page='+page + '&perPage=' + per_page).then((response) => {
+                this.$http.get('/api/package?page='+page + '&perPage=' + per_page).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('items', $response.data.data);
@@ -68,7 +68,7 @@ new Vue({
             },
             postPackage: function() {
                 var input = this.fillItem;
-                this.$http.post('/api/admin/package', input).then((response) => {
+                this.$http.post('/api/package', input).then((response) => {
                     this.getPackageList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'total': '', 'type': '', 'id': ''};
                     toastr.success('Tạo package thành công!', 'Success Alert', {timeOut: 5000});
@@ -86,7 +86,7 @@ new Vue({
             },
             update: function (id) {
                 var input = this.fillItem;
-                this.$http.put('/api/admin/package/'+id, input).then((response) => {
+                this.$http.put('/api/package/'+id, input).then((response) => {
                     this.getPackageList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'total': '', 'type': '', 'id': ''};
                     toastr.success('Chỉnh Sửa Thành Công!', 'Success Alert', {timeOut: 5000});
@@ -106,7 +106,7 @@ new Vue({
                 $("#confirmDeleteModal").modal('hide');
             },
             remove: function($id) {
-                this.$http.delete('/api/admin/package/'+$id).then((response) => {
+                this.$http.delete('/api/package/'+$id).then((response) => {
                     this.getPackageList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'total': '', 'type': '', 'id': ''};
                     

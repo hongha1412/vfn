@@ -67,7 +67,7 @@ new Vue({
         },
         methods : {
             gettokenList: function(page, per_page) {
-                this.$http.get('/api/admin/token?page='+page + '&perPage=' + per_page).then((response) => {
+                this.$http.get('/api/token?page='+page + '&perPage=' + per_page).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('items', $response.data.data);
@@ -79,7 +79,7 @@ new Vue({
                 var page = this.pagination.current_page - 1;
                 var per_page = this.pagination.per_page;
                 var search = this.pagination.search;
-                this.$http.get('/api/admin/token?page='+page + '&perPage=' + per_page + '&q=' + search).then((response) => {
+                this.$http.get('/api/token?page='+page + '&perPage=' + per_page + '&q=' + search).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('items', $response.data.data);
@@ -102,7 +102,7 @@ new Vue({
             },
             posttoken: function() {
                 var input = this.fillItem;
-                this.$http.post('/api/admin/token', input).then((response) => {
+                this.$http.post('/api/token', input).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
                     toastr.success('Tạo token thành công!', 'Success Alert', {timeOut: 5000});
@@ -120,7 +120,7 @@ new Vue({
             },
             update: function (id) {
                 var input = this.fillItem;
-                this.$http.put('/api/admin/token/'+id, input).then((response) => {
+                this.$http.put('/api/token/'+id, input).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
                     toastr.success('Chỉnh Sửa Thành Công!', 'Success Alert', {timeOut: 5000});
@@ -156,7 +156,7 @@ new Vue({
                 $("#confirmDeleteMultipleModal").modal('hide');
             },
             remove: function($id) {
-                this.$http.delete('/api/admin/token/'+$id).then((response) => {
+                this.$http.delete('/api/token/'+$id).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
                     
@@ -174,7 +174,7 @@ new Vue({
             removeMultiple: function(selected) {
                 var dfd = $.Deferred();
                 var ids = {'ids': selected};
-                this.$http.post('/api/admin/token/removemultiple', ids).then((response) => {
+                this.$http.post('/api/token/removemultiple', ids).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
                     

@@ -13,7 +13,7 @@ new Vue({
         },
         methods : {
             getNotice: function() {
-                this.$http.get('/api/admin/notice').then((response) => {
+                this.$http.get('/api/notice').then((response) => {
                     if (response && response.data) {
                         var $response = JSON.parse(response.data);
                         this.itemNotice.text = $response.text;
@@ -30,7 +30,7 @@ new Vue({
             },
             updateNotice: function(id) {
                 var input = this.itemNotice;
-                this.$http.put('/api/admin/notice/'+id, input).then((response) => {
+                this.$http.put('/api/notice/'+id, input).then((response) => {
                     this.getNotice();
                     toastr.success('Thay Đổi Thông Báo Thành Công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {
@@ -42,7 +42,7 @@ new Vue({
             },
             postNotice: function() {
                 var input = this.itemNotice;
-                this.$http.post('/api/admin/notice', input).then((response) => {
+                this.$http.post('/api/notice', input).then((response) => {
                     this.getNotice();
                     toastr.success('Thêm Thông Báo Thành Công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {

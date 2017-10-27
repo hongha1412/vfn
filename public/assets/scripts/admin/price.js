@@ -48,7 +48,7 @@ new Vue({
         },
         methods : {
             getPackageList: function() {
-                this.$http.get('/api/admin/allpackage').then((response) => {
+                this.$http.get('/api/allpackage').then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('itemsPackage', $response);
@@ -56,7 +56,7 @@ new Vue({
                 });
             },
             getDayPackageList: function() {
-                this.$http.get('/api/admin/alldaypackage').then((response) => {
+                this.$http.get('/api/alldaypackage').then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('itemsDayPackage', $response);
@@ -64,7 +64,7 @@ new Vue({
                 });
             },
             getPriceList: function(page, per_page) {
-                this.$http.get('/api/admin/price?page='+page + '&perPage=' + per_page).then((response) => {
+                this.$http.get('/api/price?page='+page + '&perPage=' + per_page).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('items', $response.data.data);
@@ -86,7 +86,7 @@ new Vue({
             },
             postSpeed: function() {
                 var input = this.fillItem;
-                this.$http.post('/api/admin/price', input).then((response) => {
+                this.$http.post('/api/price', input).then((response) => {
                     this.getPriceList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'type': '', 'vnd': '', 'package':'', 'daypackage':'','id': ''};
                     toastr.success('Tạo thành công!', 'Success Alert', {timeOut: 5000});
@@ -106,7 +106,7 @@ new Vue({
             },
             update: function (id) {
                 var input = this.fillItem;
-                this.$http.put('/api/admin/price/'+id, input).then((response) => {
+                this.$http.put('/api/price/'+id, input).then((response) => {
                     this.getPriceList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'type': '', 'vnd': '', 'package':'', 'daypackage':'','id': ''};
                     toastr.success('Chỉnh Sửa Thành Công!', 'Success Alert', {timeOut: 5000});
@@ -126,7 +126,7 @@ new Vue({
                 $("#confirmDeleteModal").modal('hide');
             },
             remove: function($id) {
-                this.$http.delete('/api/admin/price/'+$id).then((response) => {
+                this.$http.delete('/api/price/'+$id).then((response) => {
                     this.getPriceList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'type': '', 'vnd': '', 'package':'', 'daypackage':'','id': ''};
                     
