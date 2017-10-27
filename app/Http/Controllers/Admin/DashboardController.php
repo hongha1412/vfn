@@ -34,4 +34,8 @@ class DashboardController extends Controller
     public function price() {
         return view("admin.price.index");
     }
+
+    public function token() {
+        return view("admin.token.index");
+    }
 }

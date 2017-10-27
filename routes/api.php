@@ -70,3 +70,8 @@ Route::get('admin/price', 'Admin\PriceController@index');
 Route::put('admin/price/{id}', 'Admin\PriceController@update');
 Route::post('admin/price', 'Admin\PriceController@store');
 Route::delete('admin/price/{id}', 'Admin\PriceController@destroy');
+// token
+Route::get('admin/token', 'Admin\TokenController@index');
+Route::put('admin/token/{id}', 'Admin\TokenController@update');
+Route::post('admin/token', 'Admin\TokenController@store');
+Route::delete('admin/token/{id}', 'Admin\TokenController@destroy');
