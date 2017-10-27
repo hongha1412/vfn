@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group pull-right">
                             <label for="search">Tìm kiếm:</label>
-                            <input type="search" class="form-control" id="search" v-model="pagination.search_key" v-on:change="changePage(pagination.current_page - 1, pagination.per_page)">
+                            <input type="search" placeholder="Tìm kiếm theo tên" class="form-control" id="search" v-model="pagination.search" @keyup.enter="search()">
                         </div>
                     </div>
                     <div class="table-responsive">

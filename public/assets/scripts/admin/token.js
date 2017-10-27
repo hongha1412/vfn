@@ -10,7 +10,8 @@ new Vue({
                 per_page: 10,
                 from: 1, 
                 to: 0,
-                current_page: 1
+                current_page: 1,
+                search:""
             },
             offset: 4,
             fillItem: {'token': '', 'ten': '', 'idfb': '','id': ''},
@@ -47,6 +48,18 @@ new Vue({
         methods : {
             gettokenList: function(page, per_page) {
                 this.$http.get('/api/admin/token?page='+page + '&perPage=' + per_page).then((response) => {
+                    if (response) {
+                        var $response = JSON.parse(response.data);
+                        this.$set('items', $response.data.data);
+                        this.$set('pagination', $response.pagination);
+                    }
+                });
+            },
+            search: function() {
+                var page = this.pagination.current_page - 1;
+                var per_page = this.pagination.per_page;
+                var search = this.pagination.search;
+                this.$http.get('/api/admin/token?page='+page + '&perPage=' + per_page + '&q=' + search).then((response) => {
                     if (response) {
                         var $response = JSON.parse(response.data);
                         this.$set('items', $response.data.data);

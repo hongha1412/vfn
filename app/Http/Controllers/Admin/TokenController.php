@@ -16,7 +16,10 @@ class TokenController extends Controller
     public function index()
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
-        $tokens = Token::paginate($perPage);
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
+        $tokens = isset($_GET["q"])
+                ? Token::where("ten", 'like', '%'.$q.'%')->paginate($perPage)
+                : Token::paginate($perPage);
 
         $response = [
             'pagination' => [
