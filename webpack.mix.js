@@ -11,5 +11,11 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/admin/dashboard.js', 'public/assets/scripts/admin')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+mix.js('resources/assets/js/admin/dboard5.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/daypackage.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/package.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/giftcode.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/notice.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/price.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/speed.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/token.js', 'public/assets/scripts/admin');

@@ -1,79 +1,3 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(1);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
 Vue.http.headers.common['X-CSRF-TOKEN'] = $("#token").attr("value");
 
 new Vue({
@@ -83,9 +7,9 @@ new Vue({
     data: {
         items: [],
         pagination: {
-            total: 0,
+            total: 0, 
             per_page: 2,
-            from: 1,
+            from: 1, 
             to: 0,
             current_page: 1
         },
@@ -140,18 +64,18 @@ new Vue({
         },
         offset: 4,
 
-        formDelete: { 'action': '', 'id': '' },
-        formErrors: {},
-        itemAccount: { 'vnd': '', 'toida': '' },
-        fillItemAccount: { 'vnd': '', 'toida': '', 'id': '' },
-        fillItemVipLike: { 'idfb': '', 'fbname': '', 'package': '', 'time': '', 'id': '' }
+        formDelete: {'action':'', 'id': ''},
+        formErrors:{},
+        itemAccount : {'vnd':'', 'toida': ''},
+        fillItemAccount : {'vnd':'', 'toida': '', 'id':''},
+        fillItemVipLike : {'idfb':'', 'fbname': '', 'package': '', 'time': '', 'id':''}
     },
 
     computed: {
-        isActived: function isActived() {
+        isActived: function () {
             return this.pagination.current_page;
         },
-        pagesNumber: function pagesNumber() {
+        pagesNumber: function () {
             if (!this.pagination.to) {
                 return [];
             }
@@ -159,7 +83,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.pagination.last_page) {
                 to = this.pagination.last_page;
             }
@@ -171,10 +95,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedAccount: function isActivedAccount() {
+        isActivedAccount: function () {
             return this.paginationAccount.current_page;
         },
-        pagesNumberAccount: function pagesNumberAccount() {
+        pagesNumberAccount: function () {
             if (!this.paginationAccount.to) {
                 return [];
             }
@@ -182,7 +106,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationAccount.last_page) {
                 to = this.paginationAccount.last_page;
             }
@@ -194,10 +118,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedVipLike: function isActivedVipLike() {
+        isActivedVipLike: function () {
             return this.paginationVipLike.current_page;
         },
-        pagesNumberVipLike: function pagesNumberVipLike() {
+        pagesNumberVipLike: function () {
             if (!this.paginationVipLike.to) {
                 return [];
             }
@@ -205,7 +129,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationVipLike.last_page) {
                 to = this.paginationVipLike.last_page;
             }
@@ -217,10 +141,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedVipCmt: function isActivedVipCmt() {
+        isActivedVipCmt: function () {
             return this.paginationVipCmt.current_page;
         },
-        pagesNumberVipCmt: function pagesNumberVipCmt() {
+        pagesNumberVipCmt: function () {
             if (!this.paginationVipCmt.to) {
                 return [];
             }
@@ -228,7 +152,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationVipCmt.last_page) {
                 to = this.paginationVipCmt.last_page;
             }
@@ -240,10 +164,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedVipShare: function isActivedVipShare() {
+        isActivedVipShare: function () {
             return this.paginationVipShare.current_page;
         },
-        pagesNumberVipShare: function pagesNumberVipShare() {
+        pagesNumberVipShare: function () {
             if (!this.paginationVipShare.to) {
                 return [];
             }
@@ -251,7 +175,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationVipShare.last_page) {
                 to = this.paginationVipShare.last_page;
             }
@@ -263,10 +187,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedCamXuc: function isActivedCamXuc() {
+        isActivedCamXuc: function () {
             return this.paginationCamXuc.current_page;
         },
-        pagesNumberCamXuc: function pagesNumberCamXuc() {
+        pagesNumberCamXuc: function () {
             if (!this.paginationCamXuc.to) {
                 return [];
             }
@@ -274,7 +198,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationCamXuc.last_page) {
                 to = this.paginationCamXuc.last_page;
             }
@@ -286,10 +210,10 @@ new Vue({
             return pagesArray;
         },
 
-        isActivedLogCard: function isActivedLogCard() {
+        isActivedLogCard: function () {
             return this.paginationLogCard.current_page;
         },
-        pagesNumberLogCard: function pagesNumberLogCard() {
+        pagesNumberLogCard: function () {
             if (!this.paginationLogCard.to) {
                 return [];
             }
@@ -297,7 +221,7 @@ new Vue({
             if (from < 1) {
                 from = 1;
             }
-            var to = from + this.offset * 2;
+            var to = from + (this.offset * 2);
             if (to >= this.paginationLogCard.last_page) {
                 to = this.paginationLogCard.last_page;
             }
@@ -307,11 +231,11 @@ new Vue({
                 from++;
             }
             return pagesArray;
-        }
+        },
     },
 
-    ready: function ready() {
-        this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page, "");
+    ready : function(){
+    	this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page, "");
         this.getvueviplike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
         this.getvueVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
         this.getvueVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
@@ -319,85 +243,81 @@ new Vue({
         this.getvueLogCard(this.paginationLogCard.current_page);
     },
 
-    methods: {
+    methods : {
         //////////////////////////////// Danh sach ////////////////////////////////////////
-        getvueAccount: function getvueAccount(page, per_page, search_key) {
-            var _this = this;
-
-            var path = search_key ? '/api/account?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/account?page=' + page + '&perPage=' + per_page;
-            this.$http.get(path).then(function (response) {
+        getvueAccount: function(page, per_page, search_key){
+            var path = search_key
+                ? '/api/account?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/account?page='+page+ '&perPage=' + per_page;
+            this.$http.get(path).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
-                    _this.$set('itemsAccount', $response.data.data);
-                    _this.$set('paginationAccount', $response.pagination);
+                    this.$set('itemsAccount', $response.data.data);
+                    this.$set('paginationAccount', $response.pagination);
                 }
             });
         },
 
-        changePageAccount: function changePageAccount(page, per_page) {
+        changePageAccount: function (page, per_page) {
             this.paginationAccount.current_page = page;
             this.paginationAccount.per_page = per_page;
             this.getvueAccount(page, per_page, this.paginationAccount.search_key);
         },
 
-        getvueviplike: function getvueviplike(page, per_page) {
-            var _this2 = this;
-
-            this.$http.get('/api/viplike?page=' + page + '&perPage=' + per_page).then(function (response) {
+        getvueviplike: function(page, per_page){
+            this.$http.get('/api/viplike?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
-                    _this2.$set('itemsVipLike', $response.data.data);
-                    _this2.$set('paginationVipLike', $response.pagination);
+                    this.$set('itemsVipLike', $response.data.data);
+                    this.$set('paginationVipLike', $response.pagination);
                 }
             });
         },
 
-        changePageVipLike: function changePageVipLike(page, per_page) {
+        changePageVipLike: function (page, per_page) {
             this.paginationVipLike.current_page = page;
             this.paginationVipLike.per_page = per_page;
-            this.getvueviplike(page, per_page);
+            this.getvueviplike(page,per_page);
         },
 
-        getvueVipCmt: function getvueVipCmt(page, per_page) {
-            var _this3 = this;
-
-            this.$http.get('/api/vipcmt?page=' + page + '&perPage=' + per_page).then(function (response) {
+        getvueVipCmt: function(page, per_page){
+            this.$http.get('/api/vipcmt?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
-                    _this3.$set('itemsVipCmt', $response.data.data);
-                    _this3.$set('paginationVipCmt', $response.pagination);
+                    this.$set('itemsVipCmt', $response.data.data);
+                    this.$set('paginationVipCmt', $response.pagination);
                 }
             });
         },
 
-        changePageVipCmt: function changePageVipCmt(page, per_page) {
+        changePageVipCmt: function (page, per_page) {
             this.paginationVipCmt.current_page = page;
             this.paginationVipCmt.per_page = per_page;
             this.getvueVipCmt(page, per_page);
         },
 
-        getvueVipShare: function getvueVipShare(page, per_page) {
-            var _this4 = this;
-
-            this.$http.get('/api/vipshare?page=' + page + '&perPage=' + per_page).then(function (response) {
+        getvueVipShare: function(page, per_page){
+            this.$http.get('/api/vipshare?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
-                    _this4.$set('itemsVipShare', $response.data.data);
-                    _this4.$set('paginationVipShare', $response.pagination);
+                    this.$set('itemsVipShare', $response.data.data);
+                    this.$set('paginationVipShare', $response.pagination);
                 }
             });
         },
 
-        changePageVipShare: function changePageVipShare(page, per_page) {
+        changePageVipShare: function (page, per_page) {
             this.paginationVipShare.current_page = page;
             this.paginationVipShare.per_page = per_page;
             this.getvueVipShare(page, per_page);
         },
 
-        getvueCamXuc: function getvueCamXuc(page, per_page, search_key) {
+        getvueCamXuc: function(page, per_page, search_key){
             var self = this;
-            var path = search_key ? '/api/camxuc?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/camxuc?page=' + page + '&perPage=' + per_page;
-            this.$http.get('/api/camxuc?page=' + page + '&perPage=' + per_page).then(function (response) {
+            var path = search_key
+                ? '/api/camxuc?page='+page+ '&perPage=' + per_page + '&' + 'q=' + search_key
+                : '/api/camxuc?page='+page+ '&perPage=' + per_page;
+            this.$http.get('/api/camxuc?page='+page+ '&perPage=' + per_page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     self.$set('itemsCamXuc', $response.data);
@@ -406,37 +326,35 @@ new Vue({
             });
         },
 
-        changePageCamXuc: function changePageCamXuc(page, per_page) {
+        changePageCamXuc: function (page, per_page) {
             this.paginationCamXuc.current_page = page;
             this.paginationCamXuc.per_page = per_page;
             this.getvueCamXuc(page, per_page);
         },
 
-        getvueLogCard: function getvueLogCard(page) {
-            var _this5 = this;
-
-            this.$http.get('/api/logcard?page=' + page).then(function (response) {
+        getvueLogCard: function(page){
+            this.$http.get('/api/logcard?page='+page).then((response) => {
                 if (response) {
                     var $response = JSON.parse(response.data);
-                    _this5.$set('itemsLogCard', $response.data.data);
-                    _this5.$set('paginationLogCard', $response.pagination);
+                    this.$set('itemsLogCard', $response.data.data);
+                    this.$set('paginationLogCard', $response.pagination);
                 }
             });
         },
 
-        changePageLogCard: function changePageLogCard(page) {
+        changePageLogCard: function (page) {
             this.paginationLogCard.current_page = page;
             this.getvueLogCard(page);
         },
 
         //////////////////////////////// DELETE ////////////////////////////////////////
-        showConfirmDelete: function showConfirmDelete(action, id) {
+        showConfirmDelete: function(action, id) {
             this.formDelete.action = action;
             this.formDelete.id = id;
             $("#confirmDeleteModal").modal('show');
         },
 
-        submitDelete: function submitDelete() {
+        submitDelete: function(){
             switch (this.formDelete.action) {
                 case "account":
                     this.deleteAccount(this.formDelete.id);
@@ -458,99 +376,85 @@ new Vue({
             $("#confirmDeleteModal").modal('hide');
         },
 
-        deleteAccount: function deleteAccount(id) {
-            var _this6 = this;
-
-            this.$http.delete('/api/account/' + id).then(function (response) {
-                _this6.changePageAccount(_this6.paginationAccount.current_page, _this6.paginationAccount.per_page);
-                toastr.success('Xóa Tài Khoản Thành Công!', 'Success Alert', { timeOut: 5000 });
+        deleteAccount: function(id){
+            this.$http.delete('/api/account/'+ id).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+                toastr.success('Xóa Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipLike: function deleteVipLike(id) {
-            var _this7 = this;
-
-            this.$http.delete('/api/viplike/' + id).then(function (response) {
-                _this7.changePageVipLike(_this7.paginationVipLike.current_page, _this7.paginationVipLike.per_page);
-                toastr.success('Xóa ID Thành Công!', 'Success Alert', { timeOut: 5000 });
+        deleteVipLike: function(id){
+            this.$http.delete('/api/viplike/'+ id).then((response) => {
+                this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipCmt: function deleteVipCmt(id) {
-            var _this8 = this;
-
-            this.$http.delete('/api/vipcmt/' + id).then(function (response) {
-                _this8.changePageVipCmt(_this8.paginationVipCmt.current_page, _this8.paginationVipCmt.per_page);
-                toastr.success('Xóa ID Thành Công!', 'Success Alert', { timeOut: 5000 });
+        deleteVipCmt: function(id){
+            this.$http.delete('/api/vipcmt/'+ id).then((response) => {
+                this.changePageVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteVipShare: function deleteVipShare(id) {
-            var _this9 = this;
-
-            this.$http.delete('/api/vipshare/' + id).then(function (response) {
-                _this9.changePageVipShare(_this9.paginationVipShare.current_page, _this9.paginationVipShare.per_page);
-                toastr.success('Xóa ID Thành Công!', 'Success Alert', { timeOut: 5000 });
+        deleteVipShare: function(id){
+            this.$http.delete('/api/vipshare/'+ id).then((response) => {
+                this.changePageVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
-        deleteCamXuc: function deleteCamXuc(id) {
-            var _this10 = this;
-
-            this.$http.delete('/api/camxuc/' + id).then(function (response) {
-                _this10.changePageCamXuc(_this10.paginationCamXuc.current_page, _this10.paginationCamXuc.per_page);
-                toastr.success('Xóa ID Thành Công!', 'Success Alert', { timeOut: 5000 });
+        deleteCamXuc: function(id){
+            this.$http.delete('/api/camxuc/'+ id).then((response) => {
+                this.changePageCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
+                toastr.success('Xóa ID Thành Công!', 'Success Alert', {timeOut: 5000});
             });
         },
 
         //////////////////////////////// Edit ////////////////////////////////////////
         // Account
-        congTien: function congTien(item) {
+        congTien: function(item){
             this.fillItemAccount.id = item.id;
             $("#congtienModal").modal('show');
         },
 
-        updateCongTien: function updateCongTien(id) {
-            var _this11 = this;
-
+        updateCongTien: function(id){
             var input = this.fillItemAccount;
-            this.$http.put('/api/account/congtien/' + id, input).then(function (response) {
-                _this11.changePageAccount(_this11.paginationAccount.current_page, _this11.paginationAccount.per_page);
-                _this11.fillItemAccount = { 'vnd': '', 'toida': '', 'id': '' };
-                $("#congtienModal").modal('hide');
-                toastr.success('Cộng tiền vào tài khoản thành công!', 'Success Alert', { timeOut: 5000 });
-            }, function (response) {
+            this.$http.put('/api/account/congtien/'+id, input).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+            this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
+            $("#congtienModal").modal('hide');
+            toastr.success('Cộng tiền vào tài khoản thành công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
                 if (response && response.data) {
                     var $response = JSON.parse(response.data);
-                    _this11.formErrors = $response;
+                    this.formErrors = $response;
                 }
             });
         },
 
-        themId: function themId(item) {
+        themId: function(item){
             this.fillItemAccount.id = item.id;
             $("#themIdModal").modal('show');
         },
 
-        updateToiDa: function updateToiDa(id) {
-            var _this12 = this;
-
+        updateToiDa: function(id){
             var input = this.fillItemAccount;
-            this.$http.put('/api/account/themid/' + id, input).then(function (response) {
-                _this12.changePageAccount(_this12.paginationAccount.current_page, _this12.paginationAccount.per_page);
-                _this12.fillItemAccount = { 'vnd': '', 'toida': '', 'id': '' };
-                $("#themIdModal").modal('hide');
-                toastr.success('Thêm id vào Tài Khoản Thành Công!', 'Success Alert', { timeOut: 5000 });
-            }, function (response) {
+            this.$http.put('/api/account/themid/'+id, input).then((response) => {
+                this.changePageAccount(this.paginationAccount.current_page, this.paginationAccount.per_page);
+            this.fillItemAccount = {'vnd':'', 'toida': '','id':''};
+            $("#themIdModal").modal('hide');
+            toastr.success('Thêm id vào Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
                 if (response && response.data) {
                     var $response = JSON.parse(response.data);
-                    _this12.formErrors = $response;
+                    this.formErrors = $response;
                 }
             });
         },
 
         // Vip like
-        editVipLike: function editVipLike(item) {
+        editVipLike: function (item) {
             this.fillItemVipLike.id = item.id;
             this.fillItemVipLike.idfb = item.idfb;
             this.fillItemVipLike.fbname = item.fbname;
@@ -558,22 +462,20 @@ new Vue({
             this.fillItemVipLike.time = item.expiretime;
             $("#editVipLikeModal").modal('show');
         },
-        updateVipLike: function updateVipLike(id) {
-            var _this13 = this;
-
+        updateVipLike: function (id) {
             var input = this.fillItemVipLike;
-            this.$http.put('/api/viplike/' + id, input).then(function (response) {
-                _this13.changePageVipLike(_this13.paginationVipLike.current_page, _this13.paginationVipLike.per_page);
-                _this13.fillItemVipLike = { 'idfb': '', 'fbname': '', 'package': '', 'time': '', 'id': '' };
-                $("#editVipLikeModal").modal('hide');
-                toastr.success('Chỉnh Sửa Cập Nhật Tài Khoản Thành Công!', 'Success Alert', { timeOut: 5000 });
-            }, function (response) {
+            this.$http.put('/api/viplike/'+id, input).then((response) => {
+                this.changePageVipLike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
+            this.fillItemVipLike = {'idfb':'', 'fbname': '', 'package': '', 'time': '', 'id':''};
+            $("#editVipLikeModal").modal('hide');
+            toastr.success('Chỉnh Sửa Cập Nhật Tài Khoản Thành Công!', 'Success Alert', {timeOut: 5000});
+        }, (response) => {
                 if (response && response.data) {
                     var $response = JSON.parse(response.data);
-                    _this13.formErrors = $response;
+                    this.formErrors = $response;
                 }
             });
-        }
+        },
         // Vip cmt
 
         // Vip share
@@ -584,15 +486,15 @@ new Vue({
     },
 
     filters: {
-        formatPrice: function formatPrice(value) {
+        formatPrice: function (value) {
             if (!value) {
                 return "0";
             }
-            var val = (value / 1).toFixed(0).replace('.', ',');
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var val = (value/1).toFixed(0).replace('.', ',')
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
         },
-        formatDate: function formatDate(value) {
-            if (!value) {
+        formatDate: function(value) {
+            if (!value){
                 return "";
             }
             var date = new Date(value);
@@ -604,7 +506,7 @@ new Vue({
             var second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
             return curr_date + "/" + curr_month + "/" + curr_year + " " + hours + ":" + minutes + ":" + second;
         },
-        formatTelco: function formatTelco(value) {
+        formatTelco: function (value) {
             if (!value) {
                 return "";
             }
@@ -624,6 +526,3 @@ new Vue({
         }
     }
 });
-
-/***/ })
-/******/ ]);
