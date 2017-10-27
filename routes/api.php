@@ -75,3 +75,4 @@ Route::get('admin/token', 'Admin\TokenController@index');
 Route::put('admin/token/{id}', 'Admin\TokenController@update');
 Route::post('admin/token', 'Admin\TokenController@store');
 Route::delete('admin/token/{id}', 'Admin\TokenController@destroy');
+Route::post('admin/token/removemultiple', 'Admin\TokenController@destroyMultiple');

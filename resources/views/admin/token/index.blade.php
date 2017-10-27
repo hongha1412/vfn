@@ -15,10 +15,13 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b><i class="fa fa-gears"></i> Quản Lý Token</b>
+                    <b><i class="fa fa-gears"></i> Quản Lý Token</b><span> (Tổng token: @{{ pagination.total }})</span>
                 </div>
                 <div class="panel-body">
                     <div class="form-inline" style="padding-bottom: 10px">
+                        <div class="form-group">
+                            <button class="btn btn-danger" @click.prevent="showConfirmDeleteAll()"><i class="fa fa-trash" aria-hidden="true"></i> Xóa</button>
+                        </div>
                         <div class="form-group">
                             <select v-model="pagination.per_page" v-on:change="changePage(pagination.current_page - 1, pagination.per_page)" class="form-control" style="width: 80px">
                                 <option value="5">5</option>
@@ -38,7 +41,7 @@
                         <table id="" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input type="checkbox" v-model="selectAll"></th>
                                     <th>Facebook ID</th>
                                     <th>Tên</th>
                                     <th>Token</th>
@@ -47,7 +50,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for="item in items">
-                                    <td><input type="checkbox" v-bind:value="item.id"></td>
+                                    <td><input type="checkbox" v-bind:value="item.id" v-model="selected"></td>
                                     <td>@{{ item.idfb }}</td>
                                     <td>@{{ item.ten }}</td>
                                     <td>@{{ item.token }}</td>
@@ -81,6 +84,26 @@
                             </li>
                         </ul>
                     </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Modal confirm delete multiple-->
+        <div id="confirmDeleteMultipleModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <form method="POST" v-on:submit.prevent="submitDeleteAll()">
+                        <div class="modal-header">
+                            <h4 class="modal-title"><b>Xác Nhận Xóa</b></h4>
+                        </div>
+                        <div class="modal-body">
+                            <label for="usr" style="color:red">Bạn Có Chắc Chắn Muốn Xóa?</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="submitDelete" class="btn btn-danger">Xóa</button>
+                            <button type="button" name="deleteClose" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

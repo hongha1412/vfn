@@ -127,4 +127,12 @@ class TokenController extends Controller
         
         return response()->json(array('error' => false, 'message' => 'Xóa token thành công'));
     }
+
+    public function destroyMultiple(Request $request) {
+        if (sizeof($request->ids) <=0) {
+            return response()->json(array('error' => true, 'message' => 'Vui lòng chọn token cần xóa!')); 
+        }
+        Token::destroy($request->ids);
+        return response()->json(array('error' => false, 'message' => 'Xóa token thành công'));
+    }
 }

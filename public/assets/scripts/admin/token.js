@@ -14,6 +14,7 @@ new Vue({
                 search:""
             },
             offset: 4,
+            selected: [],
             fillItem: {'token': '', 'ten': '', 'idfb': '','id': ''},
             formErrors: {},
             formDelete: {'action':'', 'id': ''}
@@ -40,6 +41,25 @@ new Vue({
                     from++;
                 }
                 return pagesArray;
+            },
+            selectAll: {
+                get: function () {
+                    if (!this.selected || this.selected.length == 0) {
+                        return false;
+                    }
+                    return this.items ? this.selected.length == this.items.length : false;
+                },
+                set: function (value) {
+                    var selected = [];
+    
+                    if (value) {
+                        this.items.forEach(function (item) {
+                            selected.push(item.id);
+                        });
+                    }
+    
+                    this.selected = selected;
+                }
             }
         },
         ready : function(){
@@ -70,6 +90,7 @@ new Vue({
             changePage: function (page, per_page) {
                 this.pagination.current_page = page;
                 this.pagination.per_page = per_page;
+                this.selected = [];
                 this.gettokenList(page, per_page);
             },
             submit: function(id) {
@@ -118,6 +139,22 @@ new Vue({
                 this.remove(this.formDelete.id);
                 $("#confirmDeleteModal").modal('hide');
             },
+            showConfirmDeleteAll: function() {
+                if (!this.selected || this.selected.length == 0) {
+                    toastr.error("Chưa chọn token nào!", 'Faild Alert', {timeOut: 5000});
+                    return;
+                }
+                $("#confirmDeleteMultipleModal").modal('show');
+            },
+            submitDeleteAll: function(){
+                var self = this;
+                self.removeMultiple(this.selected).done(function(error) {
+                    if (!error) {
+                        self.selected = [];
+                    }
+                });
+                $("#confirmDeleteMultipleModal").modal('hide');
+            },
             remove: function($id) {
                 this.$http.delete('/api/admin/token/'+$id).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
@@ -133,6 +170,30 @@ new Vue({
                         
                     }
                 });
+            },
+            removeMultiple: function(selected) {
+                var dfd = $.Deferred();
+                var ids = {'ids': selected};
+                this.$http.post('/api/admin/token/removemultiple', ids).then((response) => {
+                    this.gettokenList(this.pagination.current_page, this.pagination.per_page);
+                    this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
+                    
+                    if (response && response.data) {
+                        var $response = JSON.parse(response.data);
+                        if ($response.error) {
+                            toastr.error($response.message, 'Faild Alert', {timeOut: 5000});
+                        } else {
+                            toastr.success($response.message, 'Success Alert', {timeOut: 5000});
+                        }
+                        
+                    }
+
+                    dfd.resolve($response.error);
+                }, (response) => {
+                    dfd.reject();
+                });
+
+                return dfd.promise();
             }
         }
 });
