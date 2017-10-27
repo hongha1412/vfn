@@ -18,7 +18,7 @@ class AccountController extends Controller
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
         $q = isset($_GET["q"]) ? $_GET["q"] : "";
         $accounts = isset($_GET["q"])
-            ? Account::where("fullname", 'like', '%'+$q+'%')->paginate($perPage)
+            ? Account::where("fullname", 'like', '%'.$q.'%')->paginate($perPage)
             : Account::paginate($perPage);
 
         $response = [
