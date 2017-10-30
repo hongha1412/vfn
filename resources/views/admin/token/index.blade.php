@@ -111,6 +111,8 @@
         </div>
         @component("admin.layouts._confirm")
         @endcomponent
+        @component("admin.token._edit")
+        @endcomponent
     </div>
 @stop
 

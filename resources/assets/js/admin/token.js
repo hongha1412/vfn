@@ -115,14 +115,17 @@ new Vue({
             },
             edit: function(item) {
                 this.fillItem.id = item.id;
-                this.fillItem.total = item.total;
-                this.fillItem.type = item.type;
+                this.fillItem.token = item.token;
+                this.fillItem.ten = item.ten;
+                this.fillItem.idfb = item.idfb;
+                $("#editTokenModal").modal("show");
             },
             update: function (id) {
                 var input = this.fillItem;
                 this.$http.put('/api/token/'+id, input).then((response) => {
                     this.gettokenList(this.pagination.current_page, this.pagination.per_page);
                     this.fillItem = {'token': '', 'ten': '', 'idfb': '','id': ''};
+                    $("#editTokenModal").modal("hide");
                     toastr.success('Chỉnh Sửa Thành Công!', 'Success Alert', {timeOut: 5000});
                 }, (response) => {
                         if (response && response.data) {
