@@ -38,4 +38,8 @@ class DashboardController extends Controller
     public function token() {
         return view("admin.token.index");
     }
+
+    public function tokenkiemtra() {
+        return view("admin.token.check");
+    }
 }

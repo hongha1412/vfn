@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Console\Commands\CronJob\VipLikeCommand;
 use App\Models\Token;
 
 class TokenController extends Controller
@@ -34,6 +35,43 @@ class TokenController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+    /**
+     * Check token die or live
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check(Request $request) {
+        $this->validate($request, [
+            'tokens'    => 'required'
+        ], [
+            'tokens.required'    => 'Vui lòng nhập trường này!',
+        ]);
+        $vipLikeCommand = new VipLikeCommand;
+        $tokens = $request->tokens;
+        $tokenDies = [];
+        $tokenLives = [];
+        
+        $pool = new Pool(4);
+        
+        foreach ($tokens as $token) {
+            $pool->submit(new TokenTask($token));
+            if ($pool->response == 0) {
+                array_push($tokenDies, $token);
+            } else {
+                array_push($tokenLives, $token);
+            }
+        }
+        
+        while ($pool->collect());
+        $pool->shutdown();
+
+        $data = array(
+            "token_die" => $tokenDies,
+            "token_live" => $tokenLives
+        );
+        return response()->json($data);
     }
 
     /**
@@ -134,5 +172,23 @@ class TokenController extends Controller
         }
         Token::destroy($request->ids);
         return response()->json(array('error' => false, 'message' => 'Xóa token thành công'));
+    }
+}
+
+class TokenTask extends Threaded
+{
+    private $value;
+    private $response;
+
+    public function __construct(int $token)
+    {
+        $this->value = $token;
+    }
+
+    public function run()
+    {
+        usleep(250000);
+        $vipLikeCommand = new VipLikeCommand;
+        $this->response = $vipLikeCommand->getInfo($token);
     }
 }

@@ -1,5 +1,6 @@
 {
     "/assets/scripts/admin/token.js": "/assets/scripts/admin/token.js",
+    "/assets/scripts/admin/token-check.js": "/assets/scripts/admin/token-check.js",
     "/assets/scripts/admin/speed.js": "/assets/scripts/admin/speed.js",
     "/assets/scripts/admin/price.js": "/assets/scripts/admin/price.js",
     "/assets/scripts/admin/package.js": "/assets/scripts/admin/package.js",

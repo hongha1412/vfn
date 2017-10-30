@@ -77,4 +77,5 @@ Route::group(['domain' => $adminDomain], function () {
     Route::post('token', 'Admin\TokenController@store');
     Route::delete('token/{id}', 'Admin\TokenController@destroy');
     Route::post('token/removemultiple', 'Admin\TokenController@destroyMultiple');
+    Route::post('token/check', 'Admin\TokenController@check');
 });
