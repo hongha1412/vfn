@@ -19,4 +19,5 @@ mix.js('resources/assets/js/admin/dboard5.js', 'public/assets/scripts/admin')
 .js('resources/assets/js/admin/price.js', 'public/assets/scripts/admin')
 .js('resources/assets/js/admin/speed.js', 'public/assets/scripts/admin')
 .js('resources/assets/js/admin/token.js', 'public/assets/scripts/admin')
-.js('resources/assets/js/admin/token-check.js', 'public/assets/scripts/admin');
+.js('resources/assets/js/admin/token-check.js', 'public/assets/scripts/admin')
+.js('resources/assets/js/admin/token-report.js', 'public/assets/scripts/admin');

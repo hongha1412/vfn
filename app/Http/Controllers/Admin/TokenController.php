@@ -38,6 +38,16 @@ class TokenController extends Controller
     }
 
     /**
+     * Count token live
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function count() 
+    {
+        return response()->json(Token::count());
+    }
+
+    /**
      * Check token die or live
      *
      * @return \Illuminate\Http\Response

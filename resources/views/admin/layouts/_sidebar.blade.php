@@ -50,7 +50,7 @@
                 <li><a href="{{ url('token') }}"><i class="fa fa-plus-square"></i> DS Token</a></li>
                 <li><a href="them_token"><i class="fa fa-plus-square"></i> Thêm Token</a></li>
                 <li><a href="{{ url('token/kiemtra') }}"><i class="fa fa-plus-square"></i> Kiểm Tra Token </a></li>
-                <li><a href="tong_token.php"><i class="fa fa-plus-square"></i> Tổng Token </a></li>
+                <li><a href="{{ url('token/report') }}"><i class="fa fa-plus-square"></i> Tổng Token </a></li>
             </ul>
         </li>
 

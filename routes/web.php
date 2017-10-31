@@ -36,6 +36,7 @@ Route::group(['domain' => $adminDomain], function () {
     Route::get('/price', 'Admin\DashboardController@price')->name('admin.price');
     Route::get('/token', 'Admin\DashboardController@token')->name('admin.token');
     Route::get('/token/kiemtra', 'Admin\DashboardController@tokenkiemtra')->name('admin.token.kiemtra');
+    Route::get('/token/report', 'Admin\DashboardController@tokenreport')->name('admin.token.report');
 });
 
 Route::group(['domain' => $domain], function () {
