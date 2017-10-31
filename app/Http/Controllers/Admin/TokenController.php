@@ -53,19 +53,25 @@ class TokenController extends Controller
         $tokenDies = [];
         $tokenLives = [];
         
-        $pool = new Pool(4);
-        
-        foreach ($tokens as $token) {
-            $pool->submit(new TokenTask($token));
-            if ($pool->response == 0) {
+        //$pool = new Pool(4);
+
+        foreach ($tokens as $token) {    
+            $response = $vipLikeCommand->getInfo($token);
+            if ($response == 0) {
                 array_push($tokenDies, $token);
             } else {
                 array_push($tokenLives, $token);
             }
+            //$pool->submit(new TokenTask($token));
+            //if ($pool->response == 0) {
+            //    array_push($tokenDies, $token);
+            //} else {
+            //    array_push($tokenLives, $token);
+            //}
         }
         
-        while ($pool->collect());
-        $pool->shutdown();
+        //while ($pool->collect());
+        //$pool->shutdown();
 
         $data = array(
             "token_die" => $tokenDies,
@@ -175,7 +181,7 @@ class TokenController extends Controller
     }
 }
 
-class TokenTask extends Threaded
+/* class TokenTask extends Thread
 {
     private $value;
     private $response;
@@ -191,4 +197,4 @@ class TokenTask extends Threaded
         $vipLikeCommand = new VipLikeCommand;
         $this->response = $vipLikeCommand->getInfo($token);
     }
-}
+} */
