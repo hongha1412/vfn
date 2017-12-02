@@ -15,8 +15,11 @@ class VipController extends Controller
      */
     public function index()
     {
-        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $vips = Vip::paginate($perPage);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
+        $vips = isset($_GET["q"])
+            ? Vip::where("fbname", 'like', '%'.$q.'%')->paginate($perPage)
+            : Vip::paginate($perPage);
         
         $response = [
             'pagination' => [

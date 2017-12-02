@@ -12,7 +12,7 @@
         </div>
         <div class="form-group pull-right">
             <label for="search">Tìm kiếm:</label>
-            <input type="search" class="form-control" id="search">
+            <input type="search" class="form-control" id="search" placeholder="Tìm kiếm theo name" v-model="paginationVipCmt.search_key" @keyup.enter="searchVipCmt()">
         </div>
     </div>
     <div class="table-responsive">

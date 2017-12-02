@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Console\Commands\CronJob\VipLikeCommand;
+use App\Jobs\CheckToken;
 use App\Models\Token;
 
 class TokenController extends Controller
@@ -18,7 +19,7 @@ class TokenController extends Controller
     {
         $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
         $q = isset($_GET["q"]) ? $_GET["q"] : "";
-        $tokens = isset($_GET["q"])
+        $tokens = isset($_GET["q"]) || $_GET["q"] == ""
                 ? Token::where("ten", 'like', '%'.$q.'%')->paginate($perPage)
                 : Token::paginate($perPage);
 
@@ -60,34 +61,10 @@ class TokenController extends Controller
         ]);
         $vipLikeCommand = new VipLikeCommand;
         $tokens = $request->tokens;
-        $tokenDies = [];
-        $tokenLives = [];
-        
-        //$pool = new Pool(4);
-
-        foreach ($tokens as $token) {    
-            $response = $vipLikeCommand->getInfo($token);
-            if ($response == 0) {
-                array_push($tokenDies, $token);
-            } else {
-                array_push($tokenLives, $token);
-            }
-            //$pool->submit(new TokenTask($token));
-            //if ($pool->response == 0) {
-            //    array_push($tokenDies, $token);
-            //} else {
-            //    array_push($tokenLives, $token);
-            //}
-        }
-        
-        //while ($pool->collect());
-        //$pool->shutdown();
-
-        $data = array(
-            "token_die" => $tokenDies,
-            "token_live" => $tokenLives
-        );
-        return response()->json($data);
+        $job = (new CheckToken($tokens)); //->delay(Carbon::now()->addMinutes(1));
+        dispatch($job);
+        dd($job->getResult());
+        return response()->json($job->getResult());
     }
 
     /**

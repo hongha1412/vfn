@@ -15,8 +15,11 @@ class VipCmtController extends Controller
      */
     public function index()
     {
-        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $vipCmts = VipCmt::paginate($perPage);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
+        $vipCmts = isset($_GET["q"])
+            ? VipCmt::where("name", 'like', '%'.$q.'%')->paginate($perPage)
+            : VipCmt::paginate($perPage);
         
         $response = [
             'pagination' => [

@@ -104,7 +104,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         itemsVipCmt: [],
         paginationVipCmt: {
@@ -112,7 +113,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         itemsVipShare: [],
         paginationVipShare: {
@@ -120,7 +122,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         itemsCamXuc: [],
         paginationCamXuc: {
@@ -128,7 +131,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         itemsLogCard: [],
         paginationLogCard: {
@@ -136,7 +140,8 @@ new Vue({
             per_page: 10,
             from: 1,
             to: 0,
-            current_page: 1
+            current_page: 1,
+            search_key: ""
         },
         offset: 4,
 
@@ -312,10 +317,10 @@ new Vue({
 
     ready: function ready() {
         this.getvueAccount(this.paginationAccount.current_page, this.paginationAccount.per_page, "");
-        this.getvueviplike(this.paginationVipLike.current_page, this.paginationVipLike.per_page);
-        this.getvueVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page);
-        this.getvueVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page);
-        this.getvueCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page);
+        this.getvueviplike(this.paginationVipLike.current_page, this.paginationVipLike.per_page, "");
+        this.getvueVipCmt(this.paginationVipCmt.current_page, this.paginationVipCmt.per_page, "");
+        this.getvueVipShare(this.paginationVipShare.current_page, this.paginationVipShare.per_page, "");
+        this.getvueCamXuc(this.paginationCamXuc.current_page, this.paginationCamXuc.per_page, "");
         this.getvueLogCard(this.paginationLogCard.current_page);
     },
 
@@ -340,10 +345,11 @@ new Vue({
             this.getvueAccount(page, per_page, this.paginationAccount.search_key);
         },
 
-        getvueviplike: function getvueviplike(page, per_page) {
+        getvueviplike: function getvueviplike(page, per_page, search_key) {
             var _this2 = this;
 
-            this.$http.get('/api/viplike?page=' + page + '&perPage=' + per_page).then(function (response) {
+            var path = search_key ? '/api/viplike?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/viplike?page=' + page + '&perPage=' + per_page;
+            this.$http.get(path).then(function (response) {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     _this2.$set('itemsVipLike', $response.data.data);
@@ -355,13 +361,21 @@ new Vue({
         changePageVipLike: function changePageVipLike(page, per_page) {
             this.paginationVipLike.current_page = page;
             this.paginationVipLike.per_page = per_page;
-            this.getvueviplike(page, per_page);
+            this.getvueviplike(page, per_page, this.paginationVipLike.search_key);
         },
 
-        getvueVipCmt: function getvueVipCmt(page, per_page) {
+        searchVipLike: function searchVipLike() {
+            var page = this.paginationVipLike.current_page - 1;
+            var per_page = this.paginationVipLike.per_page;
+            var search = this.paginationVipLike.search_key;
+            this.getvueviplike(page, per_page, search);
+        },
+        //////////////////////////////
+        getvueVipCmt: function getvueVipCmt(page, per_page, search_key) {
             var _this3 = this;
 
-            this.$http.get('/api/vipcmt?page=' + page + '&perPage=' + per_page).then(function (response) {
+            var path = search_key ? '/api/vipcmt?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/vipcmt?page=' + page + '&perPage=' + per_page;
+            this.$http.get(path).then(function (response) {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     _this3.$set('itemsVipCmt', $response.data.data);
@@ -373,13 +387,21 @@ new Vue({
         changePageVipCmt: function changePageVipCmt(page, per_page) {
             this.paginationVipCmt.current_page = page;
             this.paginationVipCmt.per_page = per_page;
-            this.getvueVipCmt(page, per_page);
+            this.getvueVipCmt(page, per_page, this.paginationVipCmt.search_key);
         },
 
-        getvueVipShare: function getvueVipShare(page, per_page) {
+        searchVipCmt: function searchVipCmt() {
+            var page = this.paginationVipCmt.current_page - 1;
+            var per_page = this.paginationVipCmt.per_page;
+            var search = this.paginationVipCmt.search_key;
+            this.getvueVipCmt(page, per_page, search);
+        },
+        //////////////////////////////
+        getvueVipShare: function getvueVipShare(page, per_page, search_key) {
             var _this4 = this;
 
-            this.$http.get('/api/vipshare?page=' + page + '&perPage=' + per_page).then(function (response) {
+            var path = search_key ? '/api/vipshare?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/vipshare?page=' + page + '&perPage=' + per_page;
+            this.$http.get(path).then(function (response) {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     _this4.$set('itemsVipShare', $response.data.data);
@@ -391,13 +413,21 @@ new Vue({
         changePageVipShare: function changePageVipShare(page, per_page) {
             this.paginationVipShare.current_page = page;
             this.paginationVipShare.per_page = per_page;
-            this.getvueVipShare(page, per_page);
+            this.getvueVipShare(page, per_page, this.paginationVipShare.search_key);
         },
+
+        searchVipShare: function searchVipShare() {
+            var page = this.paginationVipShare.current_page - 1;
+            var per_page = this.paginationVipShare.per_page;
+            var search = this.paginationVipShare.search_key;
+            this.getvueVipShare(page, per_page, search);
+        },
+        //////////////////////////////
 
         getvueCamXuc: function getvueCamXuc(page, per_page, search_key) {
             var self = this;
             var path = search_key ? '/api/camxuc?page=' + page + '&perPage=' + per_page + '&' + 'q=' + search_key : '/api/camxuc?page=' + page + '&perPage=' + per_page;
-            this.$http.get('/api/camxuc?page=' + page + '&perPage=' + per_page).then(function (response) {
+            this.$http.get(path).then(function (response) {
                 if (response) {
                     var $response = JSON.parse(response.data);
                     self.$set('itemsCamXuc', $response.data);
@@ -409,8 +439,16 @@ new Vue({
         changePageCamXuc: function changePageCamXuc(page, per_page) {
             this.paginationCamXuc.current_page = page;
             this.paginationCamXuc.per_page = per_page;
-            this.getvueCamXuc(page, per_page);
+            this.getvueCamXuc(page, per_page, this.paginationCamXuc.search_key);
         },
+
+        searchCamXuc: function searchCamXuc() {
+            var page = this.paginationCamXuc.current_page - 1;
+            var per_page = this.paginationCamXuc.per_page;
+            var search = this.paginationCamXuc.search_key;
+            this.getvueCamXuc(page, per_page, search);
+        },
+        //////////////////////////////
 
         getvueLogCard: function getvueLogCard(page) {
             var _this5 = this;

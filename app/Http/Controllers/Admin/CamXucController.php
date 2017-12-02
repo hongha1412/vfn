@@ -23,7 +23,7 @@ class CamXucController extends Controller
 
         $camXucs = CamXuc::paginate($perPage);
         $camXucsLimit = isset($_GET["q"])
-            ? CamXuc::where("fullname", "LIKE", "%".$q."%")->limit($perPage)->offset($offset)->get()
+            ? CamXuc::where("name", "LIKE", "%".$q."%")->limit($perPage)->offset($offset)->get()
             : CamXuc::limit($perPage)->offset($offset)->get();
 
         $response = [

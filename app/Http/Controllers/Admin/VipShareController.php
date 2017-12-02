@@ -15,8 +15,11 @@ class VipShareController extends Controller
      */
     public function index()
     {
-        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 10;
-        $vipShares = VipShare::paginate($perPage);
+        $perPage =  isset($_GET["perPage"]) ? $_GET["perPage"] : 12;
+        $q = isset($_GET["q"]) ? $_GET["q"] : "";
+        $vipShares = isset($_GET["q"])
+            ? VipShare::where("name", 'like', '%'.$q.'%')->paginate($perPage)
+            : VipShare::paginate($perPage);
         
         $response = [
             'pagination' => [
