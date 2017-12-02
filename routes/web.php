@@ -24,19 +24,18 @@ Route::group(['domain' => $adminDomain], function () {
     Route::get('/login', 'Auth\LoginController@adminLogin')->name('admin.login');
 
     Route::group(['prefix' => '/', 'middleware' => ['sessionTimeout', 'checkPermissionAdmin']], function () {
+        // Dashboard
+        Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
+        Route::get('/giftcode', 'Admin\DashboardController@giftcode')->name('admin.giftcode');
+        Route::get('/notice', 'Admin\DashboardController@notice')->name('admin.notice');
+        Route::get('/package', 'Admin\DashboardController@package')->name('admin.package');
+        Route::get('/daypackage', 'Admin\DashboardController@daypackage')->name('admin.daypackage');
+        Route::get('/speed', 'Admin\DashboardController@speed')->name('admin.speed');
+        Route::get('/price', 'Admin\DashboardController@price')->name('admin.price');
+        Route::get('/token', 'Admin\DashboardController@token')->name('admin.token');
+        Route::get('/token/kiemtra', 'Admin\DashboardController@tokenkiemtra')->name('admin.token.kiemtra');
+        Route::get('/token/report', 'Admin\DashboardController@tokenreport')->name('admin.token.report');
     });
-
-    // Dashboard
-    Route::get('/', 'Admin\DashboardController@index')->name('admin.dashboard');
-    Route::get('/giftcode', 'Admin\DashboardController@giftcode')->name('admin.giftcode');
-    Route::get('/notice', 'Admin\DashboardController@notice')->name('admin.notice');
-    Route::get('/package', 'Admin\DashboardController@package')->name('admin.package');
-    Route::get('/daypackage', 'Admin\DashboardController@daypackage')->name('admin.daypackage');
-    Route::get('/speed', 'Admin\DashboardController@speed')->name('admin.speed');
-    Route::get('/price', 'Admin\DashboardController@price')->name('admin.price');
-    Route::get('/token', 'Admin\DashboardController@token')->name('admin.token');
-    Route::get('/token/kiemtra', 'Admin\DashboardController@tokenkiemtra')->name('admin.token.kiemtra');
-    Route::get('/token/report', 'Admin\DashboardController@tokenreport')->name('admin.token.report');
 });
 
 Route::group(['domain' => $domain], function () {
