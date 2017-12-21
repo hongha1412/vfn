@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Console\Commands\CronJob\VipLikeCommand;
-use App\Jobs\CheckToken;
 use App\Models\Token;
 
 class TokenController extends Controller
@@ -59,12 +58,25 @@ class TokenController extends Controller
         ], [
             'tokens.required'    => 'Vui lòng nhập trường này!',
         ]);
+
         $vipLikeCommand = new VipLikeCommand;
-        $tokens = $request->tokens;
-        $job = (new CheckToken($tokens)); //->delay(Carbon::now()->addMinutes(1));
-        dispatch($job);
-        dd($job->getResult());
-        return response()->json($job->getResult());
+        $tokenDies = [];
+        $tokenLives = [];
+        foreach ($request->tokens as $token) {    
+            $response = $vipLikeCommand->getInfo($token);
+            if ($response == 0) {
+                array_push($tokenDies, $token);
+            } else {
+                array_push($tokenLives, $token);
+            }
+        }
+
+        $data = array(
+            "token_die" => $tokenDies,
+            "token_live" => $tokenLives
+        );
+
+        return response()->json($data);
     }
 
     /**
